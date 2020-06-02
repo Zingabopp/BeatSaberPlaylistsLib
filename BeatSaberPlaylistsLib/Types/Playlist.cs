@@ -16,16 +16,16 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Internal collection of songs in the playlist.
         /// </summary>
-        protected abstract IList<T> _songs { get; set; }
+        protected abstract IList<T> Songs { get; set; }
 
         /// <inheritdoc/>
         public IPlaylistSong this[int index]
         {
-            get => _songs[index];
+            get => Songs[index];
 
             set
             {
-                _songs[index] = CreateFrom(value);
+                Songs[index] = CreateFrom(value);
             }
         }
 
@@ -46,7 +46,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public bool AllowDuplicates { get; set; }
         /// <inheritdoc/>
-        public int Count => _songs.Count;
+        public int Count => Songs.Count;
         /// <inheritdoc/>
         public virtual bool IsReadOnly => false;
 
@@ -60,10 +60,10 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(ISong song)
         {
-            if (AllowDuplicates || !_songs.Any(s => s.Hash == song.Hash || (song.Key != null && s.Key == song.Key)))
+            if (AllowDuplicates || !Songs.Any(s => s.Hash == song.Hash || (song.Key != null && s.Key == song.Key)))
             {
                 T playlistSong = CreateFrom(song);
-                _songs.Add(playlistSong);
+                Songs.Add(playlistSong);
                 return playlistSong;
             }
             return null;
@@ -85,26 +85,26 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public virtual void Clear()
         {
-            _songs.Clear();
+            Songs.Clear();
         }
 
         /// <inheritdoc/>
         public virtual void Sort()
         {
-            _songs = _songs.OrderByDescending(s => s.DateAdded).ToList();
+            Songs = Songs.OrderByDescending(s => s.DateAdded).ToList();
         }
 
         /// <inheritdoc/>
         public virtual bool Contains(IPlaylistSong item)
         {
-            return _songs.Any(s => s.Equals(item));
+            return Songs.Any(s => s.Equals(item));
         }
 
         /// <inheritdoc/>
         public void CopyTo(IPlaylistSong[] array, int arrayIndex)
         {
             int index = arrayIndex;
-            foreach (T song in _songs)
+            foreach (T song in Songs)
             {
                 array[index] = song;
                 index++;
@@ -120,14 +120,14 @@ namespace BeatSaberPlaylistsLib.Types
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return _songs.GetEnumerator();
+            return Songs.GetEnumerator();
         }
 
         /// <inheritdoc/>
         public int IndexOf(IPlaylistSong item)
         {
             if (item is T song)
-                return _songs.IndexOf(song);
+                return Songs.IndexOf(song);
             else
                 return -1;
         }
@@ -135,7 +135,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public void Insert(int index, IPlaylistSong item)
         {
-            _songs.Insert(index, CreateFrom(item));
+            Songs.Insert(index, CreateFrom(item));
         }
 
         /// <inheritdoc/>
@@ -150,12 +150,12 @@ namespace BeatSaberPlaylistsLib.Types
         {
             bool songRemoved = false;
             if (item is T matchedType)
-                songRemoved = _songs.Remove(matchedType);
+                songRemoved = Songs.Remove(matchedType);
             else
             {
-                T song = _songs.FirstOrDefault(s => s.Equals(item));
+                T song = Songs.FirstOrDefault(s => s.Equals(item));
                 if (song != null)
-                    songRemoved = _songs.Remove(song);
+                    songRemoved = Songs.Remove(song);
             }
             return songRemoved;
         }
@@ -163,17 +163,17 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public void RemoveAt(int index)
         {
-            _songs.RemoveAt(index);
+            Songs.RemoveAt(index);
         }
 
         /// <inheritdoc/>
         public int RemoveAll(Func<IPlaylistSong, bool> match)
         {
             int songsRemoved = 0;
-            T[]? toRemove = _songs.Where(s => match(s)).ToArray();
+            T[]? toRemove = Songs.Where(s => match(s)).ToArray();
             foreach (T song in toRemove)
             {
-                if (_songs.Remove(song))
+                if (Songs.Remove(song))
                     songsRemoved++;
             }
             return songsRemoved;
@@ -214,13 +214,13 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _songs.GetEnumerator();
+            return Songs.GetEnumerator();
         }
 
         /// <inheritdoc/>
         IEnumerator<IPlaylistSong> IEnumerable<IPlaylistSong>.GetEnumerator()
         {
-            IList<IPlaylistSong>? thing = (IList<IPlaylistSong>)_songs;
+            IList<IPlaylistSong>? thing = (IList<IPlaylistSong>)Songs;
             return thing.GetEnumerator();
         }
 

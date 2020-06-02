@@ -17,7 +17,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         [DataMember]
         [JsonProperty("songs", Order = 5)]
-        protected override IList<LegacyPlaylistSong> _songs { get; set; } = new List<LegacyPlaylistSong>();
+        protected override IList<LegacyPlaylistSong> Songs { get; set; } = new List<LegacyPlaylistSong>();
         private Lazy<string>? ImageLoader;
         /// <summary>
         /// Creates an empty <see cref="LegacyPlaylist"/>.
@@ -91,7 +91,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         /// </summary>
         [DataMember]
         [JsonProperty("image", Order = 10)]
-        protected string coverString
+        protected string CoverString
         {
             get
             {
@@ -114,7 +114,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         {
             int removedSongs = 0;
             if (match != null)
-                removedSongs = ((List<LegacyPlaylistSong>)_songs).RemoveAll(s => match(s));
+                removedSongs = ((List<LegacyPlaylistSong>)Songs).RemoveAll(s => match(s));
             return removedSongs;
         }
 

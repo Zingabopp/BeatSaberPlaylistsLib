@@ -52,7 +52,7 @@ namespace BeatSaberPlaylistsLib
         /// <param name="playlistDirectory"></param>
         public PlaylistManager(string playlistDirectory)
             : this(playlistDirectory, new LegacyPlaylistHandler())
-        {  }
+        { }
 
         /// <summary>
         /// Creates a new <see cref="PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>

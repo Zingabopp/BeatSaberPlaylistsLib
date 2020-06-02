@@ -188,7 +188,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         public override string ToString()
         {
-            var keyPart = string.IsNullOrEmpty(Key) ? string.Empty : $"({Key}) ";
+            string? keyPart = string.IsNullOrEmpty(Key) ? string.Empty : $"({Key}) ";
             return $"{keyPart}{Name} by {LevelAuthorName}";
         }
 

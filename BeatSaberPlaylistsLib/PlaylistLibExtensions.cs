@@ -1,10 +1,6 @@
 ﻿using BeatSaberPlaylistsLib.Types;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -34,7 +30,7 @@ namespace BeatSaberPlaylistsLib
         public static void SerializeToFile(this IPlaylistHandler handler, IPlaylist playlist, string path)
         {
             if (handler == null)
-                throw new ArgumentNullException(nameof(handler), $"{nameof(handler)} cannot be null."); 
+                throw new ArgumentNullException(nameof(handler), $"{nameof(handler)} cannot be null.");
             if (playlist == null)
                 throw new ArgumentNullException(nameof(playlist), $"{nameof(playlist)} cannot be null.");
             if (string.IsNullOrEmpty(path))

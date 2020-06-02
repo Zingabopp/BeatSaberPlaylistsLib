@@ -1,0 +1,967 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BeatSaberPlaylistsLib</name>
+    </assembly>
+    <members>
+        <member name="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist">
+            <summary>
+            An <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> that can be serialized by a <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler"/>.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist._songs">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.#ctor">
+            <summary>
+            Creates an empty <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist"/> from the given parameters.
+            </summary>
+            <param name="fileName"></param>
+            <param name="title"></param>
+            <param name="author"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.#ctor(System.String,System.String,System.String,System.Lazy{System.String})">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist"/> from the given parameters.
+            </summary>
+            <param name="fileName"></param>
+            <param name="title"></param>
+            <param name="author"></param>
+            <param name="imageLoader"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist"/> from the given parameters.
+            </summary>
+            <param name="fileName"></param>
+            <param name="title"></param>
+            <param name="author"></param>
+            <param name="coverImage"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Title">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Author">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Description">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.coverString">
+            <summary>
+            A base64 string conversion of the cover image.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Filename">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.IsReadOnly">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.RemoveAll(System.Func{BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong,System.Boolean})">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.GetCoverStream">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.SetCover(System.Byte[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.SetCover(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.SetCover(System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler">
+            <summary>
+            <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for legacy playlists (.bplist/.json).
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.GetSupportedExtensions">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.DefaultExtension">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.HandledType">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.Populate(System.IO.Stream,BeatSaberPlaylistsLib.Legacy.LegacyPlaylist)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.Deserialize(System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.Serialize(BeatSaberPlaylistsLib.Legacy.LegacyPlaylist,System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.BeatSaberPlaylistsLib#Types#IPlaylistHandler#Serialize(BeatSaberPlaylistsLib.Types.IPlaylist,System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.BeatSaberPlaylistsLib#Types#IPlaylistHandler#Populate(System.IO.Stream,BeatSaberPlaylistsLib.Types.IPlaylist)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.BeatSaberPlaylistsLib#Types#IPlaylistHandler#Deserialize(System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong">
+            <summary>
+            An <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> that can be serialized in a <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.#ctor">
+            <summary>
+            Creates an empty <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.#ctor(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong"/> from the given <paramref name="song"/>.
+            </summary>
+            <param name="song"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong"/> with the given parameters.
+            At least one identifier must be provided (<paramref name="hash"/>, <paramref name="levelId"/>, <paramref name="songKey"/>).
+            </summary>
+            <param name="hash"></param>
+            <param name="levelId"></param>
+            <param name="songName"></param>
+            <param name="songKey"></param>
+            <param name="mapper"></param>
+            <exception cref="T:System.ArgumentException">Thrown if no identifiers are provided (<paramref name="hash"/>, <paramref name="levelId"/>, <paramref name="songKey"/>).</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.#ctor(BeatSaberPlaylistsLib.Types.ISong)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong"/> from the given <see cref="T:BeatSaberPlaylistsLib.Types.ISong"/>.
+            </summary>
+            <param name="song"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="song"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="song"/> has no valid identifiers.</exception>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Hash">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.LevelId">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Key">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.LevelAuthorName">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.DateAdded">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Identifiers">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.AddIdentifierFlag(BeatSaberPlaylistsLib.Types.Identifier)">
+            <summary>
+            Adds the given flag to the <see cref="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Identifiers"/> property.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.RemoveIdentifierFlag(BeatSaberPlaylistsLib.Types.Identifier)">
+            <summary>
+            Removes the given flag from the <see cref="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Identifiers"/> property.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistSong.Equals(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.PlaylistExtensions">
+            <summary>
+            Helpful extension methods for playlists.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistExtensions.ConvertTo``1(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <summary>
+            Creates and returns a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> with values populated from <paramref name="song"/>.
+            </summary>
+            <typeparam name="T">Target <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> type.</typeparam>
+            <param name="song">Song to clone the values from.</param>
+            <returns>A new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="song"/> is null.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistExtensions.Populate(BeatSaberPlaylistsLib.Types.IPlaylistSong,BeatSaberPlaylistsLib.Types.ISong,System.Boolean)">
+            <summary>
+            Populates the target <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> with values from <paramref name="song"/>.
+            </summary>
+            <param name="target"></param>
+            <param name="song"></param>
+            <param name="overwriteTarget">If true, overwrites existing values on <paramref name="target"/></param>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.PlaylistLibExtensions">
+            <summary>
+            Helpful extensions.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistLibExtensions.GetImageLoader(System.String)">
+            <summary>
+            Gets a <see cref="T:System.Lazy`1"/> loader for an image at the given <paramref name="resourcePath"/>.
+            </summary>
+            <param name="resourcePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistLibExtensions.SerializeToFile(BeatSaberPlaylistsLib.Types.IPlaylistHandler,BeatSaberPlaylistsLib.Types.IPlaylist,System.String)">
+            <summary>
+            Serializes an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> to a file. 
+            </summary>
+            <param name="handler"><see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use.</param>
+            <param name="playlist">The <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> to serialize</param>
+            <param name="path">The path to the target file to serialize to</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="path"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlist"/> is not of type <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while serializing.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistLibExtensions.Deserialize(BeatSaberPlaylistsLib.Types.IPlaylistHandler,System.String)">
+            <summary>
+            Attempts to deserialize and return an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> from a file.
+            </summary>
+            <param name="handler"><see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use.</param>
+            <param name="path">Path to the file.</param>
+            <returns>An <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="path"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if a file at <paramref name="path"/> does not exist.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistLibExtensions.Populate(BeatSaberPlaylistsLib.Types.IPlaylistHandler,System.String,BeatSaberPlaylistsLib.Types.IPlaylist)">
+            <summary>
+            Populates the target <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with data from a file.
+            </summary>
+            <param name="handler"><see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use.</param>
+            <param name="path">Path to the file.</param>
+            <param name="target">Target <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>.</param>
+            <returns>An <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="path"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if a file at <paramref name="path"/> does not exist 
+            or <paramref name="target"/>'s type doesn't match <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.PlaylistManager">
+            <summary>
+            Class that manages <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>s and <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager.DefaultManager">
+            <summary>
+            Reference to the default <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> which uses the 'Playlists' directory in the current working directory.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager.PlaylistHandlers">
+            <summary>
+            Dictionary of <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> <see cref="T:System.Type"/>s and their associated <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager.PlaylistExtensionHandlers">
+            <summary>
+            Dictionary of file extensions (uppercase) and their associated <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager._changedLock">
+            <summary>
+            Lock object used when modifying <see cref="F:BeatSaberPlaylistsLib.PlaylistManager.ChangedPlaylists"/>.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager.ChangedPlaylists">
+            <summary>
+            List of <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that are marked as changed.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager.LoadedPlaylists">
+            <summary>
+            Key is the file name in uppercase.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.PlaylistManager.PlaylistPath">
+            <summary>
+            Path to the directory the <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> loads and stores playlists.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.PlaylistManager.DefaultHandler">
+            <summary>
+            The default <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for this <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>.
+            </summary>
+            <param name="playlistDirectory"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.#ctor(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>
+            and sets the default <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to <paramref name="defaultHandler"/>.
+            </summary>
+            <param name="playlistDirectory"></param>
+            <param name="defaultHandler"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterHandler(BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
+            <summary>
+            Attempts to register the given <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> with the <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
+            Returns false if a handler with the same <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/> already exists,
+            or if all extensions supported by <paramref name="playlistHandler"/> are already handled.
+            </summary>
+            <param name="playlistHandler"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterHandlerForExtension(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
+            <summary>
+            
+            </summary>
+            <param name="extension"></param>
+            <param name="playlistHandler"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetHandlerForExtension(System.String)">
+            <summary>
+            Gets an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> registered for the given <paramref name="extension"/>.
+            Returns null if no registered handler supports the <paramref name="extension"/>.
+            </summary>
+            <param name="extension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.CreatePlaylist(System.String,System.String,System.String,System.Lazy{System.String},System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> using the given parameters.
+            </summary>
+            <param name="fileName"></param>
+            <param name="title"></param>
+            <param name="author"></param>
+            <param name="imageLoader"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.CreatePlaylist(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> using the given parameters.
+            </summary>
+            <param name="fileName"></param>
+            <param name="title"></param>
+            <param name="author"></param>
+            <param name="coverImage"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RemoveSongFromAll(System.String)">
+            <summary>
+            Attempts to remove the song with the matching hash from all loaded playlists.
+            </summary>
+            <param name="hash"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RemoveSongFromAll(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <summary>
+            Attempts to remove the song from all loaded playlists.
+            </summary>
+            <param name="song"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.StoreAllPlaylists">
+            <summary>
+            Writes all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that have been marked as changed to file.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.StorePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="playlist"></param>
+            <param name="removeFromChanged"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown on serialization errors.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.LoadPlaylistFromFile(System.String)">
+            <summary>
+            Attempts to create an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> from a file with the given <paramref name="fileName"/>.
+            Returns null if there is no registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for the given type.
+            All other failure cases throw an Exception.
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"></exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterPlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
+            <summary>
+            Registers an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with the <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>. 
+            </summary>
+            <param name="playlist">Playlist to register.</param>
+            <param name="asChanged">Immediately mark the playlist as changed.</param>
+            <returns>True if <paramref name="playlist"/> was successful registered, 
+            false if a playlist with the same filename is already registered.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if <paramref name="playlist"/> does not have a file name.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.TryGetPlaylist(System.String,BeatSaberPlaylistsLib.Types.IPlaylist@)">
+            <summary>
+            Attempts to get a loaded <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with the given filename.
+            </summary>
+            <param name="fileName">Filename without extension or directories</param>
+            <param name="playlist">The retrieved playlist, null if there was no matching playlist.</param>
+            <returns>True if a playlist was retrieved, false otherwise.</returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.MarkPlaylistChanged(BeatSaberPlaylistsLib.Types.IPlaylist)">
+            <summary>
+            Mark <paramref name="playlist"/> as changed in this <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
+            </summary>
+            <param name="playlist"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.IsPlaylistChanged(BeatSaberPlaylistsLib.Types.IPlaylist)">
+            <summary>
+            Returns true if the given <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> is marked as changed by this <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
+            </summary>
+            <param name="playlist"></param>
+            <returns>True if the playlist is marked as changed, false otherwise.</returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetPlaylist(System.String)">
+            <summary>
+            Retrieves the specified playlist. If the playlist doesn't exist, returns null.
+            </summary>
+            <param name="playlistFileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetOrAdd(System.String,System.Func{BeatSaberPlaylistsLib.Types.IPlaylist})">
+            <summary>
+            Attempts to get or load a playlist with the given filename. 
+            If the playlist doesn't exist, it will be created by <paramref name="playlistFactory"/>.
+            </summary>
+            <param name="playlistFileName"></param>
+            <param name="playlistFactory"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"></exception>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.PlaylistSerializationException">
+            <summary>
+            Wrapper for exceptions that cause errors during playlist Serialization/Deserialization.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistSerializationException.#ctor">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"/> with no Message or InnerException.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistSerializationException.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"/> with the Message set to <paramref name="message"/>.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistSerializationException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"/> with the Message set to <paramref name="message"/>.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The <see cref="T:System.Exception"/> that caused this <see cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"/>.</param>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IPlaylist">
+            <summary>
+            Interface for a playlist.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.Title">
+            <summary>
+            Playlist title.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.Author">
+            <summary>
+            Playlist author.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.Description">
+            <summary>
+            Playlist description.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.Filename">
+            <summary>
+            Filename without extension, does not include directory path.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.SuggestedExtension">
+            <summary>
+            Suggested file extension for the playlist. May be null.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.GetCoverStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for the playlist cover image.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetCover(System.Byte[])">
+            <summary>
+            Sets the cover image from a byte array.
+            </summary>
+            <param name="coverImage"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetCover(System.String)">
+            <summary>
+            Sets the cover image from a base64 string.
+            </summary>
+            <param name="coverImageStr"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetCover(System.IO.Stream)">
+            <summary>
+            Sets the cover image from a <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <param name="stream"></param>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.AllowDuplicates">
+            <summary>
+            Allow duplicate songs in the playlist.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.Add(BeatSaberPlaylistsLib.Types.ISong)">
+            <summary>
+            Adds the <see cref="T:BeatSaberPlaylistsLib.Types.ISong"/> to the playlist. 
+            Does nothing if <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylist.AllowDuplicates"/> is false and the song is already in the playlist. 
+            Converts the <see cref="T:BeatSaberPlaylistsLib.Types.ISong"/> if needed.
+            </summary>
+            <param name="song"></param>
+            <returns>The added IPlaylistSong, null if nothing was added.</returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.Add(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> and adds it to the playlist.
+            Does nothing if <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylist.AllowDuplicates"/> is false and the song is already in the playlist. 
+            </summary>
+            <param name="songHash"></param>
+            <param name="songName"></param>
+            <param name="songKey"></param>
+            <param name="mapper"></param>
+            <returns>The added IPlaylistSong, null if nothing was added.</returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.TryRemoveByHash(System.String)">
+            <summary>
+            Tries to remove all songs with the given hash from the playlist. Returns true if successful.
+            </summary>
+            <param name="songHash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.TryRemoveByKey(System.String)">
+            <summary>
+            Tries to remove all songs with the given key from the playlist. Returns true if successful.
+            </summary>
+            <param name="songKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.RemoveDuplicates">
+            <summary>
+            Removes all duplicate songs from the playlist.
+            </summary>
+        </member>
+        <member name="E:BeatSaberPlaylistsLib.Types.IPlaylist.PlaylistChanged">
+            <summary>
+            Raised when <see cref="M:BeatSaberPlaylistsLib.Types.IPlaylist.RaisePlaylistChanged"/> is called.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.RaisePlaylistChanged">
+            <summary>
+            Raises the PlaylistChanged event.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.Sort">
+            <summary>
+            Sorts the playlist in descending order of DateAdded.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.RemoveAll(System.Func{BeatSaberPlaylistsLib.Types.IPlaylistSong,System.Boolean})">
+            <summary>
+            Removes all songs matched by the predicate.
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IPlaylist`1">
+            <summary>
+            Interface for an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> that uses type <typeparamref name="T"/> as its <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist`1.RemoveAll(System.Func{`0,System.Boolean})">
+            <summary>
+            Removes all songs matched by the predicate.
+            </summary>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler">
+            <summary>
+            Interface for a class that can serialize/deserialize an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler.GetSupportedExtensions">
+            <summary>
+            Returns a new array containing file extensions supported by this handler (does not include the '.' prefix).
+            </summary>
+            <returns>A new array containing file extensions supported by this handler</returns>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.DefaultExtension">
+            <summary>
+            The default extension used by this <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType">
+            <summary>
+            The <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> type used by this <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler.Deserialize(System.IO.Stream)">
+            <summary>
+            Attempts to deserialize and return an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> from a stream.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to deserialize</param>
+            <returns>An <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> of type <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="stream"/> is null.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler.Serialize(BeatSaberPlaylistsLib.Types.IPlaylist,System.IO.Stream)">
+            <summary>
+            Serializes an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> to a stream. 
+            </summary>
+            <param name="playlist">The <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> to serialize</param>
+            <param name="stream">The target <see cref="T:System.IO.Stream"/> to serialize to</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="stream"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlist"/> is not of type <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler.Populate(System.IO.Stream,BeatSaberPlaylistsLib.Types.IPlaylist)">
+            <summary>
+            Populates the target <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with data from <paramref name="stream"/>.
+            <paramref name="target"/> must be of type <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.
+            </summary>
+            <param name="stream"></param>
+            <param name="target"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="stream"/> or <paramref name="target"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="target"/> is not of type <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler`1">
+            <summary>
+            Interface for a class that can serialize/deserialize an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist`1"/>.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler`1.Serialize(`0,System.IO.Stream)">
+            <summary>
+            Serializes an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist`1"/> to a stream.
+            </summary>
+            <param name="playlist">The <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist`1"/> to serialize</param>
+            <param name="stream">The target <see cref="T:System.IO.Stream"/> to serialize to</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="stream"/> is null.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler`1.Populate(System.IO.Stream,`0)">
+            <summary>
+            Populates the target <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist`1"/> with data from <paramref name="stream"/>.
+            </summary>
+            <param name="stream"></param>
+            <param name="target"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="stream"/> or <paramref name="target"/> is null.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IPlaylistSong">
+            <summary>
+            An interface for a basic playlist song.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistSong.DateAdded">
+            <summary>
+            Date and time the song added to the playlist.
+            </summary>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.ISong">
+            <summary>
+            Interface for the basic data of a song.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.ISong.Hash">
+            <summary>
+            Beat Saver hash of the song, always uppercase.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.ISong.LevelId">
+            <summary>
+            LevelId of the song given by Beat Saber. If the song is a custom level, the hash is uppercase and prefixed by "custom_level_".
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.ISong.Name">
+            <summary>
+            Name of the song.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.ISong.Key">
+            <summary>
+            Beat Saver key of the song, always uppercase. 
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.ISong.LevelAuthorName">
+            <summary>
+            Mapper of the song.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.ISong.Identifiers">
+            <summary>
+            Flags enum identifying which properties can be used to uniquely identify the song.
+            </summary>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.Identifier">
+            <summary>
+            Flags enum identifying which properties can be used to uniquely identify the song.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Identifier.None">
+            <summary>
+            Song has no identifiers.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Identifier.Hash">
+            <summary>
+            Indicates the Hash is available.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Identifier.LevelId">
+            <summary>
+            Indicates the LevelId is available.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Identifier.Key">
+            <summary>
+            Indicates the Beat Saver key is available.
+            </summary>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.Playlist`1">
+            <summary>
+            Base class for a Playlist.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1._songs">
+            <summary>
+            Internal collection of songs in the playlist.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Item(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="E:BeatSaberPlaylistsLib.Types.Playlist`1.PlaylistChanged">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Title">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Author">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Description">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Filename">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.SuggestedExtension">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.AllowDuplicates">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IsReadOnly">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.
+            </summary>
+            <param name="song"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.ISong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Sort">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Contains(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CopyTo(BeatSaberPlaylistsLib.Types.IPlaylistSong[],System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.GetCoverStream">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.GetEnumerator">
+            <summary>
+            Returns an <see cref="T:System.Collections.Generic.IEnumerator`1"/> that iterates through the playlist's songs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.IndexOf(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Insert(System.Int32,BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RaisePlaylistChanged">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Remove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAt(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAll(System.Func{BeatSaberPlaylistsLib.Types.IPlaylistSong,System.Boolean})">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAll(System.Func{`0,System.Boolean})">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveDuplicates">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.SetCover(System.Byte[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.SetCover(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.SetCover(System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemoveByHash(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemoveByKey(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#Generic#IEnumerable{BeatSaberPlaylistsLib#Types#IPlaylistSong}#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#Generic#ICollection{BeatSaberPlaylistsLib#Types#IPlaylistSong}#Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.PlaylistSong">
+            <summary>
+            Base class for a PlaylistSong.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomLevelIdPrefix">
+            <summary>
+            LevelId prefix for custom songs in Beat Saber.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.DateAdded">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.Hash">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.LevelId">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.AddIdentifierFlag(BeatSaberPlaylistsLib.Types.Identifier)">
+            <summary>
+            Adds the given flag to the <see cref="P:BeatSaberPlaylistsLib.Types.PlaylistSong.Identifiers"/> property.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.RemoveIdentifierFlag(BeatSaberPlaylistsLib.Types.Identifier)">
+            <summary>
+            Removes the given flag from the <see cref="P:BeatSaberPlaylistsLib.Types.PlaylistSong.Identifiers"/> property.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.LevelAuthorName">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.Identifiers">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.Equals(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="T:BeatSaberPlaylistsLib.Utilities">
+            <summary>
+            Utilities
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Utilities.Base64Prefix">
+            <summary>
+            Prefix in some base64 image strings.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.Base64ToByteArray(System.String@)">
+            <summary>
+            Converts a Base64 string to a byte array.
+            </summary>
+            <param name="base64Str"></param>
+            <returns></returns>
+            <exception cref="T:System.FormatException">Thrown when the provided string isn't a valid Base64 string.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.ByteArrayToBase64(System.Byte[])">
+            <summary>
+            Converts a byte array to a base64 string.
+            </summary>
+            <param name="byteArray"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.ImageToBase64(System.String)">
+            <summary>
+            Converts an image at the given resource path to a base64 string.
+            </summary>
+            <param name="imageResourcePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.GetResource(System.Reflection.Assembly,System.String)">
+            <summary>
+            Gets a resource and returns it as a byte array.
+            From https://github.com/brian91292/BeatSaber-CustomUI/blob/master/Utilities/Utilities.cs
+            </summary>
+            <param name="asm"></param>
+            <param name="ResourceName"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

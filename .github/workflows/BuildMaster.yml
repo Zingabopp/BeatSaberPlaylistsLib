@@ -31,5 +31,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: BeatSaberPlaylistsLib-${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
-        path: ./BeatSaberPlaylistsLib/bin/Release/
+        name: BeatSaberPlaylistsLib-${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}-netstandard
+        path: ./BeatSaberPlaylistsLib/bin/Release/netstandard2.0/

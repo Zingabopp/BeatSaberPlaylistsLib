@@ -9,7 +9,7 @@
             An <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> that can be serialized by a <see cref="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler"/>.
             </summary>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist._songs">
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Songs">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.#ctor">
@@ -55,7 +55,7 @@
         <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Description">
             <inheritdoc/>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.coverString">
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CoverString">
             <summary>
             A base64 string conversion of the cover image.
             </summary>
@@ -381,7 +381,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.StorePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
             <summary>
-            
+            Saves the playlist to file.
             </summary>
             <param name="playlist"></param>
             <param name="removeFromChanged"></param>
@@ -756,7 +756,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1._songs">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Songs">
             <summary>
             Internal collection of songs in the playlist.
             </summary>

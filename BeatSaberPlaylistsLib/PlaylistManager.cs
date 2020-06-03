@@ -44,7 +44,7 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// The default <see cref="IPlaylistHandler"/> for this <see cref="PlaylistManager"/>.
         /// </summary>
-        public IPlaylistHandler DefaultHandler { get; } = new LegacyPlaylistHandler();
+        public IPlaylistHandler DefaultHandler { get; }
 
         /// <summary>
         /// Creates a new <see cref="PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>.
@@ -66,6 +66,7 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(playlistDirectory), $"PlaylistManager cannot have a null {nameof(playlistDirectory)}");
             PlaylistPath = Path.GetFullPath(playlistDirectory);
             Directory.CreateDirectory(PlaylistPath);
+            DefaultHandler = defaultHandler;
             RegisterHandler(defaultHandler);
         }
 
@@ -82,7 +83,7 @@ namespace BeatSaberPlaylistsLib
             if (!PlaylistHandlers.ContainsKey(playlistHandler.HandledType))
             {
                 PlaylistHandlers.Add(playlistHandler.HandledType, playlistHandler);
-                foreach (string ext in playlistHandler.GetSupportedExtensions())
+                foreach (string ext in playlistHandler.GetSupportedExtensions().Select(e => e.ToUpper()))
                 {
                     if (!PlaylistExtensionHandlers.ContainsKey(ext))
                     {
@@ -95,24 +96,25 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// 
+        /// Registers an <see cref="IPlaylistHandler"/> for a specific extension. 
+        /// This will not register the handler for other extensions it may support.
         /// </summary>
         /// <param name="extension"></param>
         /// <param name="playlistHandler"></param>
-        public bool RegisterHandlerForExtension(string extension, IPlaylistHandler playlistHandler)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="extension"/> or <paramref name="playlistHandler"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the given <paramref name="extension"/>.</exception>
+        public void RegisterHandlerForExtension(string extension, IPlaylistHandler playlistHandler)
         {
-            extension = extension.TrimStart('.');
-            bool successful = false;
-            if (!PlaylistHandlers.ContainsKey(playlistHandler.HandledType)) // TODO: Should I bother with this check?
-            {
-                PlaylistHandlers.Add(playlistHandler.HandledType, playlistHandler);
-                if (!PlaylistExtensionHandlers.ContainsKey(extension))
-                    PlaylistExtensionHandlers.Add(extension, playlistHandler);
-                else
-                    PlaylistExtensionHandlers[extension] = playlistHandler;
-                successful = true;
-            }
-            return successful;
+            if (string.IsNullOrEmpty(extension)) 
+                throw new ArgumentNullException(nameof(extension), "extension cannot be null or empty.");
+            if (playlistHandler == null)
+                throw new ArgumentNullException(nameof(playlistHandler), "playlistHandler cannot be null or empty.");
+            extension = extension.TrimStart('.').ToUpper();
+            PlaylistHandlers.Add(playlistHandler.HandledType, playlistHandler);
+            if (!PlaylistExtensionHandlers.ContainsKey(extension))
+                PlaylistExtensionHandlers.Add(extension, playlistHandler);
+            else
+                PlaylistExtensionHandlers[extension] = playlistHandler;
         }
 
         /// <summary>
@@ -214,7 +216,7 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// 
+        /// Saves the playlist to file.
         /// </summary>
         /// <param name="playlist"></param>
         /// <param name="removeFromChanged"></param>
@@ -227,8 +229,10 @@ namespace BeatSaberPlaylistsLib
             string extension = playlistHandler.DefaultExtension;
             if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))
                 extension = playlist.SuggestedExtension;
-            string fileName = playlist.Filename + "." + extension;
-            playlistHandler.SerializeToFile(playlist, Path.Combine(PlaylistPath, fileName));
+            string fileName = playlist.Filename;
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException(nameof(playlist), "Playlist's filename is null or empty.");
+            playlistHandler.SerializeToFile(playlist, Path.Combine(PlaylistPath, fileName + "." + extension));
             if (removeFromChanged)
                 RemoveFromChanged(playlist);
         }

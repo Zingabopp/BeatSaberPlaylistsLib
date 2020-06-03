@@ -1,0 +1,24 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'BeatSaberPlaylistsLib/**'
+      - '.github/workflows/BuildMaster.yml'
+  pull_request:
+    branches: [ master ]
+    paths: 'BeatSaberPlaylistsLib/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build
+      id: Build
+      run: dotnet test --logger GitHubActions

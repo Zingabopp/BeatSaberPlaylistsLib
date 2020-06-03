@@ -14,9 +14,14 @@ namespace BeatSaberPlaylistsLib
     public class PlaylistManager
     {
         /// <summary>
-        /// Reference to the default <see cref="PlaylistManager"/> which uses the 'Playlists' directory in the current working directory.
+        /// Lazy loader for <see cref="DefaultManager"/>. 
         /// </summary>
-        public static readonly PlaylistManager DefaultManager = new PlaylistManager("Playlists");
+        protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() => new PlaylistManager("Playlists"), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        /// <summary>
+        /// Reference to the default <see cref="PlaylistManager"/> which uses the 'Playlists' directory in the current working directory.
+        /// Only access this if you want to use a <see cref="PlaylistManager"/> with the directory set to 'CurrentWorkingDirectory\Playlists'.
+        /// </summary>
+        public static PlaylistManager DefaultManager => _defaultManagerLoader.Value;
         /// <summary>
         /// Dictionary of <see cref="IPlaylist"/> <see cref="Type"/>s and their associated <see cref="IPlaylistHandler"/>.
         /// </summary>
@@ -48,8 +53,10 @@ namespace BeatSaberPlaylistsLib
 
         /// <summary>
         /// Creates a new <see cref="PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>.
+        /// Also creates the directory given in <paramref name="playlistDirectory"/>.
         /// </summary>
         /// <param name="playlistDirectory"></param>
+        /// <exception cref="IOException">Thrown if directory creation fails.</exception>
         public PlaylistManager(string playlistDirectory)
             : this(playlistDirectory, new LegacyPlaylistHandler())
         { }
@@ -57,9 +64,11 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// Creates a new <see cref="PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>
         /// and sets the default <see cref="IPlaylistHandler"/> to <paramref name="defaultHandler"/>.
+        /// Also creates the directory given in <paramref name="playlistDirectory"/>.
         /// </summary>
         /// <param name="playlistDirectory"></param>
         /// <param name="defaultHandler"></param>
+        /// <exception cref="IOException">Thrown if directory creation fails.</exception>
         public PlaylistManager(string playlistDirectory, IPlaylistHandler defaultHandler)
         {
             if (string.IsNullOrEmpty(playlistDirectory))

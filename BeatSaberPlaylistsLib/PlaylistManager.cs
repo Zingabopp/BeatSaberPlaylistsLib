@@ -105,7 +105,7 @@ namespace BeatSaberPlaylistsLib
         /// <exception cref="ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the given <paramref name="extension"/>.</exception>
         public void RegisterHandlerForExtension(string extension, IPlaylistHandler playlistHandler)
         {
-            if (string.IsNullOrEmpty(extension)) 
+            if (string.IsNullOrEmpty(extension))
                 throw new ArgumentNullException(nameof(extension), "extension cannot be null or empty.");
             if (playlistHandler == null)
                 throw new ArgumentNullException(nameof(playlistHandler), "playlistHandler cannot be null or empty.");
@@ -222,11 +222,16 @@ namespace BeatSaberPlaylistsLib
         /// <param name="playlist"></param>
         /// <param name="removeFromChanged"></param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="playlist"/> is not supported by any registered handlers
+        /// or <paramref name="playlist"/> does not have a filename.</exception>
         /// <exception cref="PlaylistSerializationException">Thrown on serialization errors.</exception>
         public void StorePlaylist(IPlaylist playlist, bool removeFromChanged = true)
         {
-            if (!PlaylistHandlers.TryGetValue(playlist.GetType(), out IPlaylistHandler playlistHandler))
-                playlistHandler = DefaultHandler;
+            if (playlist == null)
+                throw new ArgumentNullException(nameof(playlist), "playlist cannot be null.");
+            IPlaylistHandler? playlistHandler = playlist.SuggestedExtension != null ? GetHandlerForExtension(playlist.SuggestedExtension) : null;
+            if (playlistHandler == null && !PlaylistHandlers.TryGetValue(playlist.GetType(), out playlistHandler))
+                throw new ArgumentException(nameof(playlist), $"No registered handlers support playlist type {playlist.GetType().Name}");
             string extension = playlistHandler.DefaultExtension;
             if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))
                 extension = playlist.SuggestedExtension;
@@ -239,16 +244,49 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Saves the playlist to file using the provided <see cref="IPlaylistHandler"/>.
+        /// </summary>
+        /// <param name="playlist"></param>
+        /// <param name="playlistHandler"></param>
+        /// <param name="removeFromChanged"></param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the playlist type 
+        /// or <paramref name="playlist"/> does not have a filename.</exception>
+        /// <exception cref="PlaylistSerializationException">Thrown on serialization errors.</exception>
+        public void StorePlaylist(IPlaylist playlist, IPlaylistHandler playlistHandler, bool removeFromChanged = true)
+        {
+            if (playlistHandler == null)
+            {
+                StorePlaylist(playlist, removeFromChanged);
+                return;
+            }
+            if (playlist == null)
+                throw new ArgumentNullException(nameof(playlist));
+            if (playlistHandler.HandledType.IsAssignableFrom(playlist.GetType()))
+                throw new ArgumentException(nameof(playlist), $"Playlist handler does not support playlist type {playlist.GetType().Name}");
+            string extension = playlistHandler.DefaultExtension;
+            if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))
+                extension = playlist.SuggestedExtension;
+            string fileName = playlist.Filename;
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentException(nameof(playlist), "Playlist's filename is null or empty.");
+            playlistHandler.SerializeToFile(playlist, Path.Combine(PlaylistPath, fileName + "." + extension));
+            if (removeFromChanged)
+                RemoveFromChanged(playlist);
+        }
+        /// <summary>
         /// Attempts to create an <see cref="IPlaylist"/> from a file with the given <paramref name="fileName"/>.
         /// Returns null if there is no registered <see cref="IPlaylistHandler"/> for the given type.
         /// All other failure cases throw an Exception.
         /// </summary>
         /// <param name="fileName"></param>
+        /// <param name="playlistHandler"><see cref="IPlaylistHandler"/> to use, if null a registered handler will be used if it exists.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">Thrown on invalid filename, extension not supported by <paramref name="playlistHandler"/>, or if <paramref name="playlistHandler"/> is null and no registered handlers support the extension.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if no registered handlers support <paramref name="fileName"/>.</exception>
         /// <exception cref="PlaylistSerializationException"></exception>
-        protected IPlaylist? LoadPlaylistFromFile(string fileName)
+        protected IPlaylist? LoadPlaylistFromFile(string fileName, IPlaylistHandler? playlistHandler = null)
         {
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(nameof(fileName), "fileName cannot be null or empty.");
@@ -259,15 +297,23 @@ namespace BeatSaberPlaylistsLib
             if (file != null)
             {
                 fileExtension = Path.GetExtension(file).TrimStart('.');
-                if (fileExtension != null && PlaylistExtensionHandlers.TryGetValue(fileExtension, out IPlaylistHandler handler))
+                if (string.IsNullOrEmpty(fileExtension))
+                    throw new ArgumentException($"No valid file extension for provided filename '{fileName}'");
+                if (playlistHandler == null)
                 {
-                    playlist = handler.Deserialize(file);
-                    playlist.SuggestedExtension = fileExtension;
-                    if (playlist != null)
-                    {
-                        playlist.Filename = Path.GetFileNameWithoutExtension(file);
-                        RegisterPlaylist(playlist, false);
-                    }
+                    PlaylistExtensionHandlers.TryGetValue(fileExtension, out playlistHandler);
+                    if (playlistHandler == null)
+                        throw new InvalidOperationException($"playlist extension '{fileExtension}' not supported by any registered handlers.");
+                }
+                else if (!playlistHandler.SupportsExtension(fileExtension))
+                    throw new ArgumentException(nameof(playlistHandler), $"playlist extension '{fileExtension}' not supported by the given playlistHandler.");
+
+                playlist = playlistHandler.Deserialize(file);
+                playlist.SuggestedExtension = fileExtension;
+                if (playlist != null)
+                {
+                    playlist.Filename = Path.GetFileNameWithoutExtension(file);
+                    RegisterPlaylist(playlist, false);
                 }
             }
             return playlist;
@@ -345,23 +391,23 @@ namespace BeatSaberPlaylistsLib
         /// Retrieves the specified playlist. If the playlist doesn't exist, returns null.
         /// </summary>
         /// <param name="playlistFileName"></param>
+        /// <param name="handler">Optional <see cref="IPlaylistHandler"/> to use if deserialization is necessary. If null, use the first registered handler.</param>
         /// <returns></returns>
-        public IPlaylist? GetPlaylist(string playlistFileName)
+        /// <exception cref="ArgumentException">Thrown if <paramref name="playlistFileName"/> doesn't have an extension or if a <paramref name="handler"/> is given that doesn't support the file extension.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if there isn't a registered <see cref="IPlaylistHandler"/> that supports the file extension.</exception>
+        /// <exception cref="PlaylistSerializationException">Wraps any exceptions thrown while deserializing.</exception>
+        public IPlaylist? GetPlaylist(string playlistFileName, IPlaylistHandler? handler = null)
         {
             if (string.IsNullOrEmpty(playlistFileName))
                 return null;
-            IPlaylist? playlist = null;
 
-            // Check if this playlist exists in CustomPlaylists
-            if (playlist == null)
-            {
-                TryGetPlaylist(playlistFileName, out playlist);
-            }
+            // Check if this playlist exists in LoadedPlaylists
+            TryGetPlaylist(playlistFileName, out IPlaylist? playlist);
 
             // Try to load from file
             if (playlist == null)
             {
-                playlist = LoadPlaylistFromFile(playlistFileName);
+                playlist = LoadPlaylistFromFile(playlistFileName, handler);
             }
             return playlist;
         }
@@ -373,9 +419,9 @@ namespace BeatSaberPlaylistsLib
         /// <param name="playlistFileName"></param>
         /// <param name="playlistFactory"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="PlaylistSerializationException"></exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="playlistFileName"/> doesn't have an extension.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if there isn't a registered <see cref="IPlaylistHandler"/> that supports the file extension.</exception>
+        /// <exception cref="PlaylistSerializationException">Wraps any exceptions thrown while deserializing.</exception>
         public IPlaylist GetOrAdd(string playlistFileName, Func<IPlaylist> playlistFactory)
         {
             if (string.IsNullOrEmpty(playlistFileName))

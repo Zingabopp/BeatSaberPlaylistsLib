@@ -397,18 +397,34 @@
             <param name="playlist"></param>
             <param name="removeFromChanged"></param>
             <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlist"/> is not supported by any registered handlers
+            or <paramref name="playlist"/> does not have a filename.</exception>
             <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown on serialization errors.</exception>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.LoadPlaylistFromFile(System.String)">
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.StorePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,BeatSaberPlaylistsLib.Types.IPlaylistHandler,System.Boolean)">
+            <summary>
+            Saves the playlist to file using the provided <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            </summary>
+            <param name="playlist"></param>
+            <param name="playlistHandler"></param>
+            <param name="removeFromChanged"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the playlist type 
+            or <paramref name="playlist"/> does not have a filename.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown on serialization errors.</exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.LoadPlaylistFromFile(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
             <summary>
             Attempts to create an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> from a file with the given <paramref name="fileName"/>.
             Returns null if there is no registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for the given type.
             All other failure cases throw an Exception.
             </summary>
             <param name="fileName"></param>
+            <param name="playlistHandler"><see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use, if null a registered handler will be used if it exists.</param>
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
-            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentException">Thrown on invalid filename, extension not supported by <paramref name="playlistHandler"/>, or if <paramref name="playlistHandler"/> is null and no registered handlers support the extension.</exception>
+            <exception cref="T:System.InvalidOperationException">Thrown if no registered handlers support <paramref name="fileName"/>.</exception>
             <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"></exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterPlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
@@ -442,12 +458,16 @@
             <param name="playlist"></param>
             <returns>True if the playlist is marked as changed, false otherwise.</returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetPlaylist(System.String)">
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetPlaylist(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
             <summary>
             Retrieves the specified playlist. If the playlist doesn't exist, returns null.
             </summary>
             <param name="playlistFileName"></param>
+            <param name="handler">Optional <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use if deserialization is necessary. If null, use the first registered handler.</param>
             <returns></returns>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlistFileName"/> doesn't have an extension or if a <paramref name="handler"/> is given that doesn't support the file extension.</exception>
+            <exception cref="T:System.InvalidOperationException">Thrown if there isn't a registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> that supports the file extension.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Wraps any exceptions thrown while deserializing.</exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetOrAdd(System.String,System.Func{BeatSaberPlaylistsLib.Types.IPlaylist})">
             <summary>
@@ -457,9 +477,9 @@
             <param name="playlistFileName"></param>
             <param name="playlistFactory"></param>
             <returns></returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-            <exception cref="T:System.ArgumentException"></exception>
-            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException"></exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlistFileName"/> doesn't have an extension.</exception>
+            <exception cref="T:System.InvalidOperationException">Thrown if there isn't a registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> that supports the file extension.</exception>
+            <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Wraps any exceptions thrown while deserializing.</exception>
         </member>
         <member name="T:BeatSaberPlaylistsLib.PlaylistSerializationException">
             <summary>
@@ -950,6 +970,17 @@
             <summary>
             Prefix in some base64 image strings.
             </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Utilities.UseUtc">
+            <summary>
+            Is set to true if <see cref="P:BeatSaberPlaylistsLib.Utilities.CurrentTime"/> throws an exception trying to return <see cref="P:System.DateTime.Now"/>.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Utilities.CurrentTime">
+            <summary>
+            Returns the current local time. If <see cref="P:System.DateTime.Now"/> fails, uses <see cref="P:System.DateTime.UtcNow"/>.
+            </summary>
+            <remarks><see cref="P:System.DateTime.Now"/> can throw an exception with certain localities on certain platforms.</remarks>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Utilities.Base64ToByteArray(System.String@)">
             <summary>

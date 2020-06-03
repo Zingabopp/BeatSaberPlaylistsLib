@@ -126,7 +126,9 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
 
             PlaylistManager manager = new PlaylistManager(playlistDir, handler);
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.ThrowsException<ArgumentNullException>(() => manager.RegisterHandlerForExtension("mock", null));
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
             if (Directory.Exists(playlistDir))
                 Directory.Delete(playlistDir, true);

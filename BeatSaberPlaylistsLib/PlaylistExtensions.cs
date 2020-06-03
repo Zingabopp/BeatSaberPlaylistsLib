@@ -42,7 +42,7 @@ namespace BeatSaberPlaylistsLib
                 if (song is IPlaylistSong playlistSong)
                     target.DateAdded = playlistSong.DateAdded;
                 else
-                    target.DateAdded = DateTime.Now;
+                    target.DateAdded = Utilities.CurrentTime;
                 target.Name = song.Name;
                 target.LevelAuthorName = song.LevelAuthorName;
             }
@@ -54,7 +54,7 @@ namespace BeatSaberPlaylistsLib
                 if (song is IPlaylistSong playlistSong)
                     target.DateAdded ??= playlistSong.DateAdded;
                 else
-                    target.DateAdded ??= DateTime.Now;
+                    target.DateAdded ??= Utilities.CurrentTime;
                 target.Name ??= song.Name;
                 target.LevelAuthorName ??= song.LevelAuthorName;
             }

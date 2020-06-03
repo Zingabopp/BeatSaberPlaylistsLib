@@ -22,8 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Output\" />
-    <Folder Include="ReadOnlyData\" />
+    <Folder Include="ReadOnlyData\IPlaylistHandlerTests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReadOnlyData\IPlaylistHandlerTests\5LegacySongs.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

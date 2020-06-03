@@ -44,7 +44,7 @@ namespace BeatSaberPlaylistsLib.Legacy
             if (Identifiers == Identifier.None)
                 throw new ArgumentException("song has no identifiers.");
             LevelAuthorName = mapper;
-            DateAdded = DateTime.Now;
+            DateAdded = Utilities.CurrentTime;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace BeatSaberPlaylistsLib.Legacy
             if (Identifiers == Identifier.None)
                 throw new ArgumentException("song has no identifiers.", nameof(song));
             LevelAuthorName = song.LevelAuthorName;
-            DateAdded = DateTime.Now;
+            DateAdded = Utilities.CurrentTime;
         }
 
 

@@ -110,7 +110,8 @@ namespace BeatSaberPlaylistsLib
             if (playlistHandler == null)
                 throw new ArgumentNullException(nameof(playlistHandler), "playlistHandler cannot be null or empty.");
             extension = extension.TrimStart('.').ToUpper();
-            PlaylistHandlers.Add(playlistHandler.HandledType, playlistHandler);
+            if (!playlistHandler.SupportsExtension(extension))
+                throw new ArgumentException(nameof(extension), $"{playlistHandler.GetType().Name} does not support the '{extension}' extension.");
             if (!PlaylistExtensionHandlers.ContainsKey(extension))
                 PlaylistExtensionHandlers.Add(extension, playlistHandler);
             else
@@ -327,6 +328,7 @@ namespace BeatSaberPlaylistsLib
                 ChangedPlaylists.Remove(playlist);
             }
         }
+
         /// <summary>
         /// Returns true if the given <see cref="IPlaylist"/> is marked as changed by this <see cref="PlaylistManager"/>.
         /// </summary>

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace BeatSaberPlaylistsLib.Legacy
 {
@@ -11,15 +12,33 @@ namespace BeatSaberPlaylistsLib.Legacy
     public class LegacyPlaylistHandler : IPlaylistHandler<LegacyPlaylist>
     {
         private static readonly JsonSerializer jsonSerializer = new JsonSerializer() { Formatting = Formatting.Indented };
+        /// <summary>
+        /// Array of the supported extensions (no leading '.').
+        /// </summary>
+        protected string[] SupportedExtensions = new string[] { "bplist", "json" };
+
+        ///<inheritdoc/>
+        public string DefaultExtension => "bplist";
 
         ///<inheritdoc/>
         public string[] GetSupportedExtensions()
         {
-            return new string[] { "bplist", "json" };
+            return SupportedExtensions.ToArray();
         }
 
         ///<inheritdoc/>
-        public string DefaultExtension => "bplist";
+        public bool SupportsExtension(string extension)
+        {
+            if (string.IsNullOrEmpty(extension))
+                return false;
+            string[] extensions = SupportedExtensions;
+            for(int i = 0; i < extensions.Length; i++)
+            {
+                if (extensions[i].Equals(extension, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
 
         ///<inheritdoc/>
         public Type HandledType { get; } = typeof(LegacyPlaylist);

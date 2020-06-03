@@ -9,14 +9,21 @@ namespace BeatSaberPlaylistsLib.Types
     public interface IPlaylistHandler
     {
         /// <summary>
+        /// The default extension used by this <see cref="IPlaylistHandler"/>.
+        /// </summary>
+        string DefaultExtension { get; }
+        /// <summary>
         /// Returns a new array containing file extensions supported by this handler (does not include the '.' prefix).
         /// </summary>
         /// <returns>A new array containing file extensions supported by this handler</returns>
         string[] GetSupportedExtensions();
         /// <summary>
-        /// The default extension used by this <see cref="IPlaylistHandler"/>.
+        /// Return true if the <see cref="IPlaylistHandler"/> supports the given <paramref name="extension"/>.
         /// </summary>
-        string DefaultExtension { get; }
+        /// <param name="extension"></param>
+        /// <returns>True if <paramref name="extension"/> is supported, false otherwise.</returns>
+        /// <remarks>Comparison is case-insensitive. Also returns false if <paramref name="extension"/> is a null or empty string.</remarks>
+        bool SupportsExtension(string extension);
         /// <summary>
         /// The <see cref="IPlaylist"/> type used by this <see cref="IPlaylistHandler"/>.
         /// </summary>

@@ -86,10 +86,18 @@
             <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for legacy playlists (.bplist/.json).
             </summary>
         </member>
+        <member name="F:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.SupportedExtensions">
+            <summary>
+            Array of the supported extensions (no leading '.').
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.DefaultExtension">
+            <inheritdoc/>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.GetSupportedExtensions">
             <inheritdoc/>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.DefaultExtension">
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.SupportsExtension(System.String)">
             <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylistHandler.HandledType">
@@ -327,10 +335,13 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterHandlerForExtension(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
             <summary>
-            
+            Registers an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for a specific extension. 
+            This will not register the handler for other extensions it may support.
             </summary>
             <param name="extension"></param>
             <param name="playlistHandler"></param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="extension"/> or <paramref name="playlistHandler"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the given <paramref name="extension"/>.</exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetHandlerForExtension(System.String)">
             <summary>
@@ -611,16 +622,24 @@
             Interface for a class that can serialize/deserialize an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.DefaultExtension">
+            <summary>
+            The default extension used by this <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            </summary>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler.GetSupportedExtensions">
             <summary>
             Returns a new array containing file extensions supported by this handler (does not include the '.' prefix).
             </summary>
             <returns>A new array containing file extensions supported by this handler</returns>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.DefaultExtension">
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistHandler.SupportsExtension(System.String)">
             <summary>
-            The default extension used by this <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
+            Return true if the <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> supports the given <paramref name="extension"/>.
             </summary>
+            <param name="extension"></param>
+            <returns>True if <paramref name="extension"/> is supported, false otherwise.</returns>
+            <remarks>Comparison is case-insensitive. Also returns false if <paramref name="extension"/> is a null or empty string.</remarks>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType">
             <summary>

@@ -13,6 +13,35 @@ namespace BeatSaberPlaylistsLib
         /// Prefix in some base64 image strings.
         /// </summary>
         public static readonly string Base64Prefix = "base64,";
+        /// <summary>
+        /// Is set to true if <see cref="CurrentTime"/> throws an exception trying to return <see cref="DateTime.Now"/>.
+        /// </summary>
+        public static bool UseUtc = false;
+
+        /// <summary>
+        /// Returns the current local time. If <see cref="DateTime.Now"/> fails, uses <see cref="DateTime.UtcNow"/>.
+        /// </summary>
+        /// <remarks><see cref="DateTime.Now"/> can throw an exception with certain localities on certain platforms.</remarks>
+        public static DateTime CurrentTime
+        {
+            get
+            {
+                try
+                {
+                    if (!UseUtc)
+                        return DateTime.Now;
+                    else
+                        return DateTime.UtcNow;
+                }
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch (Exception)
+                {
+                    UseUtc = true;
+                    return DateTime.UtcNow;
+                }
+#pragma warning restore CA1031 // Do not catch general exception types
+            }
+        }
 
         /// <summary>
         /// Converts a Base64 string to a byte array.

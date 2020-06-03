@@ -1,0 +1,2 @@
+# BeatSaberPlaylistsLib [![Build](https://github.com/Zingabopp/BeatSaberPlaylistsLib/workflows/Build/badge.svg?branch=master&event=push)](https://github.com/Zingabopp/BeatSaberPlaylistsLib/actions?query=workflow%3ABuild)[![Unit Tests](https://github.com/Zingabopp/BeatSaberPlaylistsLib/workflows/Unit%20Tests/badge.svg?branch=master&event=push)](https://github.com/Zingabopp/BeatSaberPlaylistsLib/actions?query=workflow%3A%22Unit+Tests%22)
+A library for reading and writing Beat Saber playlists.

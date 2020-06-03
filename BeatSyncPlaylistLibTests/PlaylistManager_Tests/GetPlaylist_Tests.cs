@@ -16,6 +16,8 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
         public static readonly string ReadOnlyData = Path.Combine(TestTools.DataFolder, "GetPlaylistTests");
         public static readonly string OutputPath = Path.Combine(TestTools.OutputFolder, "PlaylistManager_Tests", "GetPlaylist_Tests");
 
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         [TestMethod]
         public void NullFilename()
         {
@@ -30,6 +32,8 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
 
             TestTools.Cleanup(playlistDir);
         }
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
         [TestMethod]
         public void EmptyFilename()
@@ -71,6 +75,8 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             IPlaylist? playlist = null;
             playlist = manager.GetPlaylist(playlistFileName);
             Assert.IsNotNull(playlist);
+            if (playlist == null)
+                return;
             Assert.AreEqual(5, playlist.Count);
 
             TestTools.Cleanup(playlistDir);

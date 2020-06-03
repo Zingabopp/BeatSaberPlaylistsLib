@@ -13,11 +13,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
     public class Constructor_Tests
     {
         public static readonly string OutputPath = Path.Combine(TestTools.OutputFolder, "PlaylistManager_Tests", "Constructor_Tests");
-        [TestMethod]
-        public void Fail_Test()
-        {
-            Assert.Fail("Testing");
-        }
+
         [TestMethod]
         public void PathOnlyConstructor_DirectoryCreated()
         {

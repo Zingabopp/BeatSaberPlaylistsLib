@@ -279,6 +279,7 @@ namespace BeatSaberPlaylistsLib
         /// Returns null if there is no registered <see cref="IPlaylistHandler"/> for the given type.
         /// All other failure cases throw an Exception.
         /// </summary>
+        /// <remarks>If there are multiple playlists with the same filename and no handler is specified, the first playlist with an extension registered to a handler will be read.</remarks>
         /// <param name="fileName"></param>
         /// <param name="playlistHandler"><see cref="IPlaylistHandler"/> to use, if null a registered handler will be used if it exists.</param>
         /// <returns></returns>
@@ -301,7 +302,7 @@ namespace BeatSaberPlaylistsLib
                     throw new ArgumentException($"No valid file extension for provided filename '{fileName}'");
                 if (playlistHandler == null)
                 {
-                    PlaylistExtensionHandlers.TryGetValue(fileExtension, out playlistHandler);
+                    PlaylistExtensionHandlers.TryGetValue(fileExtension.ToUpper(), out playlistHandler);
                     if (playlistHandler == null)
                         throw new InvalidOperationException($"playlist extension '{fileExtension}' not supported by any registered handlers.");
                 }
@@ -390,6 +391,7 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// Retrieves the specified playlist. If the playlist doesn't exist, returns null.
         /// </summary>
+        /// <remarks>If there are multiple playlists with the same filename and no handler is specified, the first matching playlist with an extension registered to a handler will be read.</remarks>
         /// <param name="playlistFileName"></param>
         /// <param name="handler">Optional <see cref="IPlaylistHandler"/> to use if deserialization is necessary. If null, use the first registered handler.</param>
         /// <returns></returns>

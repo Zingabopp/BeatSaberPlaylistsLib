@@ -419,6 +419,7 @@
             Returns null if there is no registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for the given type.
             All other failure cases throw an Exception.
             </summary>
+            <remarks>If there are multiple playlists with the same filename and no handler is specified, the first playlist with an extension registered to a handler will be read.</remarks>
             <param name="fileName"></param>
             <param name="playlistHandler"><see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use, if null a registered handler will be used if it exists.</param>
             <returns></returns>
@@ -462,6 +463,7 @@
             <summary>
             Retrieves the specified playlist. If the playlist doesn't exist, returns null.
             </summary>
+            <remarks>If there are multiple playlists with the same filename and no handler is specified, the first matching playlist with an extension registered to a handler will be read.</remarks>
             <param name="playlistFileName"></param>
             <param name="handler">Optional <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to use if deserialization is necessary. If null, use the first registered handler.</param>
             <returns></returns>

@@ -27,6 +27,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ReadOnlyData\GetPlaylistTests\NoExtension">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\GetPlaylistTests\5LegacySongs.mock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\GetPlaylistTests\5LegacySongs.bPlist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ReadOnlyData\IPlaylistHandlerTests\5LegacySongs.bplist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

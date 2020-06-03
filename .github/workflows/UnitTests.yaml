@@ -5,7 +5,7 @@ on:
     branches: [ master ]
     paths:
       - 'BeatSaberPlaylistsLib/**'
-      - '.github/workflows/BuildMaster.yml'
+      - '.github/workflows/UnitTests.yml'
   pull_request:
     branches: [ master ]
     paths: 'BeatSaberPlaylistsLib/**'

@@ -33,16 +33,14 @@ namespace BeatSaberPlaylistsLib.Legacy
         /// <param name="songName"></param>
         /// <param name="songKey"></param>
         /// <param name="mapper"></param>
-        /// <exception cref="ArgumentException">Thrown if no identifiers are provided (<paramref name="hash"/>, <paramref name="levelId"/>, <paramref name="songKey"/>).</exception>
         public LegacyPlaylistSong(string? hash = null, string? levelId = null, string? songName = null, string? songKey = null, string? mapper = null)
             : this()
         {
             LevelId = levelId;
-            Hash = hash;
+            if (hash != null) // Don't assign null, LevelId could've set Hash
+                Hash = hash;
             Name = songName;
             Key = songKey;
-            if (Identifiers == Identifier.None)
-                throw new ArgumentException("song has no identifiers.");
             LevelAuthorName = mapper;
             DateAdded = Utilities.CurrentTime;
         }
@@ -75,20 +73,30 @@ namespace BeatSaberPlaylistsLib.Legacy
         {
             get
             {
+                if (_hash != null && _hash.Length > 0)
+                    return _hash;
+                else if (_levelId != null && _levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix))
+                {
+                    _hash = _levelId.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
+                    AddIdentifierFlag(Identifier.Hash);
+                }
                 return _hash;
             }
             set
             {
                 if (_hash == value)
                     return;
-                if (!string.IsNullOrEmpty(value))
+                if (value != null && value.Length > 0)
                 {
-                    _hash = value;
+                    _hash = value.ToUpper();
                     AddIdentifierFlag(Identifier.Hash);
+                    AddIdentifierFlag(Identifier.LevelId);
                 }
                 else
                 {
-                    RemoveIdentifierFlag(Identifier.Hash);
+                    _hash = null;
+                    if (!(_levelId != null && _levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix)))
+                        RemoveIdentifierFlag(Identifier.Hash);
                 }
             }
         }
@@ -101,20 +109,33 @@ namespace BeatSaberPlaylistsLib.Legacy
                 if (_levelId != null && _levelId.Length > 0)
                     return _levelId;
                 else if (_hash != null && _hash.Length > 0)
-                    return PlaylistSong.CustomLevelIdPrefix + Hash;
-                return null;
+                {
+                    _levelId = PlaylistSong.CustomLevelIdPrefix + Hash;
+                    AddIdentifierFlag(Identifier.LevelId);
+                }
+                return _levelId;
             }
             set
             {
                 if (_levelId == value)
                     return;
-                if (!string.IsNullOrEmpty(value))
+                if (value != null && value.Length > 0)
                 {
-                    _levelId = value;
                     AddIdentifierFlag(Identifier.LevelId);
+                    if (value.StartsWith(PlaylistSong.CustomLevelIdPrefix))
+                    {
+                        string hash = value.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
+                        if (_hash == null)
+                            Hash = hash;
+                        _levelId = PlaylistSong.CustomLevelIdPrefix + hash.ToUpper();
+                        AddIdentifierFlag(Identifier.Hash);
+                    }
+                    else
+                        _levelId = value;
                 }
                 else
                 {
+                    _levelId = null;
                     RemoveIdentifierFlag(Identifier.LevelId);
                 }
             }
@@ -133,13 +154,14 @@ namespace BeatSaberPlaylistsLib.Legacy
             {
                 if (_key == value)
                     return;
-                if (!string.IsNullOrEmpty(value))
+                if (value != null && value.Length > 0)
                 {
-                    _key = value;
+                    _key = value.ToUpper();
                     AddIdentifierFlag(Identifier.Key);
                 }
                 else
                 {
+                    _key = null;
                     RemoveIdentifierFlag(Identifier.Key);
                 }
             }

@@ -19,7 +19,7 @@ namespace BeatSaberPlaylistsLibTests
             Assert.IsFalse(Directory.Exists(playlistDir));
 
             PlaylistManager manager = new PlaylistManager(playlistDir, playlistHandler);
-
+            Assert.IsTrue(Directory.Exists(playlistDir));
             return manager;
         }
 

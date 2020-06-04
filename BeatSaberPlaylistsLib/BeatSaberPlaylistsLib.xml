@@ -270,9 +270,15 @@
             Class that manages <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>s and <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s.
             </summary>
         </member>
-        <member name="F:BeatSaberPlaylistsLib.PlaylistManager.DefaultManager">
+        <member name="F:BeatSaberPlaylistsLib.PlaylistManager._defaultManagerLoader">
+            <summary>
+            Lazy loader for <see cref="P:BeatSaberPlaylistsLib.PlaylistManager.DefaultManager"/>. 
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.PlaylistManager.DefaultManager">
             <summary>
             Reference to the default <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> which uses the 'Playlists' directory in the current working directory.
+            Only access this if you want to use a <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> with the directory set to 'CurrentWorkingDirectory\Playlists'.
             </summary>
         </member>
         <member name="F:BeatSaberPlaylistsLib.PlaylistManager.PlaylistHandlers">
@@ -313,16 +319,20 @@
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.#ctor(System.String)">
             <summary>
             Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>.
+            Also creates the directory given in <paramref name="playlistDirectory"/>.
             </summary>
             <param name="playlistDirectory"></param>
+            <exception cref="T:System.IO.IOException">Thrown if directory creation fails.</exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.#ctor(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
             <summary>
             Creates a new <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>
             and sets the default <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> to <paramref name="defaultHandler"/>.
+            Also creates the directory given in <paramref name="playlistDirectory"/>.
             </summary>
             <param name="playlistDirectory"></param>
             <param name="defaultHandler"></param>
+            <exception cref="T:System.IO.IOException">Thrown if directory creation fails.</exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterHandler(BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
             <summary>

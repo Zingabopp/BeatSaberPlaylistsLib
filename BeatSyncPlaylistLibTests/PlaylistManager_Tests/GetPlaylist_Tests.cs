@@ -104,6 +104,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             IPlaylistHandler defaultHandler = new MockPlaylistHandler();
             PlaylistManager manager = TestTools.GetPlaylistManager(playlistDir, defaultHandler);
             string playlistFileName = "5LegacySongs";
+            // Check case-insensitive extensions
             File.Copy(Path.Combine(ReadOnlyData, "5LegacySongs.bPlist"), Path.Combine(playlistDir, "5LegacySongs.bPlist"));
 
             Assert.ThrowsException<InvalidOperationException>(() => manager.GetPlaylist(playlistFileName));

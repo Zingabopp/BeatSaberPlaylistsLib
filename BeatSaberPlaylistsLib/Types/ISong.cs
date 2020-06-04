@@ -9,10 +9,12 @@ namespace BeatSaberPlaylistsLib.Types
     {
         /// <summary>
         /// Beat Saver hash of the song, always uppercase.
+        /// Setting Hash will also set <see cref="LevelId"/> to Hash prefixed by "custom_level_".
         /// </summary>
         string? Hash { get; set; }
         /// <summary>
         /// LevelId of the song given by Beat Saber. If the song is a custom level, the hash is uppercase and prefixed by "custom_level_".
+        /// Setting a LevelId prefixed by "custom_level_" will also set <see cref="Hash"/>.
         /// </summary>
         string? LevelId { get; set; }
         /// <summary>

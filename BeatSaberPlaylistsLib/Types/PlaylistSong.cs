@@ -22,20 +22,32 @@ namespace BeatSaberPlaylistsLib.Types
         {
             get
             {
+                if (_hash != null && _hash.Length > 0)
+                    return _hash;
+                else if (_levelId != null && _levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix))
+                {
+                    _hash = _levelId.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
+                    AddIdentifierFlag(Identifier.Hash);
+                }
                 return _hash;
             }
             set
             {
                 if (_hash == value)
                     return;
-                if (!string.IsNullOrEmpty(value))
+                if (value != null && value.Length > 0)
                 {
-                    _hash = value;
+                    _hash = value.ToUpper();
+                    if (_levelId == null || !_levelId.EndsWith(_hash))
+                        _levelId = PlaylistSong.CustomLevelIdPrefix + _hash;
                     AddIdentifierFlag(Identifier.Hash);
+                    AddIdentifierFlag(Identifier.LevelId);
                 }
                 else
                 {
-                    RemoveIdentifierFlag(Identifier.Hash);
+                    _hash = null;
+                    if (!(_levelId != null && _levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix)))
+                        RemoveIdentifierFlag(Identifier.Hash);
                 }
             }
         }
@@ -47,21 +59,35 @@ namespace BeatSaberPlaylistsLib.Types
                 if (_levelId != null && _levelId.Length > 0)
                     return _levelId;
                 else if (_hash != null && _hash.Length > 0)
-                    return CustomLevelIdPrefix + Hash;
-                return null;
+                {
+                    _levelId = PlaylistSong.CustomLevelIdPrefix + Hash;
+                    AddIdentifierFlag(Identifier.LevelId);
+                }
+                return _levelId;
             }
             set
             {
                 if (_levelId == value)
                     return;
-                if (!string.IsNullOrEmpty(value))
+                if (value != null && value.Length > 0)
                 {
-                    _levelId = value;
                     AddIdentifierFlag(Identifier.LevelId);
+                    if (value.StartsWith(PlaylistSong.CustomLevelIdPrefix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        string hash = value.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
+                        _levelId = PlaylistSong.CustomLevelIdPrefix + hash.ToUpper();
+                        if (_hash == null || _hash != hash)
+                            Hash = hash;
+                        AddIdentifierFlag(Identifier.Hash);
+                    }
+                    else
+                        _levelId = value;
                 }
                 else
                 {
-                    RemoveIdentifierFlag(Identifier.LevelId);
+                    _levelId = null;
+                    if (string.IsNullOrEmpty(_hash))
+                        RemoveIdentifierFlag(Identifier.Hash);
                 }
             }
         }
@@ -76,13 +102,14 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (_key == value)
                     return;
-                if (!string.IsNullOrEmpty(value))
+                if (value != null && value.Length > 0)
                 {
-                    _key = value;
+                    _key = value.ToUpper();
                     AddIdentifierFlag(Identifier.Key);
                 }
                 else
                 {
+                    _key = null;
                     RemoveIdentifierFlag(Identifier.Key);
                 }
             }

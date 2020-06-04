@@ -21,17 +21,21 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
         #region Using Constructor
         public void HashOnly_ctor()
         {
-            string? hash = "SDFKLjSDLFKJ";
+            string? hash = "sDFKLjSDLFKJ";
             string? levelId = null;
             string? key = null;
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
+            string expectedHash = hash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
             IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.AreEqual(hash.ToUpper(), songA.Hash);
-            Assert.AreEqual(PlaylistSong.CustomLevelIdPrefix + hash.ToUpper(), songA.LevelId);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+            Assert.IsTrue(expectedLevelId.Equals(songA.LevelId, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
         }
 
         
@@ -43,12 +47,16 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? key = null;
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
+            string expectedHash = songHash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
             IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.AreEqual(PlaylistSong.CustomLevelIdPrefix + songHash.ToUpper(), songA.LevelId);
-            Assert.AreEqual(songHash.ToUpper(), songA.Hash);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+            Assert.IsTrue(expectedHash.Equals(songA.Hash, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
         }
 
         
@@ -59,27 +67,27 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? key = "abcD";
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
+            string expectedKey = key.ToUpper();
             IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.AreEqual(key.ToUpper(), songA.Key);
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash), "Song should not have Hash Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should not have LevelId Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Key), "Song should have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.IsTrue(expectedKey.Equals(songA.Key, StringComparison.OrdinalIgnoreCase), "Song did not assign the Key correctly.");
+            Assert.AreEqual(expectedKey, songA.Key, "Song did not capitalize Key.");
         }
 
         
         public void HashAndLevelId_NotMatched_ctor()
         {
-            string? hash = "SDFKLJSDLFKJ";
-            string? levelId = PlaylistSong.CustomLevelIdPrefix + hash + "D";
+            string? hash = "SDFKLJSDLFKj";
+            string? levelId = PlaylistSong.CustomLevelIdPrefix + hash + "d";
             string? key = null;
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
-            IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.AreEqual(hash, songA.Hash);
-            Assert.AreEqual(levelId, songA.LevelId);
+            string expectedHash = hash.ToUpper() + "D";
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash + "D";
+            Assert.ThrowsException<ArgumentException>(() => CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName));
         }
 
         
@@ -91,10 +99,10 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsTrue(songA.Identifiers == Identifier.None);
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash), "Song should not have Hash Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should not have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsTrue(songA.Identifiers == Identifier.None, "Song should have None Identifier.");
         }
 
         #endregion
@@ -107,12 +115,17 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? key = null;
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
-            IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.AreEqual(hash.ToUpper(), songA.Hash);
-            Assert.AreEqual(PlaylistSong.CustomLevelIdPrefix + hash.ToUpper(), songA.LevelId);
+            bool assignHashFirst = false;
+            string expectedHash = hash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
+            IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+            Assert.IsTrue(expectedLevelId.Equals(songA.LevelId, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
         }
 
         
@@ -124,12 +137,16 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             bool assignHashFirst = true;
+            string expectedHash = hash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
             IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.AreEqual(hash.ToUpper(), songA.Hash);
-            Assert.AreEqual(PlaylistSong.CustomLevelIdPrefix + hash.ToUpper(), songA.LevelId);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+            Assert.IsTrue(expectedLevelId.Equals(songA.LevelId, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
         }
 
         
@@ -142,13 +159,16 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             bool assignHashFirst = false;
+            string expectedHash = songHash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
             IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsFalse(songA.Identifiers == Identifier.None);
-            Assert.AreEqual(PlaylistSong.CustomLevelIdPrefix + songHash.ToUpper(), songA.LevelId);
-            Assert.AreEqual(songHash.ToUpper(), songA.Hash);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+            Assert.IsTrue(expectedHash.Equals(songA.Hash, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
         }
 
         
@@ -161,16 +181,61 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             bool assignHashFirst = true;
+            string expectedHash = songHash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
             IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsFalse(songA.Identifiers == Identifier.None);
-            Assert.AreEqual(PlaylistSong.CustomLevelIdPrefix + songHash.ToUpper(), songA.LevelId);
-            Assert.AreEqual(songHash.ToUpper(), songA.Hash);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+            Assert.IsTrue(expectedHash.Equals(songA.Hash, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
         }
 
-        
+
+        public void LevelIdOnly_EmptyHash()
+        {
+            string songHash = "LSKDFJLKJSDf";
+            string? hash = "";
+            string? levelId = PlaylistSong.CustomLevelIdPrefix + songHash;
+            string? key = null;
+            string? songName = "Test";
+            string? levelAuthorName = "TestMapper";
+            bool assignHashFirst = false;
+            string expectedHash = songHash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
+            IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+            Assert.IsTrue(expectedHash.Equals(songA.Hash, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+        }
+
+        public void LevelIdOnly_EmptyHashFirst()
+        {
+            string songHash = "LSKDFJLKJSDf";
+            string? hash = "";
+            string? levelId = PlaylistSong.CustomLevelIdPrefix + songHash;
+            string? key = null;
+            string? songName = "Test";
+            string? levelAuthorName = "TestMapper";
+            bool assignHashFirst = true;
+            string expectedHash = songHash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
+            IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+            Assert.IsTrue(expectedHash.Equals(songA.Hash, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+        }
+
         public void KeyOnly()
         {
             string? hash = null;
@@ -179,46 +244,51 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers == Identifier.None);
-            Assert.AreEqual(key.ToUpper(), songA.Key);
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash), "Song should not have Hash Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should not have LevelId Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Key), "Song should have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(key.ToUpper(), songA.Key, "Song did not capitalize Key.");
         }
 
         
         public void HashAndLevelId_NotMatched()
         {
-            string? hash = "SDFKLJSDLFKJ";
+            string? hash = "sDFKLJSDLFKJ";
             string? levelId = PlaylistSong.CustomLevelIdPrefix + hash + "D";
             string? key = null;
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
-            IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsFalse(songA.Identifiers == Identifier.None);
-            Assert.AreEqual(hash, songA.Hash);
-            Assert.AreEqual(levelId, songA.LevelId);
+            bool assignHashFirst = false;
+            string expectedHash = hash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + hash.ToUpper();
+            IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not keep the original Hash.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not change LevelId to match Hash.");
         }
 
         
         public void HashAndLevelId_NotMatched_HashFirst()
         {
-            string? hash = "SDFKLJSDLFKJ";
+            string? hash = "SDFKLJSDLFKj";
             string? levelId = PlaylistSong.CustomLevelIdPrefix + hash + "D";
             string? key = null;
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             bool assignHashFirst = true;
+            string expectedHash = hash.ToUpper() + "D";
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + hash.ToUpper() + "D";
             IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName, assignHashFirst);
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsFalse(songA.Identifiers == Identifier.None);
-            Assert.AreEqual(hash, songA.Hash);
-            Assert.AreEqual(levelId, songA.LevelId);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not change hash to match LevelId.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not keep the original LevelId.");
         }
 
         
@@ -230,10 +300,10 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? songName = "Test";
             string? levelAuthorName = "TestMapper";
             IPlaylistSong songA = CreatePlaylistSong<LegacyPlaylistSong>(hash, levelId, songName, key, levelAuthorName);
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId));
-            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key));
-            Assert.IsTrue(songA.Identifiers == Identifier.None);
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Hash), "Song should not have Hash Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should not have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsTrue(songA.Identifiers == Identifier.None, "Song should have None Identifier.");
         }
         #endregion
     }

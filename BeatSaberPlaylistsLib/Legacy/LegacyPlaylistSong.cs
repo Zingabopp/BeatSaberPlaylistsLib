@@ -36,6 +36,12 @@ namespace BeatSaberPlaylistsLib.Legacy
         public LegacyPlaylistSong(string? hash = null, string? levelId = null, string? songName = null, string? songKey = null, string? mapper = null)
             : this()
         {
+            if(hash != null && hash.Length > 0 && levelId != null && levelId.Length > 0)
+            {
+                if (levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix, StringComparison.OrdinalIgnoreCase)
+                    && !levelId.EndsWith(hash))
+                    throw new ArgumentException(nameof(levelId), "CustomLevel levelId and hash do not match.");
+            }
             LevelId = levelId;
             if (hash != null) // Don't assign null, LevelId could've set Hash
                 Hash = hash;
@@ -89,6 +95,8 @@ namespace BeatSaberPlaylistsLib.Legacy
                 if (value != null && value.Length > 0)
                 {
                     _hash = value.ToUpper();
+                    if (_levelId == null || !_levelId.EndsWith(_hash))
+                        _levelId = PlaylistSong.CustomLevelIdPrefix + _hash;
                     AddIdentifierFlag(Identifier.Hash);
                     AddIdentifierFlag(Identifier.LevelId);
                 }
@@ -122,12 +130,12 @@ namespace BeatSaberPlaylistsLib.Legacy
                 if (value != null && value.Length > 0)
                 {
                     AddIdentifierFlag(Identifier.LevelId);
-                    if (value.StartsWith(PlaylistSong.CustomLevelIdPrefix))
+                    if (value.StartsWith(PlaylistSong.CustomLevelIdPrefix, StringComparison.OrdinalIgnoreCase))
                     {
                         string hash = value.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
-                        if (_hash == null)
-                            Hash = hash;
                         _levelId = PlaylistSong.CustomLevelIdPrefix + hash.ToUpper();
+                        if (_hash == null || _hash != hash)
+                            Hash = hash;
                         AddIdentifierFlag(Identifier.Hash);
                     }
                     else
@@ -136,7 +144,8 @@ namespace BeatSaberPlaylistsLib.Legacy
                 else
                 {
                     _levelId = null;
-                    RemoveIdentifierFlag(Identifier.LevelId);
+                    if (string.IsNullOrEmpty(_hash))
+                        RemoveIdentifierFlag(Identifier.Hash);
                 }
             }
         }

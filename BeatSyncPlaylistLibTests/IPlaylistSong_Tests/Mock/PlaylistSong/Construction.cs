@@ -1,19 +1,19 @@
-﻿using BeatSaberPlaylistsLib.Legacy;
-using BeatSaberPlaylistsLib.Types;
+﻿using BeatSaberPlaylistsLib.Types;
+using BeatSaberPlaylistsLibTests.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.LegacyTests
+namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.Mock.PlaylistSong
 {
     [TestClass]
-    public class LegacyPlaylistSongTests
+    public class Construction
     {
         public static readonly Func<string?, string?, string?, string?, string?, IPlaylistSong> PlaylistSongFactory =
-            (hash, levelId, songName, key, levelAuthorName) => new LegacyPlaylistSong(hash, levelId, songName, key, levelAuthorName);
-        public static readonly IPlaylistSongTestRunners<LegacyPlaylistSong> TestRunner 
-            = new IPlaylistSongTestRunners<LegacyPlaylistSong>(PlaylistSongFactory);
+            (hash, levelId, songName, key, levelAuthorName) => new MockPlaylistSong(hash, levelId, songName, key, levelAuthorName);
+        public static readonly IPlaylistSongTestRunners<MockPlaylistSong> TestRunner 
+            = new IPlaylistSongTestRunners<MockPlaylistSong>(PlaylistSongFactory);
         #region Using Constructor
         [TestMethod]
         public void HashOnly_ctor()

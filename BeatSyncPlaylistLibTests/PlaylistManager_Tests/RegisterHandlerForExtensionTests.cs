@@ -74,9 +74,9 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
         }
 
         [TestMethod]
-        public void RegisterHandlerForExtension_UnsupportedExtension()
+        public void UnsupportedExtension()
         {
-            string playlistDir = Path.Combine(OutputPath, "RegisterHandlerForExtension_UnsupportedExtension");
+            string playlistDir = Path.Combine(OutputPath, "UnsupportedExtension");
             IPlaylistHandler handler = new LegacyPlaylistHandler();
             if (Directory.Exists(playlistDir))
                 Directory.Delete(playlistDir, true);
@@ -91,9 +91,9 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
         }
 
         [TestMethod]
-        public void RegisterHandlerForExtension_NullHandler()
+        public void NullHandler()
         {
-            string playlistDir = Path.Combine(OutputPath, "RegisterHandlerForExtension_NullHandler");
+            string playlistDir = Path.Combine(OutputPath, "NullHandler");
             IPlaylistHandler handler = new LegacyPlaylistHandler();
             if (Directory.Exists(playlistDir))
                 Directory.Delete(playlistDir, true);

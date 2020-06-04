@@ -280,6 +280,7 @@ namespace BeatSaberPlaylistsLib
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentException(nameof(playlist), "Playlist's filename is null or empty.");
             playlistHandler.SerializeToFile(playlist, Path.Combine(PlaylistPath, fileName + "." + extension));
+            RegisterPlaylist(playlist, false);
             if (removeFromChanged)
                 RemoveFromChanged(playlist);
         }

@@ -2,8 +2,6 @@
 using BeatSaberPlaylistsLib.Types;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.Legacy.PlaylistSong
 {
@@ -18,13 +16,25 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.Legacy.PlaylistSong
         [TestMethod]
         public void HashOnly_ctor()
         {
-            TestRunner.HashOnly_ctor();
+            TestRunner.HashOnly_ctor();            
+        }
+
+        [TestMethod]
+        public void HashOnly_EmptyLevelId_ctor()
+        {
+            TestRunner.HashOnly_EmptyLevelId_ctor();
         }
 
         [TestMethod]
         public void LevelIdOnly_ctor()
         {
             TestRunner.LevelIdOnly_ctor();
+        }
+
+        [TestMethod]
+        public void LevelIdOnly_EmptyHash_ctor()
+        {
+            TestRunner.LevelIdOnly_EmptyHash_ctor();
         }
 
         [TestMethod]

@@ -38,7 +38,26 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
         }
 
-        
+        public void HashOnly_EmptyLevelId_ctor()
+        {
+            string? hash = "sDFKLjSDLFKJ";
+            string? levelId = "";
+            string? key = null;
+            string? songName = "Test";
+            string? levelAuthorName = "TestMapper";
+            string expectedHash = hash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
+            IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+            Assert.IsTrue(expectedLevelId.Equals(songA.LevelId, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+        }
+
+
         public void LevelIdOnly_ctor()
         {
             string songHash = "LSKDFJLKJSDf";
@@ -59,7 +78,27 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
         }
 
-        
+
+        public void LevelIdOnly_EmptyHash_ctor()
+        {
+            string songHash = "LSKDFJLKJSDf";
+            string? hash = "";
+            string? levelId = PlaylistSong.CustomLevelIdPrefix + songHash;
+            string? key = null;
+            string? songName = "Test";
+            string? levelAuthorName = "TestMapper";
+            string expectedHash = songHash.ToUpper();
+            string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash;
+            IPlaylistSong songA = CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName);
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.Hash), "Song should have Hash Identifier.");
+            Assert.IsTrue(songA.Identifiers.HasFlag(Identifier.LevelId), "Song should have LevelId Identifier.");
+            Assert.IsFalse(songA.Identifiers.HasFlag(Identifier.Key), "Song should not have Key Identifier.");
+            Assert.IsFalse(songA.Identifiers == Identifier.None, "Song should not have None Identifier.");
+            Assert.AreEqual(expectedLevelId, songA.LevelId, "Song did not capitalize the hash part of the LevelId.");
+            Assert.IsTrue(expectedHash.Equals(songA.Hash, StringComparison.OrdinalIgnoreCase), "Song did not assign the correct LevelId.");
+            Assert.AreEqual(expectedHash, songA.Hash, "Song did not capitalize Hash.");
+        }
+
         public void KeyOnly_ctor()
         {
             string? hash = null;
@@ -87,10 +126,10 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests
             string? levelAuthorName = "TestMapper";
             string expectedHash = hash.ToUpper() + "D";
             string expectedLevelId = PlaylistSong.CustomLevelIdPrefix + expectedHash + "D";
-            Assert.ThrowsException<ArgumentException>(() => CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName));
+            Assert.ThrowsException<ArgumentException>(() => CreatePlaylistSongWithFactory(PlaylistSongFactory, hash, levelId, songName, key, levelAuthorName), "ArgumentException should've been thrown when hash and levelId both have values and don't match.");
         }
 
-        
+
         public void NoIdentifiers_ctor()
         {
             string? hash = null;

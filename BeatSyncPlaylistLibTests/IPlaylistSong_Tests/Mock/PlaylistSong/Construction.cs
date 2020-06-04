@@ -22,9 +22,21 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.Mock.PlaylistSong
         }
 
         [TestMethod]
+        public void HashOnly_EmptyLevelId_ctor()
+        {
+            TestRunner.HashOnly_EmptyLevelId_ctor();
+        }
+
+        [TestMethod]
         public void LevelIdOnly_ctor()
         {
             TestRunner.LevelIdOnly_ctor();
+        }
+
+        [TestMethod]
+        public void LevelIdOnly_EmptyHash_ctor()
+        {
+            TestRunner.LevelIdOnly_EmptyHash_ctor();
         }
 
         [TestMethod]
@@ -45,7 +57,7 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.Mock.PlaylistSong
             TestRunner.NoIdentifiers_ctor();
         }
 
-#endregion
+        #endregion
         #region Default Constructor with Property Assignments
         [TestMethod]
         public void HashOnly()
@@ -69,6 +81,18 @@ namespace BeatSaberPlaylistsLibTests.IPlaylistSong_Tests.Mock.PlaylistSong
         public void LevelIdOnly_NullHashFirst()
         {
             TestRunner.LevelIdOnly_NullHashFirst();
+        }
+
+        [TestMethod]
+        public void LevelIdOnly_EmptyHash()
+        {
+            TestRunner.LevelIdOnly_EmptyHash();
+        }
+
+        [TestMethod]
+        public void LevelIdOnly_EmptyHashFirst()
+        {
+            TestRunner.LevelIdOnly_EmptyHashFirst();
         }
 
         [TestMethod]

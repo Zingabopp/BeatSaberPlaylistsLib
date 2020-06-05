@@ -128,6 +128,18 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Returns the first registered <see cref="IPlaylistHandler"/> of type <typeparamref name="T"/> 
+        /// or null if there's no registered matching <see cref="IPlaylistHandler"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T? GetHandler<T>() where T : class, IPlaylistHandler, new()
+        {
+            PlaylistHandlers.TryGetValue(typeof(T), out IPlaylistHandler? handler);
+            return handler as T;
+        }
+
+        /// <summary>
         /// Gets an <see cref="IPlaylistHandler"/> registered for the given <paramref name="extension"/>.
         /// Returns null if no registered handler supports the <paramref name="extension"/>.
         /// </summary>
@@ -303,7 +315,7 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(fileName), "fileName cannot be null or empty.");
             IPlaylist? playlist = null;
             string[] files = Directory.GetFiles(PlaylistPath);
-            string file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase));
+            string? file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase));
             string? fileExtension = null;
             if (file != null)
             {

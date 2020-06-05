@@ -264,18 +264,6 @@
             or <paramref name="target"/>'s type doesn't match <see cref="P:BeatSaberPlaylistsLib.Types.IPlaylistHandler.HandledType"/>.</exception>
             <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.PlaylistLibExtensions.Matches(BeatSaberPlaylistsLib.Types.ISong,BeatSaberPlaylistsLib.Types.ISong)">
-            <summary>
-            Compares two <see cref="T:BeatSaberPlaylistsLib.Types.ISong"/>s by one of their identifiers.
-            </summary>
-            <remarks>
-            If <see cref="P:BeatSaberPlaylistsLib.Types.ISong.LevelId"/> is available for both songs, the result of that comparison is returned, otherwise key is checked.
-            <see cref="P:BeatSaberPlaylistsLib.Types.ISong.Hash"/> isn't explicitly checked because if an <see cref="T:BeatSaberPlaylistsLib.Types.ISong"/> has a Hash, it should also have a matching LevelId.
-            </remarks>
-            <param name="a"></param>
-            <param name="b"></param>
-            <returns>True if the songs are a match.</returns>
-        </member>
         <member name="T:BeatSaberPlaylistsLib.PlaylistManager">
             <summary>
             Class that manages <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>s and <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s.

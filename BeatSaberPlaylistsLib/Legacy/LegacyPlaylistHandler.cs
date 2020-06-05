@@ -31,6 +31,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         {
             if (string.IsNullOrEmpty(extension))
                 return false;
+            extension = extension.TrimStart('.');
             string[] extensions = SupportedExtensions;
             for(int i = 0; i < extensions.Length; i++)
             {

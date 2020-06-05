@@ -22,7 +22,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         /// <param name="extension"></param>
         /// <returns>True if <paramref name="extension"/> is supported, false otherwise.</returns>
-        /// <remarks>Comparison is case-insensitive. Also returns false if <paramref name="extension"/> is a null or empty string.</remarks>
+        /// <remarks>Comparison is case-insensitive and should ignore any leading '.'. Also returns false if <paramref name="extension"/> is a null or empty string.</remarks>
         bool SupportsExtension(string extension);
         /// <summary>
         /// The <see cref="IPlaylist"/> type used by this <see cref="IPlaylistHandler"/>.

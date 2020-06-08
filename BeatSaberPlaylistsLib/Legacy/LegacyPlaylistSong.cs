@@ -189,6 +189,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         public DateTime? DateAdded { get; set; }
 
         ///<inheritdoc/>
+        [JsonIgnore]
         public Identifier Identifiers { get; protected set; }
 
 

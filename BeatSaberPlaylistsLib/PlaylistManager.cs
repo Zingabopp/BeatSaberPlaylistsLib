@@ -450,7 +450,17 @@ namespace BeatSaberPlaylistsLib
         {
             if (string.IsNullOrEmpty(playlistFileName))
                 throw new ArgumentNullException(nameof(playlistFileName), "playlistFileName cannot be null or empty.");
-            IPlaylist? playlist = GetPlaylist(playlistFileName);
+            IPlaylist? playlist = null;
+            try
+            {
+                GetPlaylist(playlistFileName);
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (PlaylistSerializationException)
+            {
+                // TODO: Logging...
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             if (playlist == null)
             {

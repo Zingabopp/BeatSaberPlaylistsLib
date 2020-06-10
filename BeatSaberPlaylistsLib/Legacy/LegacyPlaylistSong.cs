@@ -74,7 +74,32 @@ namespace BeatSaberPlaylistsLib.Legacy
 
 
         ///<inheritdoc/>
-        [JsonProperty("hash", Order = -9)]
+        [JsonProperty("key", Order = -10)]
+        public string? Key
+        {
+            get
+            {
+                return _key;
+            }
+            set
+            {
+                if (_key == value)
+                    return;
+                if (value != null && value.Length > 0)
+                {
+                    _key = value.ToUpper();
+                    AddIdentifierFlag(Identifier.Key);
+                }
+                else
+                {
+                    _key = null;
+                    RemoveIdentifierFlag(Identifier.Key);
+                }
+            }
+        }
+
+        ///<inheritdoc/>
+        [JsonProperty("hash", Order = -7)]
         public string? Hash
         {
             get
@@ -109,7 +134,7 @@ namespace BeatSaberPlaylistsLib.Legacy
             }
         }
         ///<inheritdoc/>
-        [JsonProperty("levelid")]
+        [JsonProperty("levelid", Order = -6)]
         public string? LevelId
         {
             get
@@ -152,40 +177,15 @@ namespace BeatSaberPlaylistsLib.Legacy
 
 
         ///<inheritdoc/>
-        [JsonProperty("key", Order = -10)]
-        public string? Key
-        {
-            get
-            {
-                return _key;
-            }
-            set
-            {
-                if (_key == value)
-                    return;
-                if (value != null && value.Length > 0)
-                {
-                    _key = value.ToUpper();
-                    AddIdentifierFlag(Identifier.Key);
-                }
-                else
-                {
-                    _key = null;
-                    RemoveIdentifierFlag(Identifier.Key);
-                }
-            }
-        }
-
-        ///<inheritdoc/>
-        [JsonProperty("songName", Order = -8)]
+        [JsonProperty("songName", Order = -9)]
         public string? Name { get; set; }
 
         ///<inheritdoc/>
-        [JsonProperty("levelAuthorName")]
+        [JsonProperty("levelAuthorName", Order = -8)]
         public string? LevelAuthorName { get; set; }
 
         ///<inheritdoc/>
-        [JsonProperty("dateAdded", Order = -7)]
+        [JsonProperty("dateAdded", Order = 10)]
         public DateTime? DateAdded { get; set; }
 
         ///<inheritdoc/>

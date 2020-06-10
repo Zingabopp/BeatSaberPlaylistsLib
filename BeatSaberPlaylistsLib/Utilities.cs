@@ -49,7 +49,7 @@ namespace BeatSaberPlaylistsLib
         /// <param name="base64Str"></param>
         /// <returns></returns>
         /// <exception cref="FormatException">Thrown when the provided string isn't a valid Base64 string.</exception>
-        public static byte[]? Base64ToByteArray(ref string base64Str)
+        public static byte[]? Base64ToByteArray(string base64Str)
         {
             if (string.IsNullOrEmpty(base64Str))
             {

@@ -121,7 +121,9 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(CoverString))
+                return new MemoryStream(Array.Empty<byte>());
+            return new MemoryStream(Utilities.Base64ToByteArray(CoverString));
         }
 
         ///<inheritdoc/>

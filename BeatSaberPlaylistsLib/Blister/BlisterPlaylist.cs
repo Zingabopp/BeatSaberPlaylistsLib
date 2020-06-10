@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
+using BeatSaberPlaylistsLib.Blister.Converters;
 using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -52,13 +54,17 @@ namespace BeatSaberPlaylistsLib.Blister
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, object>? CustomData { get; set; }
 
+
+        private string? _description;
         /// <summary>
         /// The optional playlist description
         /// </summary>
         [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(MinMaxLengthCheckConverter))]
-        public override string? Description { get; set; }
-
+        public override string? Description
+        {
+            get => string.IsNullOrEmpty(_description) ? null : _description;
+            set => _description = string.IsNullOrEmpty(value) ? null : value;
+        }
         /// <summary>
         /// The beatmaps contained in the playlist
         /// </summary>
@@ -75,6 +81,7 @@ namespace BeatSaberPlaylistsLib.Blister
         [JsonProperty("title")]
         public override string Title { get; set; } = "";
 
+        ///<inheritdoc/>
         protected override BlisterPlaylistSong CreateFrom(ISong song)
         {
             if (song is BlisterPlaylistSong legacySong)
@@ -82,16 +89,19 @@ namespace BeatSaberPlaylistsLib.Blister
             return new BlisterPlaylistSong(song);
         }
 
+        ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
             return new MemoryStream(CoverData ?? Array.Empty<byte>());
         }
 
+        ///<inheritdoc/>
         public override void SetCover(byte[] coverImage)
         {
             CoverData = coverImage?.Clone() as byte[];
         }
 
+        ///<inheritdoc/>
         public override void SetCover(string? coverImageStr)
         {
             if (coverImageStr != null && coverImageStr.Length > 0)
@@ -100,6 +110,7 @@ namespace BeatSaberPlaylistsLib.Blister
                 CoverData = null;
         }
 
+        ///<inheritdoc/>
         public override void SetCover(Stream stream)
         {
             if (stream == null || !stream.CanRead)
@@ -116,15 +127,19 @@ namespace BeatSaberPlaylistsLib.Blister
             }
         }
 
-        public bool HasCover => (CoverData?.Length ?? 0) > 0;
+        ///<inheritdoc/>
+        public override bool HasCover => (CoverData?.Length ?? 0) > 0;
 
+        /// <summary>
+        /// Raw data for the cover image.
+        /// </summary>
         protected byte[]? CoverData;
     }
 
     /// <summary>
     /// A beatmap difficulty
     /// </summary>
-    public partial class Difficulty
+    public struct Difficulty
     {
         /// <summary>
         /// The characteristic name
@@ -137,108 +152,63 @@ namespace BeatSaberPlaylistsLib.Blister
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        ///<inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (obj is Difficulty diff)
+            {
+                if (Characteristic?.Equals(diff.Characteristic, StringComparison.OrdinalIgnoreCase) ?? diff.Characteristic != null)
+                    return false;
+                if (Name?.Equals(diff.Name, StringComparison.OrdinalIgnoreCase) ?? diff.Name != null)
+                    return false;
+                return true;
+            }
+            return false;
+        }
+
+        ///<inheritdoc/>
+        public override int GetHashCode()
+        {
+            int hash = 238947239;
+            hash ^= Characteristic?.GetHashCode() ?? 23408234;
+            hash ^= Name?.GetHashCode() ?? 12987213;
+            return hash;
+        }
+
+        ///<inheritdoc/>
+        public static bool operator ==(Difficulty left, Difficulty right)
+        {
+            return left.Equals(right);
+        }
+
+        ///<inheritdoc/>
+        public static bool operator !=(Difficulty left, Difficulty right)
+        {
+            return !(left.Equals(right));
+        }
     }
 
     /// <summary>
     /// The entry type defining how the beatmap is identified in the playlist
     /// </summary>
-    public enum TypeEnum { Hash, Key, LevelId };
-
-    public partial class BlisterPlaylist
+    public enum BlisterPlaylistType
     {
-        public static BlisterPlaylist FromJson(string json) => JsonConvert.DeserializeObject<BlisterPlaylist>(json, BeatSaberPlaylistsLib.Blister.Converter.Settings);
-    }
-
-    public static class Serialize
-    {
-        public static string ToJson(this BlisterPlaylist self) => JsonConvert.SerializeObject(self, BeatSaberPlaylistsLib.Blister.Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                TypeEnumConverter.Singleton,
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
-
-    internal class MinMaxLengthCheckConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(string);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            var value = serializer.Deserialize<string>(reader);
-            if (value.Length >= 1)
-            {
-                return value;
-            }
-            throw new Exception("Cannot unmarshal type string");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            var value = (string)untypedValue;
-            if (value.Length >= 1)
-            {
-                serializer.Serialize(writer, value);
-                return;
-            }
-            throw new Exception("Cannot marshal type string");
-        }
-
-        public static readonly MinMaxLengthCheckConverter Singleton = new MinMaxLengthCheckConverter();
-    }
-
-    internal class TypeEnumConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(TypeEnum) || t == typeof(TypeEnum?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
-            {
-                case "hash":
-                    return TypeEnum.Hash;
-                case "key":
-                    return TypeEnum.Key;
-                case "levelID":
-                    return TypeEnum.LevelId;
-            }
-            throw new Exception("Cannot unmarshal type TypeEnum");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (TypeEnum)untypedValue;
-            switch (value)
-            {
-                case TypeEnum.Hash:
-                    serializer.Serialize(writer, "hash");
-                    return;
-                case TypeEnum.Key:
-                    serializer.Serialize(writer, "key");
-                    return;
-                case TypeEnum.LevelId:
-                    serializer.Serialize(writer, "levelID");
-                    return;
-            }
-            throw new Exception("Cannot marshal type TypeEnum");
-        }
-
-        public static readonly TypeEnumConverter Singleton = new TypeEnumConverter();
-    }
+        /// <summary>
+        /// No known type.
+        /// </summary>
+        None,
+        /// <summary>
+        /// Song is identified by its Hash.
+        /// </summary>
+        Hash,
+        /// <summary>
+        /// Song is identified by its Key.
+        /// </summary>
+        Key,
+        /// <summary>
+        /// Song is identified by its LevelId.
+        /// </summary>
+        LevelId
+    };
 }

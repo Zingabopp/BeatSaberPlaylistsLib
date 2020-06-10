@@ -50,6 +50,9 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public virtual bool IsReadOnly => false;
 
+        /// <inheritdoc/>
+        public abstract bool HasCover { get; }
+
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.
         /// </summary>
@@ -226,8 +229,8 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         IEnumerator<IPlaylistSong> IEnumerable<IPlaylistSong>.GetEnumerator()
         {
-            IList<IPlaylistSong>? thing = (IList<IPlaylistSong>)Songs;
-            return thing.GetEnumerator();
+            IList<IPlaylistSong>? cast = (IList<IPlaylistSong>)Songs;
+            return cast.GetEnumerator();
         }
 
         /// <inheritdoc/>

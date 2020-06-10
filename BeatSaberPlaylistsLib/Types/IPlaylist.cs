@@ -30,6 +30,10 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         string? SuggestedExtension { get; set; }
         /// <summary>
+        /// True if a playlist cover image is available.
+        /// </summary>
+        bool HasCover { get; }
+        /// <summary>
         /// Returns a <see cref="Stream"/> for the playlist cover image.
         /// </summary>
         /// <returns></returns>

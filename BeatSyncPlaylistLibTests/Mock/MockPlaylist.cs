@@ -26,6 +26,8 @@ namespace BeatSaberPlaylistsLibTests.Mock
             return removedSongs;
         }
 
+        public override bool HasCover => false;
+
         public override void SetCover(byte[] coverImage)
         {
             throw new NotImplementedException();

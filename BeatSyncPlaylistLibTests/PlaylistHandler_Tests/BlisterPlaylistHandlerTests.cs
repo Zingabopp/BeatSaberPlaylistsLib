@@ -98,7 +98,8 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsTrue(File.Exists(playlistFile));
             Console.WriteLine(Path.GetFullPath(playlistFile));
             using FileStream newFileStream = File.OpenRead(playlistFile);
-            BlisterPlaylist readPlaylist = handler.Deserialize(newFileStream) as BlisterPlaylist;
+            BlisterPlaylist? readPlaylist = handler.Deserialize(newFileStream) as BlisterPlaylist 
+                ?? throw new AssertFailedException("readPlaylist is null.");
             Assert.AreEqual(playlist.Count, readPlaylist.Count);
             Assert.IsTrue(readPlaylist.HasCover);
             var newSongList = readPlaylist.Take(10).ToArray();
@@ -150,14 +151,16 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsTrue(File.Exists(playlistFile));
             Console.WriteLine(Path.GetFullPath(playlistFile));
             using FileStream newFileStream = File.OpenRead(playlistFile);
-            BlisterPlaylist readPlaylist = handler.Deserialize(newFileStream) as BlisterPlaylist;
+            BlisterPlaylist readPlaylist = handler.Deserialize(newFileStream) as BlisterPlaylist
+                ?? throw new AssertFailedException("readPlaylist is null.");
             Assert.AreEqual(playlist.Count, readPlaylist.Count);
             Assert.IsTrue(readPlaylist.HasCover);
-            var newSongList = readPlaylist.Take(10).ToArray();
+            BlisterPlaylistSong[] newSongList = readPlaylist.Take(10).Select(s => (BlisterPlaylistSong)s).ToArray();
             readPlaylist.Clear();
             Assert.AreEqual(0, readPlaylist.Count);
             foreach (var item in newSongList)
             {
+                item.AddDifficulty(new Difficulty() { Characteristic = "Standard", Name = "Hard" });
                 readPlaylist.Add(item);
             }
             readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });

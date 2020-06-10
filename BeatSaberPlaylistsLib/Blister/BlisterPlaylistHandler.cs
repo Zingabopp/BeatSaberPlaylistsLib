@@ -12,7 +12,11 @@ namespace BeatSaberPlaylistsLib.Blister
     /// </summary>
     public class BlisterPlaylistHandler : IPlaylistHandler<BlisterPlaylist>
     {
-        private static readonly JsonSerializer jsonSerializer = new JsonSerializer() { Formatting = Formatting.Indented };
+        private static readonly JsonSerializer jsonSerializer = new JsonSerializer()
+        {
+            Formatting = Formatting.Indented,
+            DateParseHandling = DateParseHandling.DateTime
+        };
         ///<inheritdoc/>
         public string DefaultExtension => "blist";
 

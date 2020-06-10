@@ -132,9 +132,9 @@ namespace BeatSaberPlaylistsLib.Types
             Identifiers &= ~identifier;
         }
         ///<inheritdoc/>
-        public string? Name { get; set; }
+        public virtual string? Name { get; set; }
         ///<inheritdoc/>
-        public string? LevelAuthorName { get; set; }
+        public virtual string? LevelAuthorName { get; set; }
         ///<inheritdoc/>
         public Identifier Identifiers { get; protected set; }
         ///<inheritdoc/>

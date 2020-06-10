@@ -114,6 +114,9 @@ namespace BeatSaberPlaylistsLib.Legacy
         public override bool IsReadOnly => false;
 
         ///<inheritdoc/>
+        public override bool HasCover => !string.IsNullOrEmpty(CoverString);
+
+        ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
             if (string.IsNullOrEmpty(CoverString))

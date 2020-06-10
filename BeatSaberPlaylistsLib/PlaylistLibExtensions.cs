@@ -37,7 +37,7 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(path), "path cannot be null or empty.");
             try
             {
-                using FileStream stream = File.OpenWrite(path);
+                using FileStream stream = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 handler.Serialize(playlist, stream);
             }
             catch (Exception ex)

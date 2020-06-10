@@ -95,14 +95,17 @@ namespace BeatSaberPlaylistsLib.Blister
             {
                 using ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Update);
                 ZipArchiveEntry playlistEntry = zipArchive.GetEntry("playlist.json");
-                
-                if (playlistEntry == null)
-                    playlistEntry = zipArchive.CreateEntry("playlist.json");
+                if (playlistEntry != null)
+                    playlistEntry.Delete();
+                playlistEntry = zipArchive.CreateEntry("playlist.json");
                 if (playlist.HasCover)
                 {
                     if (string.IsNullOrEmpty(playlist.Cover))
                         playlist.Cover = "cover";
-                    ZipArchiveEntry coverEntry = zipArchive.GetEntry(playlist.Cover) ?? zipArchive.CreateEntry(playlist.Cover);
+                    ZipArchiveEntry coverEntry = zipArchive.GetEntry(playlist.Cover);
+                    if (coverEntry != null)
+                        coverEntry.Delete();
+                    coverEntry = zipArchive.CreateEntry(playlist.Cover);
                     using (Stream coverEntryStream = coverEntry.Open())
                     {
                         using Stream coverStream = playlist.GetCoverStream();

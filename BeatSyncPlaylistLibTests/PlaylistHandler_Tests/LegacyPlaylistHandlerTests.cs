@@ -25,7 +25,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsFalse(Directory.Exists(playlistDir));
 
             PlaylistManager manager = new PlaylistManager(playlistDir, handler);
-            var songs = CreateSongArray<LegacyPlaylistSong>("Legacy_", "LegacyAuthor_", 5, Identifier.LevelId | Identifier.Hash | Identifier.Key);
+            var songs = CreateSongArray<LegacyPlaylistSong>("Legacy_", "LegacyAuthor_", 1000, Identifier.LevelId | Identifier.Hash | Identifier.Key);
             IPlaylist playlist = manager.CreatePlaylist("5LegacySongs", "Five Legacy Songs", "TestAuthor", string.Empty, "Test Description");
             foreach (var song in songs)
                 playlist.Add(song);

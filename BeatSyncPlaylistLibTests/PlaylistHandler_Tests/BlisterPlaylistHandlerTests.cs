@@ -75,7 +75,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
                 Directory.Delete(playlistDir, true);
             Assert.IsFalse(Directory.Exists(playlistDir));
             Directory.CreateDirectory(playlistDir);
-            var songs = CreateSongArray<LegacyPlaylistSong>("Blister_", "BlisterAuthor_", 5, Identifier.LevelId | Identifier.Hash | Identifier.Key);
+            var songs = CreateSongArray<LegacyPlaylistSong>("Blister_", "BlisterAuthor_", 1000, Identifier.LevelId | Identifier.Hash | Identifier.Key);
             BlisterPlaylist playlist = new BlisterPlaylist(fileName, playlistTitle, playlistAuthor )
             {
                 Description = playlistDescription,
@@ -85,14 +85,66 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             {
                 playlist.Add(song);
             }
+            playlist.SetCover(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             playlist.RaisePlaylistChanged();
             Assert.AreEqual(songs.Length, playlist.Count);
 
+            Directory.CreateDirectory(playlistDir);
             using FileStream fileStream = File.Create(playlistFile);
             handler.Serialize(playlist, fileStream);
 
             Assert.IsTrue(File.Exists(playlistFile));
             Console.WriteLine(Path.GetFullPath(playlistFile));
+            using FileStream newFileStream = File.OpenRead(playlistFile);
+            BlisterPlaylist readPlaylist = handler.Deserialize(newFileStream) as BlisterPlaylist;
+            Assert.AreEqual(playlist.Count, readPlaylist.Count);
+            Assert.IsTrue(readPlaylist.HasCover);
+            var newSongList = readPlaylist.Take(10).ToArray();
+            readPlaylist.Clear();
+            Assert.AreEqual(0, readPlaylist.Count);
+            foreach (var item in newSongList)
+            {
+                readPlaylist.Add(item);
+            }
+            readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });
+            readPlaylist.RaisePlaylistChanged();
+            using FileStream finalStream = File.Open(playlistFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            handler.Serialize(readPlaylist, finalStream);
+        }
+
+
+        [TestMethod]
+        public void UpdatePlaylist_WithImage()
+        {
+            string fileName = "MDBB.blist";
+            string originalFile = Path.Combine(ReadOnlyData, fileName);
+            string playlistDir = Path.Combine(OutputPath, "UpdatePlaylist");
+            if (Directory.Exists(playlistDir))
+                Directory.Delete(playlistDir, true);
+            Assert.IsFalse(Directory.Exists(playlistDir));
+            Directory.CreateDirectory(playlistDir);
+            File.Copy(originalFile, Path.Combine(playlistDir, fileName));
+            Assert.IsTrue(File.Exists(Path.Combine(playlistDir, fileName)));
+            string playlistFile = "MDBB";
+            BlisterPlaylistHandler handler = new BlisterPlaylistHandler();
+            PlaylistManager manager = new PlaylistManager(playlistDir, handler);
+            BlisterPlaylist playlist = manager.GetPlaylist(playlistFile) as BlisterPlaylist ?? throw new AssertFailedException("Playlist is null");
+            Assert.IsNotNull(playlist);
+            Assert.AreEqual(7, playlist.Count);
+            Assert.IsTrue(playlist.HasCover);
+            var song = playlist.First();
+            playlist.Clear();
+            Assert.IsTrue(playlist.Count == 0);
+            playlist.Add(song);
+            playlist.RaisePlaylistChanged();
+            Assert.AreEqual(1, playlist.Count);
+            manager.StoreAllPlaylists();
+
+            manager = new PlaylistManager(playlistDir, handler);
+            playlist = manager.GetPlaylist(playlistFile) as BlisterPlaylist ?? throw new AssertFailedException("Playlist is null");
+            Assert.IsNotNull(playlist);
+            Assert.AreEqual(1, playlist.Count);
+            Assert.IsTrue(playlist.HasCover);
         }
     }
 }

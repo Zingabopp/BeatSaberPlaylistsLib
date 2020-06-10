@@ -12,7 +12,6 @@ namespace BeatSaberPlaylistsLibTests.Mock
         public override string? Author { get; set; }
         public override string? Description { get; set; }
         public override string Filename { get; set; } = string.Empty;
-        protected override IList<MockPlaylistSong> Songs { get; set; } = new List<MockPlaylistSong>();
 
         public override Stream GetCoverStream()
         {

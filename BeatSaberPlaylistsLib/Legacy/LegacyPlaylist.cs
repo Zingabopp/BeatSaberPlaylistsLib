@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace BeatSaberPlaylistsLib.Legacy
@@ -17,7 +18,11 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         [DataMember]
         [JsonProperty("songs", Order = 5)]
-        protected override IList<LegacyPlaylistSong> Songs { get; set; } = new List<LegacyPlaylistSong>();
+        protected List<LegacyPlaylistSong> _serializedSongs 
+        {
+            get => Songs;
+            set => Songs = value ?? new List<LegacyPlaylistSong>();
+        }
         private Lazy<string>? ImageLoader;
         /// <summary>
         /// Creates an empty <see cref="LegacyPlaylist"/>.
@@ -104,19 +109,9 @@ namespace BeatSaberPlaylistsLib.Legacy
                 _coverString = value;
             }
         }
-        ///<inheritdoc/>
-        public override string Filename { get; set; } = string.Empty;
 
         ///<inheritdoc/>
         public override bool IsReadOnly => false;
-        ///<inheritdoc/>
-        public override int RemoveAll(Func<LegacyPlaylistSong, bool> match)
-        {
-            int removedSongs = 0;
-            if (match != null)
-                removedSongs = ((List<LegacyPlaylistSong>)Songs).RemoveAll(s => match(s));
-            return removedSongs;
-        }
 
         ///<inheritdoc/>
         public override Stream GetCoverStream()
@@ -127,9 +122,9 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        public override void SetCover(byte[] coverImage)
+        public override void SetCover(byte[]? coverImage)
         {
-            throw new NotImplementedException();
+            CoverString = Utilities.ByteArrayToBase64(coverImage);
         }
 
         ///<inheritdoc/>
@@ -143,7 +138,17 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         public override void SetCover(Stream stream)
         {
-            throw new NotImplementedException();
+            if (stream == null || !stream.CanRead)
+                CoverString = "";
+            else if (stream is MemoryStream cast)
+            {
+                CoverString = Utilities.ByteArrayToBase64(cast.ToArray());
+            }
+            else
+            {
+                using MemoryStream ms = new MemoryStream();
+                stream.CopyTo(ms);
+            }
         }
     }
 }

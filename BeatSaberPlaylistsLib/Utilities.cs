@@ -78,7 +78,6 @@ namespace BeatSaberPlaylistsLib
                     return Convert.FromBase64String(base64Str.Substring(startIndex));
                 }
             }
-
             return Convert.FromBase64String(base64Str);
         }
 
@@ -87,7 +86,7 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="byteArray"></param>
         /// <returns></returns>
-        public static string ByteArrayToBase64(byte[] byteArray)
+        public static string ByteArrayToBase64(byte[]? byteArray)
         {
             if (byteArray == null || byteArray.Length == 0)
                 return string.Empty;

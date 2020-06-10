@@ -16,7 +16,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Internal collection of songs in the playlist.
         /// </summary>
-        protected abstract IList<T> Songs { get; set; }
+        protected List<T> Songs { get; set; } = new List<T>();
 
         /// <inheritdoc/>
         public IPlaylistSong this[int index]
@@ -40,7 +40,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public abstract string? Description { get; set; }
         /// <inheritdoc/>
-        public abstract string Filename { get; set; }
+        public virtual string Filename { get; set; } = "";
         /// <inheritdoc/>
         public string? SuggestedExtension { get; set; }
         /// <inheritdoc/>
@@ -180,7 +180,13 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         /// <inheritdoc/>
-        public abstract int RemoveAll(Func<T, bool> match);
+        public virtual int RemoveAll(Func<T, bool> match)
+        {
+            int removedSongs = 0;
+            if (match != null)
+                removedSongs = Songs.RemoveAll(s => match(s));
+            return removedSongs;
+        }
 
         /// <inheritdoc/>
         public void RemoveDuplicates()

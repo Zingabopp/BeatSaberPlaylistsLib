@@ -22,6 +22,19 @@ namespace BeatSaberPlaylistsLib.Blister
         { }
 
         /// <summary>
+        /// Creates a new <see cref="BlisterPlaylist"/> from the given parameters.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        public BlisterPlaylist(string fileName, string title, string? author)
+        {
+            Filename = fileName;
+            Title = title;
+            Author = author;
+        }
+
+        /// <summary>
         /// The playlist author
         /// </summary>
         [JsonProperty("author", NullValueHandling = NullValueHandling.Ignore)]
@@ -71,23 +84,41 @@ namespace BeatSaberPlaylistsLib.Blister
 
         public override Stream GetCoverStream()
         {
-            throw new NotImplementedException();
+            return new MemoryStream(CoverData ?? Array.Empty<byte>());
         }
 
         public override void SetCover(byte[] coverImage)
         {
-            throw new NotImplementedException();
+            CoverData = coverImage?.Clone() as byte[];
         }
 
         public override void SetCover(string? coverImageStr)
         {
-            throw new NotImplementedException();
+            if (coverImageStr != null && coverImageStr.Length > 0)
+                CoverData = Utilities.Base64ToByteArray(coverImageStr);
+            else
+                CoverData = null;
         }
 
         public override void SetCover(Stream stream)
         {
-            throw new NotImplementedException();
+            if (stream == null || !stream.CanRead)
+                CoverData = null;
+            else if (stream is MemoryStream cast)
+            {
+                CoverData = cast.ToArray();
+            }
+            else
+            {
+                using MemoryStream ms = new MemoryStream();
+                stream.CopyTo(ms);
+                CoverData = ms.ToArray();
+            }
         }
+
+        public bool HasCover => (CoverData?.Length ?? 0) > 0;
+
+        protected byte[]? CoverData;
     }
 
     /// <summary>

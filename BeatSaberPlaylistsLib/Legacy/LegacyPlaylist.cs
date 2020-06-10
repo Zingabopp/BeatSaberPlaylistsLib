@@ -36,7 +36,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         /// <param name="fileName"></param>
         /// <param name="title"></param>
         /// <param name="author"></param>
-        protected LegacyPlaylist(string fileName, string title, string? author)
+        public LegacyPlaylist(string fileName, string title, string? author)
         {
             Filename = fileName;
             Title = title;
@@ -148,6 +148,7 @@ namespace BeatSaberPlaylistsLib.Legacy
             {
                 using MemoryStream ms = new MemoryStream();
                 stream.CopyTo(ms);
+                CoverString = Utilities.ByteArrayToBase64(ms.ToArray());
             }
         }
     }

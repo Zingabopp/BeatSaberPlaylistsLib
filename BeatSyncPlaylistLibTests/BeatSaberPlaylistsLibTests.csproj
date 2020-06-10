@@ -30,6 +30,9 @@
     <None Update="ReadOnlyData\BlisterPlaylists\AnniversarySongPack.blist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ReadOnlyData\BlisterPlaylists\testCover.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ReadOnlyData\GetPlaylistTests\NoExtension">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

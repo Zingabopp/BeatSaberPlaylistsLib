@@ -59,6 +59,60 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             IPlaylist playlist = handler.Deserialize(playlistStream);
 
         }
+        [TestMethod]
+        public void WritePlaylist_Image()
+        {
+            string playlistDir = Path.Combine(OutputPath, "WritePlaylist_Image");
+            string fileName = "testPlaylist";
+            string playlistTitle = "WritePlaylist_NoImage";
+            string playlistAuthor = "BlisterTests";
+            string playlistDescription = "A test playlist";
+            string playlistExtension = "blist";
+            string coverFile = Path.Combine(ReadOnlyData, "testCover.jpg");
+            string playlistFile = Path.Combine(playlistDir, fileName + "." + playlistExtension);
+            Assert.IsTrue(File.Exists(coverFile), $"Cover not found: '{coverFile}'");
+            IPlaylistHandler handler = new BlisterPlaylistHandler();
+            if (Directory.Exists(playlistDir))
+                Directory.Delete(playlistDir, true);
+            Assert.IsFalse(Directory.Exists(playlistDir));
+            Directory.CreateDirectory(playlistDir);
+            var songs = CreateSongArray<LegacyPlaylistSong>("Blister_", "BlisterAuthor_", 1000, Identifier.LevelId | Identifier.Hash | Identifier.Key);
+            BlisterPlaylist playlist = new BlisterPlaylist(fileName, playlistTitle, playlistAuthor)
+            {
+                Description = playlistDescription,
+                SuggestedExtension = playlistExtension
+            };
+            foreach (var song in songs)
+            {
+                playlist.Add(song);
+            }
+            playlist.SetCover(File.OpenRead(coverFile));
+            playlist.Cover = Path.GetFileName(coverFile);
+            playlist.RaisePlaylistChanged();
+            Assert.AreEqual(songs.Length, playlist.Count);
+
+            Directory.CreateDirectory(playlistDir);
+            using FileStream fileStream = File.Create(playlistFile);
+            handler.Serialize(playlist, fileStream);
+
+            Assert.IsTrue(File.Exists(playlistFile));
+            Console.WriteLine(Path.GetFullPath(playlistFile));
+            using FileStream newFileStream = File.OpenRead(playlistFile);
+            BlisterPlaylist readPlaylist = handler.Deserialize(newFileStream) as BlisterPlaylist;
+            Assert.AreEqual(playlist.Count, readPlaylist.Count);
+            Assert.IsTrue(readPlaylist.HasCover);
+            var newSongList = readPlaylist.Take(10).ToArray();
+            readPlaylist.Clear();
+            Assert.AreEqual(0, readPlaylist.Count);
+            foreach (var item in newSongList)
+            {
+                readPlaylist.Add(item);
+            }
+            readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });
+            readPlaylist.RaisePlaylistChanged();
+            using FileStream finalStream = File.Open(playlistFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            handler.Serialize(readPlaylist, finalStream);
+        }
 
         [TestMethod]
         public void WritePlaylist_NoImage()

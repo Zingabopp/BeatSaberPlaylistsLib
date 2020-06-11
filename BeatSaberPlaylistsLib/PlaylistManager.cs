@@ -1,4 +1,5 @@
-﻿using BeatSaberPlaylistsLib.Legacy;
+﻿using BeatSaberPlaylistsLib.Blister;
+using BeatSaberPlaylistsLib.Legacy;
 using BeatSaberPlaylistsLib.Types;
 using System;
 using System.Collections.Concurrent;
@@ -16,7 +17,13 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// Lazy loader for <see cref="DefaultManager"/>. 
         /// </summary>
-        protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() => new PlaylistManager("Playlists"), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+        protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() =>
+        {
+            PlaylistManager playlistManager = new PlaylistManager("Playlists", new LegacyPlaylistHandler());
+            playlistManager.RegisterHandler(new BlisterPlaylistHandler());
+            return playlistManager;
+        }
+        , System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         /// <summary>
         /// Reference to the default <see cref="PlaylistManager"/> which uses the 'Playlists' directory in the current working directory.
         /// Only access this if you want to use a <see cref="PlaylistManager"/> with the directory set to 'CurrentWorkingDirectory\Playlists'.
@@ -77,6 +84,29 @@ namespace BeatSaberPlaylistsLib
             Directory.CreateDirectory(PlaylistPath);
             DefaultHandler = defaultHandler;
             RegisterHandler(defaultHandler);
+        }
+
+        /// <summary>
+        /// Returns an array of all the extensions (UPPERCASE) that have a registered <see cref="IPlaylistHandler"/> (without the leading '.')
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetSupportedExtensions()
+        {
+            if (PlaylistExtensionHandlers.Count > 0)
+                return PlaylistExtensionHandlers.Keys.ToArray();
+            else
+                return Array.Empty<string>();
+        }
+
+        /// <summary>
+        /// Returns true if a registered <see cref="IPlaylistHandler"/> supports <paramref name="extension"/>.
+        /// <paramref name="extension"/> is case-insensitive and leading '.' are ignored.
+        /// </summary>
+        /// <param name="extension"></param>
+        /// <returns></returns>
+        public bool SupportsExtension(string extension)
+        {
+            return PlaylistExtensionHandlers.ContainsKey(extension.TrimStart('.').ToUpper());
         }
 
         /// <summary>
@@ -315,6 +345,7 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(fileName), "fileName cannot be null or empty.");
             IPlaylist? playlist = null;
             string[] files = Directory.GetFiles(PlaylistPath);
+            // TODO: fileName is probably passed without an extension, playlists with a '.' in the name won't load correctly.
             string? file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase));
             string? fileExtension = null;
             if (file != null)
@@ -414,7 +445,7 @@ namespace BeatSaberPlaylistsLib
         /// Retrieves the specified playlist. If the playlist doesn't exist, returns null.
         /// </summary>
         /// <remarks>If there are multiple playlists with the same filename and no handler is specified, the first matching playlist with an extension registered to a handler will be read.</remarks>
-        /// <param name="playlistFileName"></param>
+        /// <param name="playlistFileName">Playlist filename with extension.</param>
         /// <param name="handler">Optional <see cref="IPlaylistHandler"/> to use if deserialization is necessary. If null, use the first registered handler.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="playlistFileName"/> doesn't have an extension or if a <paramref name="handler"/> is given that doesn't support the file extension.</exception>

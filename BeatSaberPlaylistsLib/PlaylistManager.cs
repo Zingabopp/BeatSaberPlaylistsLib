@@ -601,15 +601,15 @@ namespace BeatSaberPlaylistsLib
                 GetPlaylist(playlistFileName);
             }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch (PlaylistSerializationException)
-            {
-                // TODO: Logging...
-            }
+            catch (InvalidOperationException) { } // No supported handlers for existing playlist.
+            catch (ArgumentException) { } // No existing playlist.
 #pragma warning restore CA1031 // Do not catch general exception types
 
             if (playlist == null)
             {
                 playlist = playlistFactory() ?? throw new ArgumentException("playlistFactory returned a null IPlaylist.", nameof(playlistFactory));
+                _ = GetHandlerForPlaylistType(playlist.GetType()) 
+                    ?? throw new InvalidOperationException($"PlaylistManager does not have an IPlaylistHandler that supports the playlist returned by playlistFactory.");
                 playlist.Filename = playlistFileName;
                 RegisterPlaylist(playlist);
             }

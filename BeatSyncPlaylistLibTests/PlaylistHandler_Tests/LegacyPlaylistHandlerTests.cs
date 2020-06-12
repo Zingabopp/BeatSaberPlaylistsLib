@@ -32,7 +32,12 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
                 playlist.Add(song);
             playlist.RaisePlaylistChanged();
             manager.RegisterPlaylist(playlist);
+            Assert.IsTrue(manager.IsPlaylistChanged(playlist));
             manager.StoreAllPlaylists();
+            Assert.IsFalse(manager.IsPlaylistChanged(playlist));
+            playlist.Add(songs[0]);
+            playlist.RaisePlaylistChanged();
+            Assert.IsTrue(manager.IsPlaylistChanged(playlist));
             if (Directory.Exists(playlistDir))
                 Directory.Delete(playlistDir, true);
         }

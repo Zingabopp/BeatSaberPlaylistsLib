@@ -44,6 +44,50 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Opens a file for reading and returns the <see cref="FileStream"/>.
+        /// If a '.bak' of the file exists, the original is replaced by the backup and opened.
+        /// </summary>
+        /// <param name="playlistFilePath"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="IOException"></exception>
+        public static FileStream OpenFileRead(string playlistFilePath)
+        {
+            if (playlistFilePath == null) throw new ArgumentNullException(nameof(playlistFilePath));
+            string backupFile = playlistFilePath + ".bak";
+            bool originalExists = File.Exists(playlistFilePath);
+            bool backupExists = File.Exists(backupFile);
+            try
+            {
+                if (backupExists)
+                {
+                    try
+                    {
+                        if (originalExists) File.Delete(playlistFilePath);
+                        File.Move(backupFile, playlistFilePath);
+                    }
+                    catch (IOException)
+                    {
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new IOException(ex.Message, ex);
+                    }
+                }
+                return File.OpenRead(playlistFilePath);
+            }
+            catch (IOException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
         /// Converts a Base64 string to a byte array.
         /// </summary>
         /// <param name="base64Str"></param>

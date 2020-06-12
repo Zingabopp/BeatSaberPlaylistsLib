@@ -56,8 +56,12 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(path), "path cannot be null or empty.");
             try
             {
-                using FileStream stream = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                string backupPath = path + ".bak";
+                if (File.Exists(path)) File.Move(path, backupPath);
+                using FileStream stream = File.Open(path, FileMode.Create, FileAccess.ReadWrite);
                 handler.Serialize(playlist, stream);
+                if (File.Exists(backupPath))
+                    File.Delete(backupPath);
             }
             catch (Exception ex)
             {
@@ -85,7 +89,7 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentException($"File at '{path}' does not exist or is inaccessible.");
             try
             {
-                using FileStream stream = File.OpenRead(path);
+                using FileStream stream = Utilities.OpenFileRead(path);
                 return handler.Deserialize(stream);
             }
             catch (Exception ex)
@@ -120,7 +124,7 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentException($"File at '{path}' does not exist or is inaccessible.");
             try
             {
-                using FileStream stream = File.OpenRead(path);
+                using FileStream stream = Utilities.OpenFileRead(path);
                 handler.Populate(stream, target);
             }
             catch (Exception ex)

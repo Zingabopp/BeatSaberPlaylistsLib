@@ -111,7 +111,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             }
             readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });
             readPlaylist.RaisePlaylistChanged();
-            using FileStream finalStream = File.Open(playlistFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            using FileStream finalStream = File.Open(playlistFile, FileMode.Create, FileAccess.ReadWrite);
             handler.Serialize(readPlaylist, finalStream);
         }
 
@@ -165,7 +165,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             }
             readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });
             readPlaylist.RaisePlaylistChanged();
-            using FileStream finalStream = File.Open(playlistFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            using FileStream finalStream = File.Open(playlistFile, FileMode.Create, FileAccess.ReadWrite);
             handler.Serialize(readPlaylist, finalStream);
         }
 

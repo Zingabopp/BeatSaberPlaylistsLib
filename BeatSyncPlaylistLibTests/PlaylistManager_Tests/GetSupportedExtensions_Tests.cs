@@ -56,6 +56,8 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             Assert.IsNotNull(handler);
             handler = childManager.GetHandler<LegacyPlaylistHandler>();
             Assert.IsNotNull(handler);
+            string[] supportedExtensions = childManager.GetSupportedExtensions();
+            Assert.AreEqual(3, supportedExtensions.Length);
         }
     }
 }

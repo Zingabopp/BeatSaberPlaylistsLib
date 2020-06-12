@@ -4,6 +4,7 @@ using BeatSaberPlaylistsLib.Types;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 
@@ -141,15 +142,36 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Internal method to retrieve supported extensions from this and parent <see cref="PlaylistManager"/>s.
+        /// </summary>
+        /// <param name="supportedExtensions">List to add supported extensions to.</param>
+        protected void GetSupportedExtensions(List<string> supportedExtensions)
+        {
+            PlaylistManager? manager = this;
+            do
+            {
+                if (manager.PlaylistExtensionHandlers.Count > 0)
+                {
+                    foreach (var extension in manager.PlaylistExtensionHandlers.Keys.ToArray())
+                    {
+                        supportedExtensions.Add(extension);
+                    }
+                }
+                manager = manager.Parent;
+            } while (manager != null);
+        }
+
+        /// <summary>
         /// Returns an array of all the extensions (UPPERCASE) that have a registered <see cref="IPlaylistHandler"/> (without the leading '.')
         /// </summary>
         /// <returns></returns>
         public string[] GetSupportedExtensions()
         {
-            if (PlaylistExtensionHandlers.Count > 0)
+            if (Parent == null)
                 return PlaylistExtensionHandlers.Keys.ToArray();
-            else
-                return Array.Empty<string>();
+            List<string> supportedExtensions = new List<string>();
+            GetSupportedExtensions(supportedExtensions);
+            return supportedExtensions.ToArray();
         }
 
         /// <summary>
@@ -160,7 +182,14 @@ namespace BeatSaberPlaylistsLib
         /// <returns></returns>
         public bool SupportsExtension(string extension)
         {
-            return PlaylistExtensionHandlers.ContainsKey(extension.TrimStart('.').ToUpper());
+            PlaylistManager? manager = this;
+            do
+            {
+                if (manager.PlaylistExtensionHandlers.ContainsKey(extension.TrimStart('.').ToUpper()))
+                    return true;
+                manager = manager.Parent;
+            } while (manager != null);
+            return false;
         }
 
         /// <summary>
@@ -343,7 +372,7 @@ namespace BeatSaberPlaylistsLib
             {
                 if (playlist == null)
                     continue;
-                StorePlaylist(playlist, false);
+                StorePlaylist(playlist, true);
             }
         }
 
@@ -373,15 +402,7 @@ namespace BeatSaberPlaylistsLib
                 playlistHandler = GetHandlerForPlaylistType(playlist.GetType());
             if (playlistHandler == null)
                 throw new ArgumentException(nameof(playlist), $"No registered handlers support playlist type {playlist.GetType().Name}");
-            string extension = playlistHandler.DefaultExtension;
-            if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))
-                extension = playlist.SuggestedExtension;
-            string fileName = playlist.Filename;
-            if (string.IsNullOrEmpty(fileName))
-                throw new ArgumentException(nameof(playlist), "Playlist's filename is null or empty.");
-            playlistHandler.SerializeToFile(playlist, Path.Combine(PlaylistPath, fileName + "." + extension));
-            if (removeFromChanged)
-                RemoveFromChanged(playlist);
+            StorePlaylist(playlist, playlistHandler, removeFromChanged);
         }
 
         /// <summary>
@@ -403,8 +424,8 @@ namespace BeatSaberPlaylistsLib
             }
             if (playlist == null)
                 throw new ArgumentNullException(nameof(playlist));
-            if (playlistHandler.HandledType.IsAssignableFrom(playlist.GetType()))
-                throw new ArgumentException(nameof(playlist), $"Playlist handler does not support playlist type {playlist.GetType().Name}");
+            if (!playlist.GetType().IsAssignableFrom(playlistHandler.HandledType))
+                throw new ArgumentException($"{playlistHandler.GetType().Name} does not support playlist type {playlist.GetType().Name}", nameof(playlist));
             string extension = playlistHandler.DefaultExtension;
             if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))
                 extension = playlist.SuggestedExtension;
@@ -479,6 +500,7 @@ namespace BeatSaberPlaylistsLib
             {
                 if (LoadedPlaylists.TryAdd(playlist.Filename.ToUpper(), playlist))
                 {
+                    playlist.PlaylistChanged -= OnPlaylistChanged;
                     playlist.PlaylistChanged += OnPlaylistChanged;
                     if (asChanged)
                         MarkPlaylistChanged(playlist);

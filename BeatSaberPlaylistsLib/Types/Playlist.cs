@@ -22,7 +22,6 @@ namespace BeatSaberPlaylistsLib.Types
         public IPlaylistSong this[int index]
         {
             get => Songs[index];
-
             set
             {
                 Songs[index] = CreateFrom(value);

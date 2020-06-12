@@ -578,7 +578,7 @@ namespace BeatSaberPlaylistsLib
             {
                 playlist = LoadPlaylistFromFile(playlistFileName, handler);
             }
-            return playlist ?? throw new ArgumentException($"Playlist doesn't exist: {playlistFileName}", nameof(playlistFileName));
+            return playlist;
         }
 
         /// <summary>
@@ -598,7 +598,7 @@ namespace BeatSaberPlaylistsLib
             IPlaylist? playlist = null;
             try
             {
-                GetPlaylist(playlistFileName);
+                playlist = GetPlaylist(playlistFileName);
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (InvalidOperationException) { } // No supported handlers for existing playlist.

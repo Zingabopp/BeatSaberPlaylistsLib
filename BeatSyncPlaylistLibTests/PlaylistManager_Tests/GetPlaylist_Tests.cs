@@ -59,7 +59,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             File.Copy(Path.Combine(ReadOnlyData, "NoExtension"), Path.Combine(playlistDir, "NoExtension"));
             string playlistFileName = "NoExtension";
 
-            Assert.ThrowsException<ArgumentException>(() => manager.GetPlaylist(playlistFileName));
+            Assert.IsNull(manager.GetPlaylist(playlistFileName));
 
             TestTools.Cleanup(playlistDir);
         }
@@ -120,7 +120,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             // Check case-insensitive extensions
             File.Copy(Path.Combine(ReadOnlyData, "5LegacySongs.bPlist"), Path.Combine(playlistDir, "5LegacySongs.bPlist"));
 
-            Assert.ThrowsException<InvalidOperationException>(() => manager.GetPlaylist(playlistFileName));
+            Assert.IsNull(manager.GetPlaylist(playlistFileName));
 
             TestTools.Cleanup(playlistDir);
         }

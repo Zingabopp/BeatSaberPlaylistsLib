@@ -15,12 +15,27 @@ namespace BeatSaberPlaylistsLib
     public class PlaylistManager
     {
         /// <summary>
+        /// The parent <see cref="PlaylistManager"/>, if any. 
+        /// </summary>
+        public PlaylistManager? Parent { get; protected set; }
+        /// <summary>
+        /// Returns the available child <see cref="PlaylistManager"/>s.
+        /// </summary>
+        public IEnumerable<PlaylistManager> GetChildManagers => ChildManagers.AsEnumerable();
+        /// <summary>
+        /// Internal list of ChildManagers.
+        /// </summary>
+        protected List<PlaylistManager> ChildManagers;
+        /// <summary>
+        /// Returns true if this <see cref="PlaylistManager"/> has children.
+        /// </summary>
+        public bool HasChildren => ChildManagers.Count > 0;
+        /// <summary>
         /// Lazy loader for <see cref="DefaultManager"/>. 
         /// </summary>
         protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() =>
         {
-            PlaylistManager playlistManager = new PlaylistManager("Playlists", new LegacyPlaylistHandler());
-            playlistManager.RegisterHandler(new BlisterPlaylistHandler());
+            PlaylistManager playlistManager = new PlaylistManager("Playlists", new LegacyPlaylistHandler(), new BlisterPlaylistHandler());
             return playlistManager;
         }
         , System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
@@ -53,10 +68,27 @@ namespace BeatSaberPlaylistsLib
         /// Path to the directory the <see cref="PlaylistManager"/> loads and stores playlists.
         /// </summary>
         public string PlaylistPath { get; protected set; }
+
+        private IPlaylistHandler? _defaultHandler;
         /// <summary>
         /// The default <see cref="IPlaylistHandler"/> for this <see cref="PlaylistManager"/>.
+        /// If no default handler is set, it looks to the parent's default handler.
+        /// If none of the parents have a default handler, use the first in the list of registered handlers.
         /// </summary>
-        public IPlaylistHandler DefaultHandler { get; }
+        public IPlaylistHandler? DefaultHandler 
+        {
+            get
+            {
+                if(_defaultHandler == null)
+                {
+                    _defaultHandler = Parent?.DefaultHandler;
+                }
+                if (_defaultHandler == null)
+                    _defaultHandler = PlaylistHandlers.Values.FirstOrDefault();
+                return _defaultHandler;
+            }
+            protected set => _defaultHandler = value;
+        }
 
         /// <summary>
         /// Creates a new <see cref="PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>.
@@ -65,9 +97,28 @@ namespace BeatSaberPlaylistsLib
         /// <param name="playlistDirectory"></param>
         /// <exception cref="IOException">Thrown if directory creation fails.</exception>
         public PlaylistManager(string playlistDirectory)
-            : this(playlistDirectory, new LegacyPlaylistHandler())
-        { }
-
+        {
+            if (string.IsNullOrEmpty(playlistDirectory))
+                throw new ArgumentNullException(nameof(playlistDirectory), $"PlaylistManager cannot have a null {nameof(playlistDirectory)}");
+            PlaylistPath = Path.GetFullPath(playlistDirectory);
+            Directory.CreateDirectory(PlaylistPath);
+            string[] subDirectories = Directory.GetDirectories(PlaylistPath);
+            ChildManagers = new List<PlaylistManager>(subDirectories.Length);
+            for (int i = 0; i < subDirectories.Length; i++)
+            {
+                ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
+            }
+        }
+        /// <summary>
+        /// Internal constructor for a <see cref="PlaylistManager"/> with a parent.
+        /// </summary>
+        /// <param name="playlistDirectory"></param>
+        /// <param name="parent"></param>
+        protected PlaylistManager(string playlistDirectory, PlaylistManager parent)
+            : this(playlistDirectory)
+        {
+            Parent = parent;
+        }
         /// <summary>
         /// Creates a new <see cref="PlaylistManager"/> to manage playlists in <paramref name="playlistDirectory"/>
         /// and sets the default <see cref="IPlaylistHandler"/> to <paramref name="defaultHandler"/>.
@@ -75,15 +126,18 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="playlistDirectory"></param>
         /// <param name="defaultHandler"></param>
+        /// <param name="otherHandlers"></param>
         /// <exception cref="IOException">Thrown if directory creation fails.</exception>
-        public PlaylistManager(string playlistDirectory, IPlaylistHandler defaultHandler)
+        public PlaylistManager(string playlistDirectory, IPlaylistHandler defaultHandler, params IPlaylistHandler[] otherHandlers)
+            : this(playlistDirectory)
         {
-            if (string.IsNullOrEmpty(playlistDirectory))
-                throw new ArgumentNullException(nameof(playlistDirectory), $"PlaylistManager cannot have a null {nameof(playlistDirectory)}");
-            PlaylistPath = Path.GetFullPath(playlistDirectory);
-            Directory.CreateDirectory(PlaylistPath);
             DefaultHandler = defaultHandler;
             RegisterHandler(defaultHandler);
+            if (otherHandlers != null)
+            {
+                for (int i = 0; i < otherHandlers.Length; i++)
+                    RegisterHandler(otherHandlers[i]);
+            }
         }
 
         /// <summary>
@@ -119,9 +173,12 @@ namespace BeatSaberPlaylistsLib
         public bool RegisterHandler(IPlaylistHandler playlistHandler)
         {
             bool successful = false;
-            if (!PlaylistHandlers.ContainsKey(playlistHandler.HandledType))
+            Type handlerType = playlistHandler.HandledType;
+            if (!PlaylistHandlers.ContainsKey(handlerType))
             {
-                PlaylistHandlers.Add(playlistHandler.HandledType, playlistHandler);
+                PlaylistHandlers.Add(handlerType, playlistHandler);
+                if (DefaultHandler == null)
+                    DefaultHandler = playlistHandler;
                 foreach (string ext in playlistHandler.GetSupportedExtensions().Select(e => e.ToUpper()))
                 {
                     if (!PlaylistExtensionHandlers.ContainsKey(ext))
@@ -165,8 +222,14 @@ namespace BeatSaberPlaylistsLib
         /// <returns></returns>
         public T? GetHandler<T>() where T : class, IPlaylistHandler, new()
         {
-            PlaylistHandlers.TryGetValue(typeof(T), out IPlaylistHandler? handler);
-            return handler as T;
+            IPlaylistHandler? playlistHandler;
+            PlaylistManager? manager = this;
+            do
+            {
+                playlistHandler = manager.PlaylistHandlers.Values.FirstOrDefault(h => typeof(T).IsAssignableFrom(h.GetType()));
+                manager = manager.Parent;
+            } while (playlistHandler == null && manager != null);
+            return playlistHandler as T;
         }
 
         /// <summary>
@@ -177,9 +240,16 @@ namespace BeatSaberPlaylistsLib
         /// <returns></returns>
         public IPlaylistHandler? GetHandlerForExtension(string extension)
         {
-            extension = extension.TrimStart('.').ToUpper();
-            PlaylistExtensionHandlers.TryGetValue(extension, out IPlaylistHandler? handler);
-            return handler;
+            IPlaylistHandler? playlistHandler;
+            PlaylistManager? manager = this;
+            do
+            {
+                extension = extension.TrimStart('.').ToUpper();
+                manager.PlaylistExtensionHandlers.TryGetValue(extension, out playlistHandler);
+                manager = manager.Parent;
+            } while (playlistHandler == null && manager != null);
+            
+            return playlistHandler;
         }
 
         /// <summary>
@@ -345,9 +415,10 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(fileName), "fileName cannot be null or empty.");
             IPlaylist? playlist = null;
             string[] files = Directory.GetFiles(PlaylistPath);
-            // TODO: fileName is probably passed without an extension, playlists with a '.' in the name won't load correctly.
+            string? fileExtension = Path.GetExtension(fileName);
+            if (fileExtension != null && SupportsExtension(fileExtension))
+                fileName = Path.GetFileNameWithoutExtension(fileName);
             string? file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase));
-            string? fileExtension = null;
             if (file != null)
             {
                 fileExtension = Path.GetExtension(file).TrimStart('.');
@@ -355,7 +426,8 @@ namespace BeatSaberPlaylistsLib
                     throw new ArgumentException($"No valid file extension for provided filename '{fileName}'");
                 if (playlistHandler == null)
                 {
-                    PlaylistExtensionHandlers.TryGetValue(fileExtension.ToUpper(), out playlistHandler);
+                    PlaylistManager? manager = this;
+                    playlistHandler = manager.GetHandlerForExtension(fileExtension);
                     if (playlistHandler == null)
                         throw new InvalidOperationException($"playlist extension '{fileExtension}' not supported by any registered handlers.");
                 }
@@ -455,7 +527,7 @@ namespace BeatSaberPlaylistsLib
         {
             if (string.IsNullOrEmpty(playlistFileName))
                 return null;
-
+            playlistFileName = playlistFileName.Replace(Path.GetFullPath(PlaylistPath), "").TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             // Check if this playlist exists in LoadedPlaylists
             TryGetPlaylist(playlistFileName, out IPlaylist? playlist);
 
@@ -464,7 +536,7 @@ namespace BeatSaberPlaylistsLib
             {
                 playlist = LoadPlaylistFromFile(playlistFileName, handler);
             }
-            return playlist;
+            return playlist ?? throw new ArgumentException($"Playlist doesn't exist: {playlistFileName}", nameof(playlistFileName));
         }
 
         /// <summary>

@@ -65,6 +65,19 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
         }
 
         [TestMethod]
+        public void DeserializationError()
+        {
+            string playlistDir = Path.Combine(OutputPath, "NoExtension");
+            IPlaylistHandler handler = new LegacyPlaylistHandler();
+            PlaylistManager manager = TestTools.GetPlaylistManager(playlistDir, handler);
+            File.Copy(Path.Combine(ReadOnlyData, "InvalidJson.bPlist"), Path.Combine(playlistDir, "InvalidJson.bPlist"));
+            string playlistFileName = "InvalidJson";
+            Assert.ThrowsException<PlaylistSerializationException>(() => manager.GetPlaylist(playlistFileName));
+
+            TestTools.Cleanup(playlistDir);
+        }
+
+        [TestMethod]
         public void ExtensionHasCapital()
         {
             string playlistDir = Path.Combine(OutputPath, "ExtensionHasCapital");

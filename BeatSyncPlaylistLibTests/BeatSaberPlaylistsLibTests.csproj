@@ -33,6 +33,9 @@
     <None Update="ReadOnlyData\BlisterPlaylists\testCover.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ReadOnlyData\GetPlaylistTests\InvalidJson.bPlist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ReadOnlyData\GetPlaylistTests\NoExtension">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -455,16 +455,17 @@ namespace BeatSaberPlaylistsLib
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(nameof(fileName), "fileName cannot be null or empty.");
             IPlaylist? playlist = null;
-            string[] files = Directory.GetFiles(PlaylistPath);
+            string[]? files = Directory.GetFiles(PlaylistPath) ?? Array.Empty<string>();
             string? fileExtension = Path.GetExtension(fileName);
             if (fileExtension != null && SupportsExtension(fileExtension))
                 fileName = Path.GetFileNameWithoutExtension(fileName);
-            string? file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase));
+            string file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase)
+                                                    && SupportsExtension(Path.GetExtension(f)));
             if (file != null)
             {
                 fileExtension = Path.GetExtension(file).TrimStart('.');
                 if (string.IsNullOrEmpty(fileExtension))
-                    throw new ArgumentException($"No valid file extension for provided filename '{fileName}'");
+                    throw new ArgumentException($"No valid file extension for provided filename '{file}'");
                 if (playlistHandler == null)
                 {
                     PlaylistManager? manager = this;

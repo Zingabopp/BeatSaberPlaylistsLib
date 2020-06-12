@@ -61,17 +61,16 @@ namespace BeatSaberPlaylistsLib.Legacy
                 throw new PlaylistSerializationException(ex.Message, ex);
             }
         }
+
         ///<inheritdoc/>
-#pragma warning disable CA1822 // Mark members as static
-        public LegacyPlaylist Deserialize(Stream stream)
-#pragma warning restore CA1822 // Mark members as static
+        public LegacyPlaylist Deserialize<T>(Stream stream) where T : LegacyPlaylist
         {
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream), $"{nameof(stream)} cannot be null.");
             try
             {
                 using StreamReader sr = new StreamReader(stream);
-                if (!(jsonSerializer.Deserialize(sr, typeof(LegacyPlaylist)) is LegacyPlaylist playlist))
+                if (!(jsonSerializer.Deserialize(sr, typeof(T)) is LegacyPlaylist playlist))
                     throw new PlaylistSerializationException("Deserialized playlist was null.");
                 return playlist;
             }
@@ -79,6 +78,12 @@ namespace BeatSaberPlaylistsLib.Legacy
             {
                 throw new PlaylistSerializationException(ex.Message, ex);
             }
+        }
+
+        ///<inheritdoc/>
+        public virtual LegacyPlaylist Deserialize(Stream stream)
+        {
+            return Deserialize<LegacyPlaylist>(stream);
         }
 
         ///<inheritdoc/>

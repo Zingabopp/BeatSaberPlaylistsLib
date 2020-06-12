@@ -65,6 +65,16 @@ namespace BeatSaberPlaylistsLib.Types
         : IPlaylistHandler where T : IPlaylist
     {
         /// <summary>
+        /// Attempts to deserialize and return an <see cref="IPlaylist"/> from a stream.
+        /// </summary>
+        /// <param name="stream">The <see cref="Stream"/> to deserialize</param>
+        /// <typeparam name="TPlaylist">The <see cref="IPlaylist"/> Type to return, must derive from <typeparamref name="T"/>.</typeparam>
+        /// <returns>An <see cref="IPlaylist"/> of type <typeparamref name="TPlaylist"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="stream"/> is null.</exception>
+        /// <exception cref="PlaylistSerializationException">Thrown if an error occurs while deserializing.</exception>
+        T Deserialize<TPlaylist>(Stream stream) where TPlaylist : T;
+
+        /// <summary>
         /// Serializes an <see cref="IPlaylist{T}"/> to a stream.
         /// </summary>
         /// <param name="playlist">The <see cref="IPlaylist{T}"/> to serialize</param>

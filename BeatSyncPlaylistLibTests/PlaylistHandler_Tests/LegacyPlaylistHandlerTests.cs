@@ -1,6 +1,7 @@
 ﻿using BeatSaberPlaylistsLib;
 using BeatSaberPlaylistsLib.Legacy;
 using BeatSaberPlaylistsLib.Types;
+using BeatSaberPlaylistsLibTests.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,29 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             playlist.RaisePlaylistChanged();
             manager.RegisterPlaylist(playlist);
             manager.StoreAllPlaylists();
+            if (Directory.Exists(playlistDir))
+                Directory.Delete(playlistDir, true);
+        }
+
+        [TestMethod]
+        public void DeserializeDerivedPlaylist()
+        {
+            string playlistDir = Path.Combine(OutputPath, "DeserializeDerivedPlaylist");
+            IPlaylistHandler handler = new LegacyPlaylistHandler();
+            if (Directory.Exists(playlistDir))
+                Directory.Delete(playlistDir, true);
+            Assert.IsFalse(Directory.Exists(playlistDir));
+
+            PlaylistManager manager = new PlaylistManager(playlistDir, handler);
+            var songs = CreateSongArray<LegacyPlaylistSong>("Legacy_", "LegacyAuthor_", 1000, Identifier.LevelId | Identifier.Hash | Identifier.Key);
+            IPlaylist? playlist = manager.CreatePlaylist("5LegacySongs", "Five Legacy Songs", "TestAuthor", string.Empty, "Test Description");
+            foreach (var song in songs)
+                playlist.Add(song);
+            playlist.RaisePlaylistChanged();
+            manager.RegisterPlaylist(playlist);
+            manager.StoreAllPlaylists();
+            manager = new PlaylistManager(playlistDir, handler);
+            playlist = manager.GetHandler<LegacyPlaylistHandler>()?.Deserialize<DerivedLegacyPlaylist>(File.OpenRead(Path.Combine(playlistDir, "5LegacySongs.bplist")));
             if (Directory.Exists(playlistDir))
                 Directory.Delete(playlistDir, true);
         }

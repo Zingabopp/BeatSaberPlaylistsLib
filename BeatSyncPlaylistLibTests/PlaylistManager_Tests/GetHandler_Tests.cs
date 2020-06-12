@@ -27,7 +27,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
 
             Assert.IsTrue(manager.RegisterHandler(expectedHandler));
             Assert.IsTrue(Directory.Exists(playlistDir));
-            Assert.AreEqual(typeof(MockPlaylistHandler), manager.DefaultHandler.GetType());
+            Assert.AreEqual(typeof(MockPlaylistHandler), manager.DefaultHandler?.GetType());
             Assert.AreEqual(expectedHandler, manager.GetHandlerForExtension("bplist"));
             Assert.AreEqual(expectedHandler, manager.GetHandlerForExtension("JsOn"));
 

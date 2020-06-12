@@ -75,11 +75,11 @@ namespace BeatSaberPlaylistsLib
         /// If no default handler is set, it looks to the parent's default handler.
         /// If none of the parents have a default handler, use the first in the list of registered handlers.
         /// </summary>
-        public IPlaylistHandler? DefaultHandler 
+        public IPlaylistHandler? DefaultHandler
         {
             get
             {
-                if(_defaultHandler == null)
+                if (_defaultHandler == null)
                 {
                     _defaultHandler = Parent?.DefaultHandler;
                 }
@@ -233,6 +233,24 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Attempts to get an <see cref="IPlaylistHandler"/> for the provided <paramref name="playlistType"/>.
+        /// Also searches parent <see cref="PlaylistManager"/>s, if available.
+        /// </summary>
+        /// <param name="playlistType"></param>
+        /// <returns></returns>
+        public IPlaylistHandler? GetHandlerForPlaylistType(Type playlistType)
+        {
+            IPlaylistHandler? playlistHandler;
+            PlaylistManager? manager = this;
+            do
+            {
+                manager.PlaylistHandlers.TryGetValue(playlistType, out playlistHandler);
+                manager = manager.Parent;
+            } while (playlistHandler == null && manager != null);
+            return playlistHandler;
+        }
+
+        /// <summary>
         /// Gets an <see cref="IPlaylistHandler"/> registered for the given <paramref name="extension"/>.
         /// Returns null if no registered handler supports the <paramref name="extension"/>.
         /// </summary>
@@ -248,7 +266,7 @@ namespace BeatSaberPlaylistsLib
                 manager.PlaylistExtensionHandlers.TryGetValue(extension, out playlistHandler);
                 manager = manager.Parent;
             } while (playlistHandler == null && manager != null);
-            
+
             return playlistHandler;
         }
 
@@ -351,7 +369,9 @@ namespace BeatSaberPlaylistsLib
             if (playlist == null)
                 throw new ArgumentNullException(nameof(playlist), "playlist cannot be null.");
             IPlaylistHandler? playlistHandler = playlist.SuggestedExtension != null ? GetHandlerForExtension(playlist.SuggestedExtension) : null;
-            if (playlistHandler == null && !PlaylistHandlers.TryGetValue(playlist.GetType(), out playlistHandler))
+            if (playlistHandler == null)
+                playlistHandler = GetHandlerForPlaylistType(playlist.GetType());
+            if (playlistHandler == null)
                 throw new ArgumentException(nameof(playlist), $"No registered handlers support playlist type {playlist.GetType().Name}");
             string extension = playlistHandler.DefaultExtension;
             if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))

@@ -1,6 +1,7 @@
 ﻿using BeatSaberPlaylistsLib.Types;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -18,6 +19,24 @@ namespace BeatSaberPlaylistsLib
         {
             return new Lazy<string>(() => Utilities.ImageToBase64(resourcePath));
         }
+
+        /// <summary>
+        /// Clones an <see cref="ISong"/> to type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        public static T ToSong<T>(this ISong song) where T : ISong, new()
+        {
+            return new T()
+            {
+                Hash = song.Hash,
+                Key = song.Key,
+                LevelId = song.LevelId,
+                LevelAuthorName = song.LevelAuthorName
+            };
+        }
+
         /// <summary>
         /// Serializes an <see cref="IPlaylist"/> to a file. 
         /// </summary>

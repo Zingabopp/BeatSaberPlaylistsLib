@@ -136,10 +136,9 @@ namespace BeatSaberPlaylistsLib.Blister
             Serialize(blisterPlaylist, stream);
         }
 
+
         ///<inheritdoc/>
-#pragma warning disable CA1822 // Mark members as static
-        public BlisterPlaylist Deserialize(Stream stream)
-#pragma warning restore CA1822 // Mark members as static
+        public BlisterPlaylist Deserialize<T>(Stream stream) where T : BlisterPlaylist
         {
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream), $"{nameof(stream)} cannot be null.");
@@ -149,7 +148,7 @@ namespace BeatSaberPlaylistsLib.Blister
                 ZipArchiveEntry entry = zipArchive.GetEntry("playlist.json")
                     ?? throw new PlaylistSerializationException("Container is missing 'playlist.json'");
                 using StreamReader sr = new StreamReader(entry.Open());
-                if (!(jsonSerializer.Deserialize(sr, typeof(BlisterPlaylist)) is BlisterPlaylist playlist))
+                if (!(jsonSerializer.Deserialize(sr, typeof(T)) is BlisterPlaylist playlist))
                     throw new PlaylistSerializationException("Deserialized playlist was null.");
                 string? coverPath = playlist.Cover;
                 if (coverPath != null && coverPath.Length > 0)
@@ -169,6 +168,12 @@ namespace BeatSaberPlaylistsLib.Blister
             {
                 throw new PlaylistSerializationException(ex.Message, ex);
             }
+        }
+
+        ///<inheritdoc/>
+        public virtual BlisterPlaylist Deserialize(Stream stream)
+        {
+            return Deserialize<BlisterPlaylist>(stream);
         }
 
         ///<inheritdoc/>

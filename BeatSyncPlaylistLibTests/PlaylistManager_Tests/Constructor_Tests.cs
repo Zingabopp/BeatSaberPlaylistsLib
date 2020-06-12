@@ -44,7 +44,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             PlaylistManager manager = new PlaylistManager(playlistDir, new MockPlaylistHandler());
 
             Assert.IsTrue(Directory.Exists(playlistDir));
-            Assert.AreEqual(typeof(MockPlaylistHandler), manager.DefaultHandler.GetType());
+            Assert.AreEqual(typeof(MockPlaylistHandler), manager.DefaultHandler?.GetType());
             Assert.IsNotNull(manager.GetHandlerForExtension("mOck"));
 
             if (Directory.Exists(playlistDir))

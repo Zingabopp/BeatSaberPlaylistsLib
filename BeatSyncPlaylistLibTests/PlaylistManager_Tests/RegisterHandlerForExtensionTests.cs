@@ -25,7 +25,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
 
             manager.RegisterHandlerForExtension("json", expectedHandler);
             
-            Assert.AreEqual(typeof(MockPlaylistHandler), manager.DefaultHandler.GetType());
+            Assert.AreEqual(typeof(MockPlaylistHandler), manager.DefaultHandler?.GetType());
             Assert.AreEqual(expectedHandler, manager.GetHandlerForExtension("json"));
             Assert.IsNull(manager.GetHandlerForExtension("bplist"));
 

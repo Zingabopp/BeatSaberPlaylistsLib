@@ -51,6 +51,11 @@ namespace BeatSaberPlaylistsLibTests.Mock
             EventCalled?.Invoke(this, MockHandlerMethod.SerializeIPlaylist);
         }
 
+        public MockPlaylist Deserialize<TPlaylist>(Stream stream) where TPlaylist : MockPlaylist
+        {
+            throw new NotImplementedException();
+        }
+
         public event EventHandler<MockHandlerMethod>? EventCalled;
     }
     public enum MockHandlerMethod

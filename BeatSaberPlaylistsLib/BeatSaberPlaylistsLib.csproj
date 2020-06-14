@@ -5,7 +5,8 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>Enable</Nullable>
     <Configurations>Debug;Release;Debug-BeatSaber;Release-BeatSaber</Configurations>
-    <BeatSaberReferences>..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber</BeatSaberReferences>
+    <BeatSaberDir>..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber</BeatSaberDir>
+    <BeatSaberReferences>$(BeatSaberDir)</BeatSaberReferences>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-BeatSaber|AnyCPU'">
     <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>

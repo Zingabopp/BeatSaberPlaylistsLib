@@ -47,7 +47,8 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsTrue(File.Exists(sourcePlaylist), $"File doesn't exist: '{sourcePlaylist}'");
             using Stream playlistStream = File.OpenRead(sourcePlaylist);
             IPlaylist playlist = handler.Deserialize(playlistStream);
-
+            Assert.AreEqual(7, playlist.Count);
+            Assert.IsTrue(playlist.All(s => s.Hash != null && s.Hash.Length == 40));
         }
         [TestMethod]
         public void ReadPlaylist_NoImage()

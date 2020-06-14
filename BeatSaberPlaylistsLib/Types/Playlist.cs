@@ -228,8 +228,10 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         IEnumerator<IPlaylistSong> IEnumerable<IPlaylistSong>.GetEnumerator()
         {
-            IList<IPlaylistSong>? cast = (IList<IPlaylistSong>)Songs;
-            return cast.GetEnumerator();
+            foreach (var song in Songs)
+            {
+                yield return song;
+            }
         }
 
         /// <inheritdoc/>

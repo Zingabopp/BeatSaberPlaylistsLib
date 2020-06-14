@@ -14,7 +14,8 @@ namespace BeatSaberPlaylistsLib.Types
     {
 #if BeatSaber
         private BeatSaber.IPreviewBeatmapLevel? _previewBeatmapLevel;
-        public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel 
+        ///<inheritdoc/>
+        public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel
         {
             get
             {
@@ -36,56 +37,59 @@ namespace BeatSaberPlaylistsLib.Types
             internal set => _previewBeatmapLevel = value;
         }
 
-        public string? levelID
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        string? BeatSaber.IPreviewBeatmapLevel.levelID
             => PreviewBeatmapLevel?.levelID ?? this.LevelId;
 
-        public string songName
+        string? BeatSaber.IPreviewBeatmapLevel.songName
             => PreviewBeatmapLevel?.songName;
 
-        public string songSubName
+        string? BeatSaber.IPreviewBeatmapLevel.songSubName
             => PreviewBeatmapLevel?.songSubName;
 
-        public string songAuthorName
+        string? BeatSaber.IPreviewBeatmapLevel.songAuthorName
             => PreviewBeatmapLevel?.songAuthorName;
 
-        public string levelAuthorName
+        string? BeatSaber.IPreviewBeatmapLevel.levelAuthorName
             => PreviewBeatmapLevel?.levelAuthorName;
 
-        public float beatsPerMinute
+        float BeatSaber.IPreviewBeatmapLevel.beatsPerMinute
             => PreviewBeatmapLevel?.beatsPerMinute ?? 0;
 
-        public float songTimeOffset
+        float BeatSaber.IPreviewBeatmapLevel.songTimeOffset
             => PreviewBeatmapLevel?.songTimeOffset ?? 0;
 
-        public float shuffle
+        float BeatSaber.IPreviewBeatmapLevel.shuffle
             => PreviewBeatmapLevel?.shuffle ?? 0;
 
-        public float shufflePeriod
+        float BeatSaber.IPreviewBeatmapLevel.shufflePeriod
             => PreviewBeatmapLevel?.shufflePeriod ?? 0;
 
-        public float previewStartTime
+        float BeatSaber.IPreviewBeatmapLevel.previewStartTime
             => PreviewBeatmapLevel?.previewStartTime ?? 0;
 
-        public float previewDuration
+        float BeatSaber.IPreviewBeatmapLevel.previewDuration
             => PreviewBeatmapLevel?.previewDuration ?? 0;
 
-        public float songDuration
+        float BeatSaber.IPreviewBeatmapLevel.songDuration
             => PreviewBeatmapLevel?.songDuration ?? 0;
 
-        public BeatSaber.EnvironmentInfoSO? environmentInfo => throw new NotImplementedException();
+        BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.environmentInfo => throw new NotImplementedException();
 
-        public BeatSaber.EnvironmentInfoSO? allDirectionsEnvironmentInfo
+        BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.allDirectionsEnvironmentInfo
             => PreviewBeatmapLevel?.allDirectionsEnvironmentInfo;
 
-        public BeatSaber.PreviewDifficultyBeatmapSet[]? previewDifficultyBeatmapSets 
+        BeatSaber.PreviewDifficultyBeatmapSet[]? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets 
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
 
 
-        public Task<BeatSaber.UnityEngine.AudioClip>? GetPreviewAudioClipAsync(CancellationToken cancellationToken)
+        Task<BeatSaber.UnityEngine.AudioClip>? BeatSaber.IPreviewBeatmapLevel.GetPreviewAudioClipAsync(CancellationToken cancellationToken)
          => PreviewBeatmapLevel?.GetPreviewAudioClipAsync(cancellationToken);
 
-        public Task<BeatSaber.UnityEngine.Texture2D>? GetCoverImageTexture2DAsync(CancellationToken cancellationToken) 
+        Task<BeatSaber.UnityEngine.Texture2D>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageTexture2DAsync(CancellationToken cancellationToken) 
             => PreviewBeatmapLevel?.GetCoverImageTexture2DAsync(cancellationToken);
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 #endif
         /// <summary>
         /// LevelId prefix for custom songs in Beat Saber.

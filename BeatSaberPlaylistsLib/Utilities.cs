@@ -193,6 +193,11 @@ namespace BeatSaberPlaylistsLib
         #endregion
 
 #if BeatSaber
+        /// <summary>
+        /// Creates a <see cref="Sprite"/> from an image <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="imageStream"></param>
+        /// <returns></returns>
         public static Sprite GetSpriteFromStream(Stream imageStream)
         {
             throw new NotImplementedException();

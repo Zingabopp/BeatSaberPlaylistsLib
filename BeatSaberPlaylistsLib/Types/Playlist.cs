@@ -15,11 +15,20 @@ namespace BeatSaberPlaylistsLib.Types
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class Playlist<T> : IPlaylist<T>
-        where T : IPlaylistSong, new()
+#if BeatSaber
+        , BeatSaber.IPlaylist, BeatSaber.IBeatmapLevelCollection
+#endif
+        where T : class, IPlaylistSong, new()
     {
 #if BeatSaber
-        public string collectionName => Title;
-        public Sprite coverImage
+        /// <summary>
+        /// Name of the collection, uses <see cref="Title"/>.
+        /// </summary>
+        string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
+        /// <summary>
+        /// Cover image sprite.
+        /// </summary>
+        Sprite BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage
         {
             get
             {
@@ -30,7 +39,14 @@ namespace BeatSaberPlaylistsLib.Types
                 return Utilities.GetSpriteFromStream(GetCoverStream());
             }
         }
-        public BeatSaber.IBeatmapLevelCollection beatmapLevelCollection => throw new NotImplementedException();
+        /// <summary>
+        /// Returns itself.
+        /// </summary>
+        BeatSaber.IBeatmapLevelCollection BeatSaber.IAnnotatedBeatmapLevelCollection.beatmapLevelCollection => this;
+        /// <summary>
+        /// Returns a new array of the songs in this playlist.
+        /// </summary>
+        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels => Songs.ToArray();
 #endif
 
         /// <summary>

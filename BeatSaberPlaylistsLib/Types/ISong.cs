@@ -14,6 +14,10 @@ namespace BeatSaberPlaylistsLib.Types
 #endif
     {
 #if BeatSaber
+        /// <summary>
+        /// The <see cref="BeatSaber.IPreviewBeatmapLevel"/> this playlist song is matched to, if any.
+        /// Depends on SongCore being finished loading songs.
+        /// </summary>
         public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel { get; }
 #endif
         /// <summary>

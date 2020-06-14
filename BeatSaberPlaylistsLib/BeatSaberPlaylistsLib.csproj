@@ -42,6 +42,10 @@
       <HintPath>$(BeatSaberReferences)\Beat Saber_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
       <Aliases>BeatSaber</Aliases>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(BeatSaberReferences)\Beat Saber_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Aliases>BeatSaber</Aliases>
+    </Reference>
   </ItemGroup>
   <Target Name="Test" AfterTargets="Build">
     <Message Text="Configuration: '$(Configuration)'" Importance="high" />

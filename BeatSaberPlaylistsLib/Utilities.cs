@@ -193,14 +193,48 @@ namespace BeatSaberPlaylistsLib
         #endregion
 
 #if BeatSaber
+        private static Lazy<Sprite?> _defaultSpriteLoader = new Lazy<Sprite?>(() => null);
+        /// <summary>
+        /// Default playlist cover, loaded on first access.
+        /// </summary>
+        public static Sprite? DefaultSprite
+        {
+            get => _defaultSpriteLoader.Value;
+        }
         /// <summary>
         /// Creates a <see cref="Sprite"/> from an image <see cref="Stream"/>.
         /// </summary>
         /// <param name="imageStream"></param>
+        /// <param name="pixelsPerUnit"></param>
         /// <returns></returns>
-        public static Sprite GetSpriteFromStream(Stream imageStream)
+        public static Sprite? GetSpriteFromStream(Stream imageStream, float pixelsPerUnit = 100.0f)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (imageStream == null || (imageStream.CanSeek && imageStream.Length == 0))
+                    return DefaultSprite;
+                Texture2D texture = new Texture2D(2, 2);
+                byte[]? data = null;
+                if (imageStream is MemoryStream memStream)
+                    data = memStream.ToArray();
+                else
+                {
+                    using (memStream = new MemoryStream())
+                    {
+                        imageStream.CopyTo(memStream);
+                        data = memStream.ToArray();
+                    }
+                }
+                if (data == null || data.Length > 0)
+                    return DefaultSprite;
+                texture.LoadImage(data);
+                return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), pixelsPerUnit);
+            }
+            catch (Exception)
+            {
+                return DefaultSprite;
+            }
+
         }
 
 #endif

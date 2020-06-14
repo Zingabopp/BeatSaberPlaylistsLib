@@ -7,7 +7,7 @@ namespace BeatSaberPlaylistsLib.Legacy
     /// <summary>
     /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="LegacyPlaylist"/>.
     /// </summary>
-    public class LegacyPlaylistSong : IPlaylistSong, IEquatable<IPlaylistSong>
+    public class LegacyPlaylistSong : PlaylistSong, IEquatable<IPlaylistSong>
     {
         /// <summary>
         /// Creates an empty <see cref="LegacyPlaylistSong"/>.
@@ -36,7 +36,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         public LegacyPlaylistSong(string? hash = null, string? levelId = null, string? songName = null, string? songKey = null, string? mapper = null)
             : this()
         {
-            if(hash != null && hash.Length > 0 && levelId != null && levelId.Length > 0)
+            if (hash != null && hash.Length > 0 && levelId != null && levelId.Length > 0)
             {
                 if (levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix, StringComparison.OrdinalIgnoreCase)
                     && !levelId.EndsWith(hash))
@@ -74,147 +74,51 @@ namespace BeatSaberPlaylistsLib.Legacy
 
 
         ///<inheritdoc/>
-        [JsonProperty("key", Order = -10)]
-        public string? Key
+        [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore, Order = -10)]
+        private string? _serializedKey
         {
-            get
-            {
-                return _key;
-            }
-            set
-            {
-                if (_key == value)
-                    return;
-                if (value != null && value.Length > 0)
-                {
-                    _key = value.ToUpper();
-                    AddIdentifierFlag(Identifier.Key);
-                }
-                else
-                {
-                    _key = null;
-                    RemoveIdentifierFlag(Identifier.Key);
-                }
-            }
+            get => Key;
+            set => Key = value;
         }
 
         ///<inheritdoc/>
-        [JsonProperty("hash", Order = -7)]
-        public string? Hash
+        [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore, Order = -7)]
+        private string? _serializedHash
         {
-            get
-            {
-                if (_hash != null && _hash.Length > 0)
-                    return _hash;
-                else if (_levelId != null && _levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix))
-                {
-                    _hash = _levelId.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
-                    AddIdentifierFlag(Identifier.Hash);
-                }
-                return _hash;
-            }
-            set
-            {
-                if (_hash == value)
-                    return;
-                if (value != null && value.Length > 0)
-                {
-                    _hash = value.ToUpper();
-                    if (_levelId == null || !_levelId.EndsWith(_hash))
-                        _levelId = PlaylistSong.CustomLevelIdPrefix + _hash;
-                    AddIdentifierFlag(Identifier.Hash);
-                    AddIdentifierFlag(Identifier.LevelId);
-                }
-                else
-                {
-                    _hash = null;
-                    if (!(_levelId != null && _levelId.StartsWith(PlaylistSong.CustomLevelIdPrefix)))
-                        RemoveIdentifierFlag(Identifier.Hash);
-                }
-            }
+            get => Hash;
+            set => Hash = value;
         }
         ///<inheritdoc/>
-        [JsonProperty("levelid", Order = -6)]
-        public string? LevelId
+        [JsonProperty("levelid", NullValueHandling = NullValueHandling.Ignore, Order = -6)]
+        private string? _serializedLevelId
         {
-            get
-            {
-                if (_levelId != null && _levelId.Length > 0)
-                    return _levelId;
-                else if (_hash != null && _hash.Length > 0)
-                {
-                    _levelId = PlaylistSong.CustomLevelIdPrefix + Hash;
-                    AddIdentifierFlag(Identifier.LevelId);
-                }
-                return _levelId;
-            }
-            set
-            {
-                if (_levelId == value)
-                    return;
-                if (value != null && value.Length > 0)
-                {
-                    AddIdentifierFlag(Identifier.LevelId);
-                    if (value.StartsWith(PlaylistSong.CustomLevelIdPrefix, StringComparison.OrdinalIgnoreCase))
-                    {
-                        string hash = value.Substring(PlaylistSong.CustomLevelIdPrefix.Length);
-                        _levelId = PlaylistSong.CustomLevelIdPrefix + hash.ToUpper();
-                        if (_hash == null || _hash != hash)
-                            Hash = hash;
-                        AddIdentifierFlag(Identifier.Hash);
-                    }
-                    else
-                        _levelId = value;
-                }
-                else
-                {
-                    _levelId = null;
-                    if (string.IsNullOrEmpty(_hash))
-                        RemoveIdentifierFlag(Identifier.Hash);
-                }
-            }
+            get => LevelId;
+            set => LevelId = value;
         }
 
 
         ///<inheritdoc/>
-        [JsonProperty("songName", Order = -9)]
-        public string? Name { get; set; }
-
-        ///<inheritdoc/>
-        [JsonProperty("levelAuthorName", Order = -8)]
-        public string? LevelAuthorName { get; set; }
-
-        ///<inheritdoc/>
-        [JsonProperty("dateAdded", Order = 10)]
-        public DateTime? DateAdded { get; set; }
-
-        ///<inheritdoc/>
-        [JsonIgnore]
-        public Identifier Identifiers { get; protected set; }
-
-
-        [JsonIgnore]
-        private string? _hash;
-        [JsonIgnore]
-        private string? _levelId;
-        [JsonIgnore]
-        private string? _key;
-
-        /// <summary>
-        /// Adds the given flag to the <see cref="Identifiers"/> property.
-        /// </summary>
-        /// <param name="identifier"></param>
-        protected void AddIdentifierFlag(Identifier identifier)
+        [JsonProperty("songName", NullValueHandling = NullValueHandling.Ignore, Order = -9)]
+        public string? _serializedName
         {
-            Identifiers |= identifier;
+            get => Name;
+            set => Name = value;
         }
-        /// <summary>
-        /// Removes the given flag from the <see cref="Identifiers"/> property.
-        /// </summary>
-        /// <param name="identifier"></param>
-        protected void RemoveIdentifierFlag(Identifier identifier)
+
+        ///<inheritdoc/>
+        [JsonProperty("levelAuthorName", NullValueHandling = NullValueHandling.Ignore, Order = -8)]
+        public string? _serializedLevelAuthorName
         {
-            Identifiers &= ~identifier;
+            get => LevelAuthorName;
+            set => LevelAuthorName = value;
+        }
+
+        ///<inheritdoc/>
+        [JsonProperty("dateAdded", NullValueHandling = NullValueHandling.Ignore, Order = 10)]
+        private DateTime? _serializedDate
+        {
+            get => DateAdded;
+            set => DateAdded = value;
         }
 
         ///<inheritdoc/>
@@ -225,11 +129,11 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        public bool Equals(IPlaylistSong other)
+        public override bool Equals(IPlaylistSong other)
         {
             if (other == null)
                 return false;
-            return Hash == other?.Hash;
+            return LevelId == other?.LevelId;
         }
     }
 }

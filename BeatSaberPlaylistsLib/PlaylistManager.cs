@@ -361,9 +361,12 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// Writes all <see cref="IPlaylist"/>s that have been marked as changed to file.
         /// </summary>
+        /// <exception cref="AggregateException"></exception>
         public void StoreAllPlaylists()
         {
             IPlaylist[]? changedPlaylists;
+            List<Exception> exceptions = new List<Exception>();
+            List<string> erroredPlaylists = new List<string>();
             lock (_changedLock)
             {
                 changedPlaylists = ChangedPlaylists.ToArray();
@@ -373,8 +376,26 @@ namespace BeatSaberPlaylistsLib
             {
                 if (playlist == null)
                     continue;
-                StorePlaylist(playlist, true);
+                try
+                {
+                    StorePlaylist(playlist, true);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                    if (playlist != null)
+                    {
+                        if (playlist.Filename != null && playlist.Filename.Length > 0)
+                            erroredPlaylists.Add(playlist.Filename);
+                        else if (playlist.Title != null && playlist.Title.Length > 0)
+                            erroredPlaylists.Add(playlist.Title);
+                        else
+                            erroredPlaylists.Add("<Unknown>");
+                    }
+                }
             }
+            if (exceptions.Count > 0)
+                throw new AggregateException($"{exceptions.Count} exceptions thrown by playlists '{string.Join(", ", erroredPlaylists)}' storing all playlists.", exceptions);
         }
 
         private void OnPlaylistChanged(object sender, EventArgs e)

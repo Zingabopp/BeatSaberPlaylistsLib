@@ -584,6 +584,28 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager.
+        /// </summary>
+        /// <returns></returns>
+        public IPlaylist[] GetAllPlaylists()
+        {
+            string[] playlistNames
+                = Directory.EnumerateFiles(PlaylistPath, "*.*").Select(p => Path.GetFileNameWithoutExtension(p)).ToArray();
+            for (int i = 0; i < playlistNames.Length; i++)
+            {
+                try
+                {
+                    _ = GetPlaylist(playlistNames[i]);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+            }
+            return LoadedPlaylists.Values.ToArray();
+        }
+
+        /// <summary>
         /// Attempts to get or load a playlist with the given filename. 
         /// If the playlist doesn't exist, it will be created by <paramref name="playlistFactory"/>.
         /// </summary>

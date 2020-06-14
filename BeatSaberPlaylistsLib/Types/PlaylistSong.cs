@@ -1,4 +1,9 @@
-﻿using System;
+﻿#if BeatSaber
+extern alias BeatSaber;
+#endif
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -7,6 +12,81 @@ namespace BeatSaberPlaylistsLib.Types
     /// </summary>
     public abstract class PlaylistSong : IPlaylistSong
     {
+#if BeatSaber
+        private BeatSaber.IPreviewBeatmapLevel? _previewBeatmapLevel;
+        public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel 
+        {
+            get
+            {
+                if (_previewBeatmapLevel != null)
+                    return _previewBeatmapLevel;
+                if (LevelId == null || LevelId.Length == 0)
+                    return null;
+                if (LevelId.StartsWith("custom_level_") &&
+                    SongCore.Loader.GetLevelById(LevelId) is BeatSaber.CustomBeatmapLevel customLevel)
+                {
+                    _previewBeatmapLevel = customLevel;
+                }
+                else if(SongCore.Loader.GetOfficialLevelById(LevelId).PreviewBeatmapLevel is BeatSaber.IPreviewBeatmapLevel officialLevel)
+                {
+                    _previewBeatmapLevel = officialLevel;
+                }
+                return _previewBeatmapLevel;
+            }
+            internal set => _previewBeatmapLevel = value;
+        }
+
+        public string? levelID
+            => PreviewBeatmapLevel?.levelID ?? this.LevelId;
+
+        public string songName
+            => PreviewBeatmapLevel?.songName;
+
+        public string songSubName
+            => PreviewBeatmapLevel?.songSubName;
+
+        public string songAuthorName
+            => PreviewBeatmapLevel?.songAuthorName;
+
+        public string levelAuthorName
+            => PreviewBeatmapLevel?.levelAuthorName;
+
+        public float beatsPerMinute
+            => PreviewBeatmapLevel?.beatsPerMinute ?? 0;
+
+        public float songTimeOffset
+            => PreviewBeatmapLevel?.songTimeOffset ?? 0;
+
+        public float shuffle
+            => PreviewBeatmapLevel?.shuffle ?? 0;
+
+        public float shufflePeriod
+            => PreviewBeatmapLevel?.shufflePeriod ?? 0;
+
+        public float previewStartTime
+            => PreviewBeatmapLevel?.previewStartTime ?? 0;
+
+        public float previewDuration
+            => PreviewBeatmapLevel?.previewDuration ?? 0;
+
+        public float songDuration
+            => PreviewBeatmapLevel?.songDuration ?? 0;
+
+        public BeatSaber.EnvironmentInfoSO? environmentInfo => throw new NotImplementedException();
+
+        public BeatSaber.EnvironmentInfoSO? allDirectionsEnvironmentInfo
+            => PreviewBeatmapLevel?.allDirectionsEnvironmentInfo;
+
+        public BeatSaber.PreviewDifficultyBeatmapSet[]? previewDifficultyBeatmapSets 
+            => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
+
+
+        public Task<BeatSaber.UnityEngine.AudioClip>? GetPreviewAudioClipAsync(CancellationToken cancellationToken)
+         => PreviewBeatmapLevel?.GetPreviewAudioClipAsync(cancellationToken);
+
+        public Task<BeatSaber.UnityEngine.Texture2D>? GetCoverImageTexture2DAsync(CancellationToken cancellationToken) 
+            => PreviewBeatmapLevel?.GetCoverImageTexture2DAsync(cancellationToken);
+#endif
         /// <summary>
         /// LevelId prefix for custom songs in Beat Saber.
         /// </summary>

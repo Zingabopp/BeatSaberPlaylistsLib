@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if BeatSaber
+extern alias BeatSaber;
+#endif
+using System;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -6,7 +9,13 @@ namespace BeatSaberPlaylistsLib.Types
     /// Interface for the basic data of a song.
     /// </summary>
     public interface ISong
+#if BeatSaber
+        : BeatSaber.IPreviewBeatmapLevel
+#endif
     {
+#if BeatSaber
+        public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel { get; }
+#endif
         /// <summary>
         /// Beat Saver hash of the song, always uppercase.
         /// Setting Hash will also set <see cref="LevelId"/> to Hash prefixed by "custom_level_".

@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if BeatSaber
+extern alias BeatSaber;
+using BeatSaber::UnityEngine;
+#endif
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -187,5 +191,13 @@ namespace BeatSaberPlaylistsLib
             }
         }
         #endregion
+
+#if BeatSaber
+        public static Sprite GetSpriteFromStream(Stream imageStream)
+        {
+            throw new NotImplementedException();
+        }
+
+#endif
     }
 }

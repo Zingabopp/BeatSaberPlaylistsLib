@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if BeatSaber
+extern alias BeatSaber;
+using BeatSaber::UnityEngine;
+#endif
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +17,22 @@ namespace BeatSaberPlaylistsLib.Types
     public abstract class Playlist<T> : IPlaylist<T>
         where T : IPlaylistSong, new()
     {
+#if BeatSaber
+        public string collectionName => Title;
+        public Sprite coverImage
+        {
+            get
+            {
+                if(!HasCover)
+                {
+                    throw new NotImplementedException();
+                }
+                return Utilities.GetSpriteFromStream(GetCoverStream());
+            }
+        }
+        public BeatSaber.IBeatmapLevelCollection beatmapLevelCollection => throw new NotImplementedException();
+#endif
+
         /// <summary>
         /// Internal collection of songs in the playlist.
         /// </summary>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if BeatSaber
+extern alias BeatSaber;
+#endif
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,6 +11,9 @@ namespace BeatSaberPlaylistsLib.Types
     /// Interface for a playlist.
     /// </summary>
     public interface IPlaylist : IList<IPlaylistSong>
+#if BeatSaber
+        , BeatSaber.IPlaylist, BeatSaber.IAnnotatedBeatmapLevelCollection
+#endif
     {
         /// <summary>
         /// Playlist title.

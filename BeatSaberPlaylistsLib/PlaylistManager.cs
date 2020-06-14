@@ -19,6 +19,7 @@ namespace BeatSaberPlaylistsLib
         /// The parent <see cref="PlaylistManager"/>, if any. 
         /// </summary>
         public PlaylistManager? Parent { get; protected set; }
+
         /// <summary>
         /// Returns the available child <see cref="PlaylistManager"/>s.
         /// </summary>

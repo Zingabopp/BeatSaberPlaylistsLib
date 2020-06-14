@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
+// Schema: https://github.com/raftario/blist/blob/master/playlist.schema.json
 namespace BeatSaberPlaylistsLib.Blister
 {
     /// <summary>
@@ -92,7 +93,11 @@ namespace BeatSaberPlaylistsLib.Blister
         /// The optional RFC3339 date and time the beatmap was added to the playlist
         /// </summary>
         [JsonProperty("date", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTime? Date { get; set; }
+        private DateTime? _serializedDate
+        {
+            get => DateAdded;
+            set => DateAdded = value;
+        }
 
         /// <summary>
         /// The optional recommended difficulties for the beatmap
@@ -104,7 +109,7 @@ namespace BeatSaberPlaylistsLib.Blister
         /// The SHA1 hash of the beatmap
         /// </summary>
         [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
-        protected string? _serializedHash
+        private string? _serializedHash
         {
             get => Hash;
             set => Hash = value;
@@ -114,7 +119,7 @@ namespace BeatSaberPlaylistsLib.Blister
         /// The BeatSaver key of the beatmap
         /// </summary>
         [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
-        protected string? _serializedKey
+        private string? _serializedKey
         {
             get => Key;
             set => Key = value;
@@ -124,7 +129,7 @@ namespace BeatSaberPlaylistsLib.Blister
         /// The level ID of the BeatMap
         /// </summary>
         [JsonProperty("levelID", NullValueHandling = NullValueHandling.Ignore)]
-        protected string? _serializedLevelId
+        private string? _serializedLevelId
         {
             get => LevelId;
             set => LevelId = value;
@@ -157,7 +162,7 @@ namespace BeatSaberPlaylistsLib.Blister
             get
             {
                 if (CustomData == null) return null;
-                if(CustomData.TryGetValue(SongNameKey, out object value))
+                if (CustomData.TryGetValue(SongNameKey, out object value))
                 {
                     return value.ToString();
                 }
@@ -165,7 +170,7 @@ namespace BeatSaberPlaylistsLib.Blister
             }
             set
             {
-                if(value == null || value.Length == 0)
+                if (value == null || value.Length == 0)
                 {
                     if (CustomData == null) return;
                     if (!CustomData.ContainsKey(SongNameKey)) return;

@@ -23,14 +23,13 @@ namespace BeatSaberPlaylistsLib.Types
                     return _previewBeatmapLevel;
                 if (LevelId == null || LevelId.Length == 0)
                     return null;
-                if (LevelId.StartsWith("custom_level_") &&
-                    SongCore.Loader.GetLevelById(LevelId) is BeatSaber.CustomBeatmapLevel customLevel)
+                if (LevelId.StartsWith("custom_level_"))
                 {
-                    _previewBeatmapLevel = customLevel;
+                    _previewBeatmapLevel = SongCore.Loader.GetLevelById(LevelId);
                 }
-                else if(SongCore.Loader.GetOfficialLevelById(LevelId).PreviewBeatmapLevel is BeatSaber.IPreviewBeatmapLevel officialLevel)
+                else
                 {
-                    _previewBeatmapLevel = officialLevel;
+                    _previewBeatmapLevel = SongCore.Loader.GetOfficialLevelById(LevelId).PreviewBeatmapLevel;
                 }
                 return _previewBeatmapLevel;
             }

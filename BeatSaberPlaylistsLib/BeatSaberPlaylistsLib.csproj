@@ -21,6 +21,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-BeatSaber|AnyCPU'">
     <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Icons\FolderIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\FolderIcon.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

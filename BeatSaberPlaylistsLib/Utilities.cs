@@ -255,24 +255,29 @@ namespace BeatSaberPlaylistsLib
             {
                 Logger?.Invoke($"imageStream is {imageStream?.Length ?? -1} bytes.", null);
                 if (imageStream == null || (imageStream.CanSeek && imageStream.Length == 0))
+                {
+                    //Logger?.Invoke($"imageStream seems to be null or empty.", null);
                     return ReturnDefault(returnDefaultOnFail) ?? throw new ArgumentNullException(nameof(imageStream));
-                //Texture2D texture = new Texture2D(2, 2);
+                }
+                Texture2D texture = new Texture2D(2, 2);
                 byte[]? data = null;
                 if (imageStream is MemoryStream memStream)
                 {
-                    Logger?.Invoke($"imageStream is a MemoryStream", null);
+                    //Logger?.Invoke($"imageStream is a MemoryStream", null);
                     data = memStream.ToArray();
                 }
                 else
                 {
                     data = imageStream.ToArray();
                 }
-                Logger?.Invoke($"data is {data?.Length ?? -1} bytes long.", null);
-                if (data == null || data.Length > 0)
+                //Logger?.Invoke($"data is {data?.Length ?? -1} bytes long.", null);
+                if (data == null || data.Length == 0)
+                {
+                    //Logger?.Invoke($"data seems to be null or empty.", null);
                     return ReturnDefault(returnDefaultOnFail);
-                //texture.LoadImage(data);
-                return SongCore.Utilities.Utils.LoadSpriteRaw(data);
-                //return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), pixelsPerUnit);
+                }
+                texture.LoadImage(data);
+                return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), pixelsPerUnit);
             }
             catch (Exception ex)
             {

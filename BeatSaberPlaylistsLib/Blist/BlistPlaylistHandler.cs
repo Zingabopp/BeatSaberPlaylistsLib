@@ -8,7 +8,7 @@ using System.Linq;
 namespace BeatSaberPlaylistsLib.Blist
 {
     /// <summary>
-    /// <see cref="IPlaylistHandler"/> for Blister playlists (.blist).
+    /// <see cref="IPlaylistHandler"/> for Blist playlists (.blist).
     /// </summary>
     public class BlistPlaylistHandler : IPlaylistHandler<BlistPlaylist>
     {
@@ -83,9 +83,9 @@ namespace BeatSaberPlaylistsLib.Blist
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target), $"{nameof(target)} cannot be null.");
-            BlistPlaylist blisterPlaylist = (target as BlistPlaylist)
+            BlistPlaylist blistPlaylist = (target as BlistPlaylist)
                 ?? throw new ArgumentException($"{target.GetType().Name} is not a supported Type for {nameof(BlistPlaylistHandler)}");
-            Populate(stream, blisterPlaylist);
+            Populate(stream, blistPlaylist);
         }
 
         ///<inheritdoc/>
@@ -131,9 +131,9 @@ namespace BeatSaberPlaylistsLib.Blist
         ///<inheritdoc/>
         public void Serialize(IPlaylist playlist, Stream stream)
         {
-            BlistPlaylist blisterPlaylist = (playlist as BlistPlaylist)
+            BlistPlaylist blistPlaylist = (playlist as BlistPlaylist)
                 ?? throw new ArgumentException($"{playlist.GetType().Name} is not a supported Type for {nameof(BlistPlaylistHandler)}");
-            Serialize(blisterPlaylist, stream);
+            Serialize(blistPlaylist, stream);
         }
 
 

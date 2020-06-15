@@ -4,33 +4,33 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
-using BeatSaberPlaylistsLib.Blister.Converters;
+using BeatSaberPlaylistsLib.Blist.Converters;
 using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 // Schema: https://github.com/raftario/blist/blob/master/playlist.schema.json
-namespace BeatSaberPlaylistsLib.Blister
+namespace BeatSaberPlaylistsLib.Blist
 {
     /// <summary>
     /// A Beat Saber playlist
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class BlisterPlaylist : Playlist<BlisterPlaylistSong>
+    public partial class BlistPlaylist : Playlist<BlistPlaylistSong>
     {
         /// <summary>
-        /// Creates an empty <see cref="BlisterPlaylist"/>.
+        /// Creates an empty <see cref="BlistPlaylist"/>.
         /// </summary>
-        protected BlisterPlaylist()
+        protected BlistPlaylist()
         { }
 
         /// <summary>
-        /// Creates a new <see cref="BlisterPlaylist"/> from the given parameters.
+        /// Creates a new <see cref="BlistPlaylist"/> from the given parameters.
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="title"></param>
         /// <param name="author"></param>
-        public BlisterPlaylist(string fileName, string title, string? author)
+        public BlistPlaylist(string fileName, string title, string? author)
         {
             Filename = fileName;
             Title = title;
@@ -70,10 +70,10 @@ namespace BeatSaberPlaylistsLib.Blister
         /// The beatmaps contained in the playlist
         /// </summary>
         [JsonProperty("maps")]
-        protected List<BlisterPlaylistSong> _serializedSongs
+        protected List<BlistPlaylistSong> _serializedSongs
         {
             get => Songs;
-            set { Songs = value ?? new List<BlisterPlaylistSong>(); }
+            set { Songs = value ?? new List<BlistPlaylistSong>(); }
         }
 
         /// <summary>
@@ -83,11 +83,11 @@ namespace BeatSaberPlaylistsLib.Blister
         public override string Title { get; set; } = "";
 
         ///<inheritdoc/>
-        protected override BlisterPlaylistSong CreateFrom(ISong song)
+        protected override BlistPlaylistSong CreateFrom(ISong song)
         {
-            if (song is BlisterPlaylistSong legacySong)
+            if (song is BlistPlaylistSong legacySong)
                 return legacySong;
-            return new BlisterPlaylistSong(song);
+            return new BlistPlaylistSong(song);
         }
 
         ///<inheritdoc/>
@@ -193,7 +193,7 @@ namespace BeatSaberPlaylistsLib.Blister
     /// <summary>
     /// The entry type defining how the beatmap is identified in the playlist
     /// </summary>
-    public enum BlisterPlaylistType
+    public enum BlistPlaylistType
     {
         /// <summary>
         /// No known type.

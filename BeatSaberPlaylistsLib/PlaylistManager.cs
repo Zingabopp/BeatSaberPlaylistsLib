@@ -605,25 +605,47 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager. Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public IPlaylist[] GetAllPlaylists(out AggregateException? e)
+        {
+            e = null;
+            string[] playlistNames
+                = Directory.EnumerateFiles(PlaylistPath, "*.*").Select(p => Path.GetFileName(p)).ToArray();
+            List<Exception>? exceptions = null;
+            List<string>? erroredPlaylists = null;
+            for (int i = 0; i < playlistNames.Length; i++)
+            {
+                try
+                {
+                    _ = GetPlaylist(Path.GetFileNameWithoutExtension(playlistNames[i]));
+                }
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch (Exception ex)
+                {
+                    if (exceptions == null) exceptions = new List<Exception>();
+                    if (erroredPlaylists == null) erroredPlaylists = new List<string>();
+                    exceptions.Add(ex);
+                    erroredPlaylists.Add(playlistNames[i]);
+                }
+#pragma warning restore CA1031 // Do not catch general exception types
+            }
+            if(exceptions != null)
+            {
+                e = new AggregateException($"Error loading playlists: '{string.Join(", ", erroredPlaylists)}'", exceptions);
+            }
+            return LoadedPlaylists.Values.ToArray();
+        }
+
+        /// <summary>
         /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager.
         /// </summary>
         /// <returns></returns>
         public IPlaylist[] GetAllPlaylists()
         {
-            string[] playlistNames
-                = Directory.EnumerateFiles(PlaylistPath, "*.*").Select(p => Path.GetFileNameWithoutExtension(p)).ToArray();
-            for (int i = 0; i < playlistNames.Length; i++)
-            {
-                try
-                {
-                    _ = GetPlaylist(playlistNames[i]);
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-            }
-            return LoadedPlaylists.Values.ToArray();
+            return GetAllPlaylists(out _);
         }
 
         /// <summary>

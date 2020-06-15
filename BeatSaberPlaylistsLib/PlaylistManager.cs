@@ -1,4 +1,4 @@
-﻿using BeatSaberPlaylistsLib.Blister;
+﻿using BeatSaberPlaylistsLib.Blist;
 using BeatSaberPlaylistsLib.Legacy;
 using BeatSaberPlaylistsLib.Types;
 using System;
@@ -36,7 +36,7 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() =>
         {
-            PlaylistManager playlistManager = new PlaylistManager("Playlists", new LegacyPlaylistHandler(), new BlisterPlaylistHandler());
+            PlaylistManager playlistManager = new PlaylistManager("Playlists", new LegacyPlaylistHandler(), new BlistPlaylistHandler());
             return playlistManager;
         }
         , System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);

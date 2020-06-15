@@ -1,4 +1,4 @@
-﻿using BeatSaberPlaylistsLib.Blister.Converters;
+﻿using BeatSaberPlaylistsLib.Blist.Converters;
 using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -7,34 +7,34 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace BeatSaberPlaylistsLib.Blister
+namespace BeatSaberPlaylistsLib.Blist
 {
     /// <summary>
-    /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="BlisterPlaylist"/>.
+    /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="BlistPlaylist"/>.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class BlisterPlaylistSong : PlaylistSong
+    public class BlistPlaylistSong : PlaylistSong
     {
         private Dictionary<string, object>? _customData;
 
         /// <summary>
-        /// Creates an empty <see cref="BlisterPlaylistSong"/>.
+        /// Creates an empty <see cref="BlistPlaylistSong"/>.
         /// </summary>
-        public BlisterPlaylistSong()
+        public BlistPlaylistSong()
         { }
 
         /// <summary>
-        /// Creates a new <see cref="BlisterPlaylistSong"/> from the given <paramref name="song"/>.
+        /// Creates a new <see cref="BlistPlaylistSong"/> from the given <paramref name="song"/>.
         /// </summary>
         /// <param name="song"></param>
-        public BlisterPlaylistSong(ISong song)
+        public BlistPlaylistSong(ISong song)
             : this()
         {
             this.Populate(song);
         }
 
         /// <summary>
-        /// Sets custom data for a <see cref="BlisterPlaylistSong"/>.
+        /// Sets custom data for a <see cref="BlistPlaylistSong"/>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -47,7 +47,7 @@ namespace BeatSaberPlaylistsLib.Blister
                 _customData.Add(key, value);
         }
         /// <summary>
-        /// Adds a <see cref="Difficulty"/> to the <see cref="BlisterPlaylistSong"/>.
+        /// Adds a <see cref="Difficulty"/> to the <see cref="BlistPlaylistSong"/>.
         /// </summary>
         /// <param name="diff"></param>
         public void AddDifficulty(Difficulty diff)
@@ -59,7 +59,7 @@ namespace BeatSaberPlaylistsLib.Blister
             Difficulties.Add(diff);
         }
         /// <summary>
-        /// Adds a <see cref="Difficulty"/> with the given parameters to the <see cref="BlisterPlaylistSong"/>.
+        /// Adds a <see cref="Difficulty"/> with the given parameters to the <see cref="BlistPlaylistSong"/>.
         /// </summary>
         /// <param name="characteristic"></param>
         /// <param name="difficultyName"></param>
@@ -135,14 +135,14 @@ namespace BeatSaberPlaylistsLib.Blister
         /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(PlaylistTypeConverter))]
-        public BlisterPlaylistType Type
+        public BlistPlaylistType Type
         {
             get
             {
-                if (Identifiers.HasFlag(Identifier.Hash)) return BlisterPlaylistType.Hash;
-                if (Identifiers.HasFlag(Identifier.LevelId)) return BlisterPlaylistType.LevelId;
-                if (Identifiers.HasFlag(Identifier.Key)) return BlisterPlaylistType.Key;
-                return BlisterPlaylistType.None;
+                if (Identifiers.HasFlag(Identifier.Hash)) return BlistPlaylistType.Hash;
+                if (Identifiers.HasFlag(Identifier.LevelId)) return BlistPlaylistType.LevelId;
+                if (Identifiers.HasFlag(Identifier.Key)) return BlistPlaylistType.Key;
+                return BlistPlaylistType.None;
             }
             set
             {

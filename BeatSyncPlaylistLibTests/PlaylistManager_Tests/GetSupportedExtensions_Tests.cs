@@ -1,5 +1,5 @@
 ﻿using BeatSaberPlaylistsLib;
-using BeatSaberPlaylistsLib.Blister;
+using BeatSaberPlaylistsLib.Blist;
 using BeatSaberPlaylistsLib.Legacy;
 using BeatSaberPlaylistsLib.Types;
 using BeatSaberPlaylistsLibTests.Mock;
@@ -20,7 +20,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
         public void Constructor()
         {
             string playlistsPath = Path.Combine(OutputPath, "Constructor");
-            IPlaylistHandler[] handlers = { new LegacyPlaylistHandler(), new MockPlaylistHandler(), new BlisterPlaylistHandler() };
+            IPlaylistHandler[] handlers = { new LegacyPlaylistHandler(), new MockPlaylistHandler(), new BlistPlaylistHandler() };
             PlaylistManager manager = new PlaylistManager(playlistsPath, handlers[0], handlers);
             string[] supportedExtensions = manager.GetSupportedExtensions();
             foreach (var handler in handlers)
@@ -48,7 +48,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
                 File.Copy(Path.Combine(TestTools.DataFolder, "GetPlaylistTests", parentPlaylist), parentPlaylistPath);
             if (!File.Exists(childPlaylistPath))
                 File.Copy(Path.Combine(TestTools.DataFolder, "BlisterPlaylists", childPlaylist), childPlaylistPath);
-            PlaylistManager manager = new PlaylistManager(playlistsPath, new LegacyPlaylistHandler(), new BlisterPlaylistHandler());
+            PlaylistManager manager = new PlaylistManager(playlistsPath, new LegacyPlaylistHandler(), new BlistPlaylistHandler());
             Assert.IsTrue(manager.HasChildren);
             PlaylistManager childManager = manager.GetChildManagers.First();
             childManager.SupportsExtension("bplist");

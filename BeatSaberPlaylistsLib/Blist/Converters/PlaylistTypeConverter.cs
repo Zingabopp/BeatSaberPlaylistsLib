@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeatSaberPlaylistsLib.Blister.Converters
+namespace BeatSaberPlaylistsLib.Blist.Converters
 {
     internal class PlaylistTypeConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(BlisterPlaylistType) || t == typeof(BlisterPlaylistType?);
+        public override bool CanConvert(Type t) => t == typeof(BlistPlaylistType) || t == typeof(BlistPlaylistType?);
 
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -16,13 +16,13 @@ namespace BeatSaberPlaylistsLib.Blister.Converters
             switch (value)
             {
                 case "hash":
-                    return BlisterPlaylistType.Hash;
+                    return BlistPlaylistType.Hash;
                 case "key":
-                    return BlisterPlaylistType.Key;
+                    return BlistPlaylistType.Key;
                 case "levelID":
-                    return BlisterPlaylistType.LevelId;
+                    return BlistPlaylistType.LevelId;
             }
-            return BlisterPlaylistType.None;
+            return BlistPlaylistType.None;
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
@@ -32,16 +32,16 @@ namespace BeatSaberPlaylistsLib.Blister.Converters
                 serializer.Serialize(writer, null);
                 return;
             }
-            var value = (BlisterPlaylistType)untypedValue;
+            var value = (BlistPlaylistType)untypedValue;
             switch (value)
             {
-                case BlisterPlaylistType.Hash:
+                case BlistPlaylistType.Hash:
                     serializer.Serialize(writer, "hash");
                     return;
-                case BlisterPlaylistType.Key:
+                case BlistPlaylistType.Key:
                     serializer.Serialize(writer, "key");
                     return;
-                case BlisterPlaylistType.LevelId:
+                case BlistPlaylistType.LevelId:
                     serializer.Serialize(writer, "levelID");
                     return;
             }

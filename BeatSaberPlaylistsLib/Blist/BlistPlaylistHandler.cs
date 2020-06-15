@@ -5,12 +5,12 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 
-namespace BeatSaberPlaylistsLib.Blister
+namespace BeatSaberPlaylistsLib.Blist
 {
     /// <summary>
     /// <see cref="IPlaylistHandler"/> for Blister playlists (.blist).
     /// </summary>
-    public class BlisterPlaylistHandler : IPlaylistHandler<BlisterPlaylist>
+    public class BlistPlaylistHandler : IPlaylistHandler<BlistPlaylist>
     {
         private static readonly JsonSerializer jsonSerializer = new JsonSerializer()
         {
@@ -21,7 +21,7 @@ namespace BeatSaberPlaylistsLib.Blister
         public string DefaultExtension => "blist";
 
         ///<inheritdoc/>
-        public Type HandledType => typeof(BlisterPlaylist);
+        public Type HandledType => typeof(BlistPlaylist);
 
         /// <summary>
         /// Array of the supported extensions (no leading '.').
@@ -48,7 +48,7 @@ namespace BeatSaberPlaylistsLib.Blister
         public string[] GetSupportedExtensions() => SupportedExtensions.ToArray();
 
         ///<inheritdoc/>
-        public void Populate(Stream stream, BlisterPlaylist target)
+        public void Populate(Stream stream, BlistPlaylist target)
         {
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream), $"{nameof(stream)} cannot be null.");
@@ -83,13 +83,13 @@ namespace BeatSaberPlaylistsLib.Blister
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target), $"{nameof(target)} cannot be null.");
-            BlisterPlaylist blisterPlaylist = (target as BlisterPlaylist)
-                ?? throw new ArgumentException($"{target.GetType().Name} is not a supported Type for {nameof(BlisterPlaylistHandler)}");
+            BlistPlaylist blisterPlaylist = (target as BlistPlaylist)
+                ?? throw new ArgumentException($"{target.GetType().Name} is not a supported Type for {nameof(BlistPlaylistHandler)}");
             Populate(stream, blisterPlaylist);
         }
 
         ///<inheritdoc/>
-        public void Serialize(BlisterPlaylist playlist, Stream stream)
+        public void Serialize(BlistPlaylist playlist, Stream stream)
         {
             if (playlist == null)
                 throw new ArgumentNullException(nameof(playlist), $"{nameof(playlist)} cannot be null.");
@@ -119,7 +119,7 @@ namespace BeatSaberPlaylistsLib.Blister
 
                 }
                 using StreamWriter sw = new StreamWriter(playlistEntry.Open());
-                jsonSerializer.Serialize(sw, playlist, typeof(BlisterPlaylist));
+                jsonSerializer.Serialize(sw, playlist, typeof(BlistPlaylist));
                 sw.Flush();
             }
             catch (Exception ex)
@@ -131,14 +131,14 @@ namespace BeatSaberPlaylistsLib.Blister
         ///<inheritdoc/>
         public void Serialize(IPlaylist playlist, Stream stream)
         {
-            BlisterPlaylist blisterPlaylist = (playlist as BlisterPlaylist)
-                ?? throw new ArgumentException($"{playlist.GetType().Name} is not a supported Type for {nameof(BlisterPlaylistHandler)}");
+            BlistPlaylist blisterPlaylist = (playlist as BlistPlaylist)
+                ?? throw new ArgumentException($"{playlist.GetType().Name} is not a supported Type for {nameof(BlistPlaylistHandler)}");
             Serialize(blisterPlaylist, stream);
         }
 
 
         ///<inheritdoc/>
-        public BlisterPlaylist Deserialize<T>(Stream stream) where T : BlisterPlaylist
+        public BlistPlaylist Deserialize<T>(Stream stream) where T : BlistPlaylist
         {
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream), $"{nameof(stream)} cannot be null.");
@@ -148,7 +148,7 @@ namespace BeatSaberPlaylistsLib.Blister
                 ZipArchiveEntry entry = zipArchive.GetEntry("playlist.json")
                     ?? throw new PlaylistSerializationException("Container is missing 'playlist.json'");
                 using StreamReader sr = new StreamReader(entry.Open());
-                if (!(jsonSerializer.Deserialize(sr, typeof(T)) is BlisterPlaylist playlist))
+                if (!(jsonSerializer.Deserialize(sr, typeof(T)) is BlistPlaylist playlist))
                     throw new PlaylistSerializationException("Deserialized playlist was null.");
                 string? coverPath = playlist.Cover;
                 if (coverPath != null && coverPath.Length > 0)
@@ -171,9 +171,9 @@ namespace BeatSaberPlaylistsLib.Blister
         }
 
         ///<inheritdoc/>
-        public virtual BlisterPlaylist Deserialize(Stream stream)
+        public virtual BlistPlaylist Deserialize(Stream stream)
         {
-            return Deserialize<BlisterPlaylist>(stream);
+            return Deserialize<BlistPlaylist>(stream);
         }
 
         ///<inheritdoc/>

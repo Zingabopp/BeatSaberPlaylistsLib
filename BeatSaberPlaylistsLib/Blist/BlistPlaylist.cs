@@ -9,6 +9,7 @@ using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+// Schema: https://github.com/raftario/blist/blob/master/playlist.schema.json
 namespace BeatSaberPlaylistsLib.Blist
 {
     /// <summary>

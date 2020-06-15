@@ -6,6 +6,11 @@
   "version": "0.0.1",
   "description": "A playlist loading library.",
   "gameVersion": "1.10.0",
-  "dependsOn": { },
+  "files": [
+    "Libs/BeatSaberPlaylistsLib.dll"
+  ],
+  "dependsOn": {
+    "SongCore": "^2.9.7"
+  },
   "features": []
 }

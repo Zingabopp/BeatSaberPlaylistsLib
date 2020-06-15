@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if BeatSaber
+extern alias BeatSaber;
+using BeatSaber::UnityEngine;
+#endif
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +15,40 @@ namespace BeatSaberPlaylistsLib.Types
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class Playlist<T> : IPlaylist<T>
-        where T : IPlaylistSong, new()
+#if BeatSaber
+        , BeatSaber.IPlaylist, BeatSaber.IBeatmapLevelCollection
+#endif
+        where T : class, IPlaylistSong, new()
     {
+#if BeatSaber
+        /// <summary>
+        /// Name of the collection, uses <see cref="Title"/>.
+        /// </summary>
+        string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
+        /// <summary>
+        /// Cover image sprite.
+        /// </summary>
+        Sprite BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage
+        {
+            get
+            {
+                if(!HasCover)
+                {
+                    throw new NotImplementedException();
+                }
+                return Utilities.GetSpriteFromStream(GetCoverStream());
+            }
+        }
+        /// <summary>
+        /// Returns itself.
+        /// </summary>
+        BeatSaber.IBeatmapLevelCollection BeatSaber.IAnnotatedBeatmapLevelCollection.beatmapLevelCollection => this;
+        /// <summary>
+        /// Returns a new array of the songs in this playlist.
+        /// </summary>
+        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels => Songs.ToArray();
+#endif
+
         /// <summary>
         /// Internal collection of songs in the playlist.
         /// </summary>

@@ -18,7 +18,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         [DataMember]
         [JsonProperty("songs", Order = 5)]
-        protected List<LegacyPlaylistSong> _serializedSongs 
+        protected List<LegacyPlaylistSong> _serializedSongs
         {
             get => Songs;
             set => Songs = value ?? new List<LegacyPlaylistSong>();
@@ -119,9 +119,16 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
-            if (string.IsNullOrEmpty(CoverString))
+            try
+            {
+                if (string.IsNullOrEmpty(CoverString))
+                    return new MemoryStream(Array.Empty<byte>());
+                return new MemoryStream(Utilities.Base64ToByteArray(CoverString));
+            }
+            catch (FormatException ex)
+            {
                 return new MemoryStream(Array.Empty<byte>());
-            return new MemoryStream(Utilities.Base64ToByteArray(CoverString));
+            }
         }
 
         ///<inheritdoc/>

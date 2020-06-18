@@ -5,25 +5,27 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>Enable</Nullable>
     <Configurations>Debug;Release;Debug-BeatSaber;Release-BeatSaber</Configurations>
-    <BeatSaberDir>..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber</BeatSaberDir>
+    <BeatSaberRelease>false</BeatSaberRelease>
+    <BeatSaberDir>H:\SteamApps\steamapps\common\Beat Saber</BeatSaberDir>
     <BeatSaberReferences>$(BeatSaberDir)</BeatSaberReferences>
+    <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-BeatSaber|AnyCPU'">
-    <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
     <DefineConstants>BeatSaber</DefineConstants>
+    <BeatSaberRelease>true</BeatSaberRelease>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-BeatSaber|AnyCPU'">
-    <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
     <DefineConstants>BeatSaber</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-BeatSaber|AnyCPU'">
-    <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
+    <BeatSaberRelease>true</BeatSaberRelease>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="BeatSaberPlaylistsLib.manifest" />
     <None Remove="Icons\FolderIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BeatSaberPlaylistsLib.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icons\FolderIcon.png" />

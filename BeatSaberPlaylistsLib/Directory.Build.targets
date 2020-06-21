@@ -10,7 +10,7 @@
     <OutputAssemblyName>$(OutputPath)$(AssemblyName)</OutputAssemblyName>
     <ReleaseName>$(AssemblyName)-$(Version)</ReleaseName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousInteration)' == 'True'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousIntegrationBuild)' == 'True'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">
@@ -58,8 +58,7 @@
   </Target>
   <!--Build target for Continuous Integration builds. Set up for GitHub Actions.-->
   <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo" Condition="'$(ContinuousIntegrationBuild)' == 'True'">
-    <Message Text="Building for CI - '$(OutputPath)BeatSaberPlaylistsLib.manifest'" Importance="high" />
-    <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
+    <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
     <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />

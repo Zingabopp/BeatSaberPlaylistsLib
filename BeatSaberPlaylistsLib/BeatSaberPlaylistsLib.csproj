@@ -10,6 +10,15 @@
     <BeatSaberReferences>$(BeatSaberDir)</BeatSaberReferences>
     <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <DisableCopyToPlugins>true</DisableCopyToPlugins>
+    <DisableZipRelease>true</DisableZipRelease>
+    <ReferencePath>.\Refs</ReferencePath>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-BeatSaber|AnyCPU'">
     <DefineConstants>BeatSaber</DefineConstants>
     <BeatSaberRelease>true</BeatSaberRelease>

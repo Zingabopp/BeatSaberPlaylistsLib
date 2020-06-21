@@ -22,6 +22,12 @@ jobs:
     - name: Build Lib
       id: Build-Lib
       run: dotnet build --configuration Release
+    - name: GetStrippedRefs
+      env:
+        FILES_URL: ${{ secrets.BSFILES_URL }}
+      run: wget --no-check-certificate "$FILES_URL" -q -O bsfiles.zip
+    - name: ExtractRefs
+      run: unzip -q bsfiles.zip -d ./Refs
     - name: Build For Beat Saber
       id: Build-BeatSaber
       run: dotnet build --configuration Release-BeatSaber

@@ -69,7 +69,7 @@
     <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile ="$(OutDir)zip\$(ReleaseName).zip" />
   </Target>
   <!--Copies the assembly and pdb to the Beat Saber folder.-->
-  <Target Name="CopyToPlugins" AfterTargets="BeatSaberBuild" Condition="'$(DisableCopyToPlugins)' != 'True' AND '$(ContinuousIntegrationBuild)' != 'True'">
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' AND '$(DisableCopyToPlugins)' != 'True' AND '$(ContinuousIntegrationBuild)' != 'True'">
     <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
     <IsProcessRunning ProcessName="Beat Saber">
       <Output TaskParameter="IsRunning" PropertyName="IsRunning" />

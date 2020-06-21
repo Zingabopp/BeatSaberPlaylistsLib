@@ -19,17 +19,19 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build
-      id: Build
+    - name: Build Lib
+      id: Build-Lib
       run: dotnet build --configuration Release
-    - name: Get artifact name variables
-      id: vars
-      shell: bash
-      run: |
-        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-    - name: Upload Artifact
+    - name: Build For Beat Saber
+      id: Build-BeatSaber
+      run: dotnet build --configuration Release-BeatSaber
+    - name: Upload Lib Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: BeatSaberPlaylistsLib-${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}-netstandard
-        path: ./BeatSaberPlaylistsLib/bin/Release/netstandard2.0/
+        name: ${{ steps.Build-Lib.outputs.filename }}
+        path: ${{ steps.Build-Lib.outputs.artifactpath }}
+    - name: Upload Beat Saber Artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ steps.Build-BeatSaber.outputs.filename }}
+        path: ${{ steps.Build-BeatSaber.outputs.artifactpath }}

@@ -10,8 +10,12 @@
     <OutputAssemblyName>$(OutputPath)$(AssemblyName)</OutputAssemblyName>
     <ReleaseName>$(AssemblyName)-$(Version)</ReleaseName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousIntegrationBuild)' == 'True'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
     <DisableZipRelease>True</DisableZipRelease>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(NCRUNCH)' == '1'">
+    <DisableCopyArtifacts>True</DisableCopyArtifacts>
+    <DisableCopyToPlugins>True</DisableCopyToPlugins>
   </PropertyGroup>
   <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">
     <ArtifactDestination>$(OutputPath)BeatSaberRelease</ArtifactDestination>
@@ -25,7 +29,7 @@
   <Target Name="CheckBSMTInstalled" AfterTargets="Build" Condition="'$(BSMTTaskAssembly)' == ''">
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
-  <Target Name="SetFullReleaseInfo" AfterTargets="Build"  Condition="'$(BSMTTaskAssembly)' != ''">
+  <Target Name="SetFullReleaseInfo" AfterTargets="Build"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
     <GetCommitHash ProjectDir="$(ProjectDir)">
       <Output TaskParameter="CommitShortHash" PropertyName="CommitShortHash" />
     </GetCommitHash>
@@ -43,33 +47,33 @@
     <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)" Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
     <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
   </Target>
-  <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True'">
+  <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).dll" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).xml" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).manifest" DestinationFiles="$(ArtifactDestination)\Plugins\$(AssemblyName).manifest" />
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
   </Target>
-  <Target Name="CopyArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' != 'True'">
+  <Target Name="CopyArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ArtifactDestination)\$(AssemblyName).dll" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ArtifactDestination)\$(AssemblyName).xml" />
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
   </Target>
   <!--Build target for Continuous Integration builds. Set up for GitHub Actions.-->
-  <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo" Condition="'$(ContinuousIntegrationBuild)' == 'True'">
+  <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo" Condition="'$(ContinuousIntegrationBuild)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
     <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />
   </Target>
   <!--Creates a BeatMods compliant zip file with the release.-->
-  <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
+  <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
     <Message Text="Zipping '$(ArtifactDestination)' for release. $(ReleaseName)" Importance="high" />
     <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile ="$(OutDir)zip\$(ReleaseName).zip" />
   </Target>
   <!--Copies the assembly and pdb to the Beat Saber folder.-->
-  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' AND '$(DisableCopyToPlugins)' != 'True' AND '$(ContinuousIntegrationBuild)' != 'True'">
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' AND '$(DisableCopyToPlugins)' != 'True'">
     <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
     <IsProcessRunning ProcessName="Beat Saber">
       <Output TaskParameter="IsRunning" PropertyName="IsRunning" />

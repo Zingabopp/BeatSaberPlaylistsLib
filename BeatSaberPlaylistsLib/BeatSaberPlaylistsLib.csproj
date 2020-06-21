@@ -14,7 +14,7 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <DisableCopyToPlugins>true</DisableCopyToPlugins>
     <DisableZipRelease>true</DisableZipRelease>
-    <ReferencePath>.\Refs</ReferencePath>
+    <BeatSaberReferences>.\Refs</BeatSaberReferences>
   </PropertyGroup>
   <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
@@ -70,6 +70,6 @@
     </Reference>
   </ItemGroup>
   <Target Name="Test" AfterTargets="Build">
-    <Message Text="Configuration: '$(Configuration)'" Importance="high" />
+    <Message Text="Configuration: '$(Configuration)', $(SolutionDir)Refs" Importance="high" />
   </Target>
 </Project>

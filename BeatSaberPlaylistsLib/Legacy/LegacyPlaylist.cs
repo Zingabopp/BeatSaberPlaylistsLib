@@ -125,10 +125,12 @@ namespace BeatSaberPlaylistsLib.Legacy
                     return new MemoryStream(Array.Empty<byte>());
                 return new MemoryStream(Utilities.Base64ToByteArray(CoverString));
             }
-            catch (FormatException ex)
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (FormatException)
             {
                 return new MemoryStream(Array.Empty<byte>());
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         ///<inheritdoc/>

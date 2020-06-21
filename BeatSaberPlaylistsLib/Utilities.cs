@@ -104,30 +104,24 @@ namespace BeatSaberPlaylistsLib
             {
                 return null;
             }
-            int tagIndex = base64Str.IndexOf(Base64Prefix);
-            if (tagIndex >= 0)
-            {
-                int firstNonWhitespace = 0;
-                int startIndex = 0;
-                for (int i = 0; i <= tagIndex; i++)
-                {
-                    firstNonWhitespace = i;
-                    if (!char.IsWhiteSpace(base64Str[i]))
-                        break;
-                }
-                if (firstNonWhitespace == tagIndex)
-                {
-                    startIndex = tagIndex + Base64Prefix.Length;
-                    for (int i = startIndex; i < base64Str.Length; i++)
-                    {
-                        startIndex = i;
-                        if (!char.IsWhiteSpace(base64Str[i]))
-                            break;
-                    }
-                    return Convert.FromBase64String(base64Str.Substring(startIndex));
-                }
-            }
-            return Convert.FromBase64String(base64Str);
+            int dataIndex = GetBase64DataStartIndex(base64Str);
+            if (dataIndex > 0)
+                return Convert.FromBase64String(base64Str.Substring(dataIndex));
+            else
+                return Convert.FromBase64String(base64Str);
+        }
+
+
+
+        /// <summary>
+        /// Returns the index of <paramref name="base64Str"/> that the data starts at.
+        /// </summary>
+        /// <param name="base64Str"></param>
+        /// <returns></returns>
+        public static int GetBase64DataStartIndex(string base64Str)
+        {
+            int tagIndex = Math.Max(0, base64Str.IndexOf(',') + 1);
+            return tagIndex;
         }
 
         /// <summary>
@@ -156,8 +150,7 @@ namespace BeatSaberPlaylistsLib
             if (!s.CanRead)
                 throw new ArgumentException("Stream cannot be read");
 
-            MemoryStream? ms = s as MemoryStream;
-            if (ms != null)
+            if (s is MemoryStream ms)
                 return ms.ToArray();
 
             long pos = s.CanSeek ? s.Position : 0L;
@@ -242,6 +235,7 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="imageStream"></param>
         /// <param name="pixelsPerUnit"></param>
+        /// <param name="returnDefaultOnFail"></param>
         /// <returns></returns>
         public static Sprite? GetSpriteFromStream(Stream imageStream, float pixelsPerUnit = 100.0f, bool returnDefaultOnFail = true)
         {

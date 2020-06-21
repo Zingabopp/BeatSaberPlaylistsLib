@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeatSaberPlaylistsLib\BeatSaberPlaylistsLib.csproj" />
+    <ProjectReference Include="..\BeatSaberPlaylistsLib\BeatSaberPlaylistsLib.csproj" AdditionalProperties="Configuration=Debug" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +49,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ReadOnlyData\BlisterPlaylists\MDBB.blist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\LegacyPlaylists\5LegacySongs.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\LegacyPlaylists\InvalidJson.bPlist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\LegacyPlaylists\ImageTypePrefix.bplist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

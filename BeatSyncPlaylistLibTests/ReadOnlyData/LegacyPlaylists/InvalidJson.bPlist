@@ -1,0 +1,54 @@
+{
+  "playlistTitle": "Five Legacy Songs",
+  "playlistAuthor": "TestAuthor",
+  "playlistDescription": "Test Description",
+  "songs": [
+    {
+      "key": "0000",
+      "hash": "000000000000000000000000000000000000ABC0",
+      "songName": "Legacy_0",
+      "dateAdded": null,
+      "levelid": "custom_level_000000000000000000000000000000000000ABC0",
+      "levelAuthorName": "LegacyAuthor_0",
+      "Identifiers": 7
+    },
+    {
+      "key": "0001",
+      "hash": "000000000000000000000000000000000000ABC1",
+      "songName": "Legacy_1",
+      "dateAdded": null,
+      "levelid": "custom_level_000000000000000000000000000000000000ABC1",
+      "levelAuthorName": "LegacyAuthor_1",
+      "Identifiers": 7
+    },
+    {
+      "key": "0002",
+      "hash": "000000000000000000000000000000000000ABC2",
+      "songName": "Legacy_2",
+      "dateAdded": null,
+      "levelid": "custom_level_000000000000000000000000000000000000ABC2",
+      "levelAuthorName": "LegacyAuthor_2",
+      "Identifiers": 7
+    },
+    {
+      "key": "0003",
+      "hash": "000000000000000000000000000000000000ABC3",
+      "songName": "Legacy_3",
+      "dateAdded": null,
+      "levelid": "custom_level_000000000000000000000000000000000000ABC3",
+      "levelAuthorName": "LegacyAuthor_3",
+      "Identifiers": 7
+    },
+    {
+      "key": "0004",
+      "hash": "000000000000000000000000000000000000ABC4",
+      "songName": "Legacy_4",
+      "dateAdded": null,
+      "levelid": "custom_level_000000000000000000000000000000000000ABC4",
+      "levelAuthorName": "LegacyAuthor_4",
+      "Identifiers": 7
+    }
+  ],
+  "image": ""
+asdfasdfasdf
+}

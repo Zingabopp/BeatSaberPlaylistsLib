@@ -10,7 +10,7 @@
     <OutputAssemblyName>$(OutputPath)$(AssemblyName)</OutputAssemblyName>
     <ReleaseName>$(AssemblyName)-$(Version)</ReleaseName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousInteratio)' == 'True'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousInteration)' == 'True'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">

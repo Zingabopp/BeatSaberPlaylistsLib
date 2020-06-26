@@ -19,11 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeatSaberPlaylistsLib\BeatSaberPlaylistsLib.csproj"/>
+    <ProjectReference Include="..\BeatSaberPlaylistsLib\BeatSaberPlaylistsLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ReadOnlyData\IPlaylistHandlerTests\" />
+    <Folder Include="ReadOnlyData\NestedDirectories\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,48 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ReadOnlyData\LegacyPlaylists\ImageTypePrefix.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L1_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L1_2.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_1\L2_0_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_1\L2_0_2.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_1\L3_1\L3_0_0_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_1\L3_1\L3_0_0_2.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_1\L3_2\L3_0_1_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_1\L3_2\L3_0_1_2.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_2\L2_1_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_2\L2_1_2.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_2\L3_3\L3_1_0_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_2\L3_3\L3_1_0_2.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_3\L2_2_1.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L2_3\L2_2_2.bplist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

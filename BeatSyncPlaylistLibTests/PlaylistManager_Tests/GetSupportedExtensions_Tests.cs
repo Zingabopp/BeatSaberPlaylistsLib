@@ -50,7 +50,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
                 File.Copy(Path.Combine(TestTools.DataFolder, "BlisterPlaylists", childPlaylist), childPlaylistPath);
             PlaylistManager manager = new PlaylistManager(playlistsPath, new LegacyPlaylistHandler(), new BlistPlaylistHandler());
             Assert.IsTrue(manager.HasChildren);
-            PlaylistManager childManager = manager.GetChildManagers.First();
+            PlaylistManager childManager = manager.GetChildManagers().First();
             childManager.SupportsExtension("bplist");
             IPlaylistHandler? handler = childManager.GetHandlerForExtension("bplist");
             Assert.IsNotNull(handler);

@@ -105,7 +105,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistManager_Tests
             string playlistFileName = "5LegacySongs";
             File.Copy(Path.Combine(ReadOnlyData, "5LegacySongs.bPlist"), Path.Combine(playlistDir, "5LegacySongs.bPlist"));
 
-            Assert.ThrowsException<ArgumentException>(() => manager.GetPlaylist(playlistFileName, providedHandler));
+            Assert.ThrowsException<ArgumentException>(() => manager.GetPlaylist(playlistFileName, false, providedHandler));
 
             TestTools.Cleanup(playlistDir);
         }

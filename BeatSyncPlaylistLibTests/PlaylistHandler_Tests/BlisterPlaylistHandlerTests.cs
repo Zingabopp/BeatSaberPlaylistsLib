@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using static BeatSaberPlaylistsLibTests.PlaylistHandler_Tests.IPlaylistHandlerTests;
+using static BeatSaberPlaylistsLibTests.TestTools;
 
 namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
 {

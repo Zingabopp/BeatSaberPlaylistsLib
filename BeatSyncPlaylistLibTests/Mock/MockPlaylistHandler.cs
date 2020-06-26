@@ -56,6 +56,32 @@ namespace BeatSaberPlaylistsLibTests.Mock
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Creates a new <see cref="MockPlaylist"/> using the given parameters.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <param name="description"></param>
+        /// <param name="suggestedExtension"></param>
+        /// <returns></returns>
+        public MockPlaylist CreatePlaylist(string fileName, string title, string? author, string? description, string? suggestedExtension)
+        {
+            MockPlaylist playlist = new MockPlaylist()
+            {
+                Filename = fileName,
+                Title = title,
+                Author = author,
+                Description = description,
+                SuggestedExtension = suggestedExtension
+            };
+            return playlist;
+        }
+
+        ///<inheritdoc/>
+        IPlaylist IPlaylistHandler.CreatePlaylist(string fileName, string title, string? author, string? description, string? suggestedExtension)
+        => CreatePlaylist(fileName, title, author, description, suggestedExtension);
+
         public event EventHandler<MockHandlerMethod>? EventCalled;
     }
     public enum MockHandlerMethod

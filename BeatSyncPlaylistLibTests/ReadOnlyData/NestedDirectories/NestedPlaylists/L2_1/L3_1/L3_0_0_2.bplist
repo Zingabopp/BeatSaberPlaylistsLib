@@ -1,0 +1,77 @@
+{
+  "playlistTitle": "Level 3_0_0",
+  "playlistAuthor": "Level 3",
+  "songs": [
+    {
+      "key": "0000",
+      "songName": "L3_0_0_2_0",
+      "levelAuthorName": "Level 3_0",
+      "hash": "L3_0_0_2ABC0_000000000000000000000000000",
+      "levelid": "custom_level_L3_0_0_2ABC0_000000000000000000000000000",
+      "DateAdded": null,
+      "Hash": "L3_0_0_2ABC0_000000000000000000000000000",
+      "LevelId": "custom_level_L3_0_0_2ABC0_000000000000000000000000000",
+      "Key": "0000",
+      "Name": "L3_0_0_2_0",
+      "LevelAuthorName": "Level 3_0",
+      "Identifiers": 7
+    },
+    {
+      "key": "0001",
+      "songName": "L3_0_0_2_1",
+      "levelAuthorName": "Level 3_1",
+      "hash": "L3_0_0_2ABC1_000000000000000000000000000",
+      "levelid": "custom_level_L3_0_0_2ABC1_000000000000000000000000000",
+      "DateAdded": null,
+      "Hash": "L3_0_0_2ABC1_000000000000000000000000000",
+      "LevelId": "custom_level_L3_0_0_2ABC1_000000000000000000000000000",
+      "Key": "0001",
+      "Name": "L3_0_0_2_1",
+      "LevelAuthorName": "Level 3_1",
+      "Identifiers": 7
+    },
+    {
+      "key": "0002",
+      "songName": "L3_0_0_2_2",
+      "levelAuthorName": "Level 3_2",
+      "hash": "L3_0_0_2ABC2_000000000000000000000000000",
+      "levelid": "custom_level_L3_0_0_2ABC2_000000000000000000000000000",
+      "DateAdded": null,
+      "Hash": "L3_0_0_2ABC2_000000000000000000000000000",
+      "LevelId": "custom_level_L3_0_0_2ABC2_000000000000000000000000000",
+      "Key": "0002",
+      "Name": "L3_0_0_2_2",
+      "LevelAuthorName": "Level 3_2",
+      "Identifiers": 7
+    },
+    {
+      "key": "0003",
+      "songName": "L3_0_0_2_3",
+      "levelAuthorName": "Level 3_3",
+      "hash": "L3_0_0_2ABC3_000000000000000000000000000",
+      "levelid": "custom_level_L3_0_0_2ABC3_000000000000000000000000000",
+      "DateAdded": null,
+      "Hash": "L3_0_0_2ABC3_000000000000000000000000000",
+      "LevelId": "custom_level_L3_0_0_2ABC3_000000000000000000000000000",
+      "Key": "0003",
+      "Name": "L3_0_0_2_3",
+      "LevelAuthorName": "Level 3_3",
+      "Identifiers": 7
+    },
+    {
+      "key": "0004",
+      "songName": "L3_0_0_2_4",
+      "levelAuthorName": "Level 3_4",
+      "hash": "L3_0_0_2ABC4_000000000000000000000000000",
+      "levelid": "custom_level_L3_0_0_2ABC4_000000000000000000000000000",
+      "DateAdded": null,
+      "Hash": "L3_0_0_2ABC4_000000000000000000000000000",
+      "LevelId": "custom_level_L3_0_0_2ABC4_000000000000000000000000000",
+      "Key": "0004",
+      "Name": "L3_0_0_2_4",
+      "LevelAuthorName": "Level 3_4",
+      "Identifiers": 7
+    }
+  ],
+  "image": ""
+}

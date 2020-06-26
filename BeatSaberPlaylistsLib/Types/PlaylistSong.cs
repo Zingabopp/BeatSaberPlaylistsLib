@@ -2,6 +2,7 @@
 extern alias BeatSaber;
 #endif
 using System;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,8 +14,10 @@ namespace BeatSaberPlaylistsLib.Types
     public abstract class PlaylistSong : IPlaylistSong
     {
 #if BeatSaber
+        [NonSerialized]
         private BeatSaber.IPreviewBeatmapLevel? _previewBeatmapLevel;
         ///<inheritdoc/>
+        [IgnoreDataMember]
         public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel
         {
             get
@@ -37,47 +40,63 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.levelID
             => PreviewBeatmapLevel?.levelID ?? this.LevelId;
 
+        [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.songName
             => PreviewBeatmapLevel?.songName;
 
+        [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.songSubName
             => PreviewBeatmapLevel?.songSubName;
 
+        [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.songAuthorName
             => PreviewBeatmapLevel?.songAuthorName;
 
+        [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.levelAuthorName
             => PreviewBeatmapLevel?.levelAuthorName;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.beatsPerMinute
             => PreviewBeatmapLevel?.beatsPerMinute ?? 0;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.songTimeOffset
             => PreviewBeatmapLevel?.songTimeOffset ?? 0;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.shuffle
             => PreviewBeatmapLevel?.shuffle ?? 0;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.shufflePeriod
             => PreviewBeatmapLevel?.shufflePeriod ?? 0;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.previewStartTime
             => PreviewBeatmapLevel?.previewStartTime ?? 0;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.previewDuration
             => PreviewBeatmapLevel?.previewDuration ?? 0;
 
+        [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.songDuration
             => PreviewBeatmapLevel?.songDuration ?? 0;
 
+        [IgnoreDataMember]
         BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.environmentInfo => throw new NotImplementedException();
 
+        [IgnoreDataMember]
         BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.allDirectionsEnvironmentInfo
             => PreviewBeatmapLevel?.allDirectionsEnvironmentInfo;
 
+        [IgnoreDataMember]
         BeatSaber.PreviewDifficultyBeatmapSet[]? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets 
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
 

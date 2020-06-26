@@ -28,6 +28,19 @@ namespace BeatSaberPlaylistsLib.Types
         /// The <see cref="IPlaylist"/> type used by this <see cref="IPlaylistHandler"/>.
         /// </summary>
         Type HandledType { get; }
+
+        /// <summary>
+        /// Creates a new <see cref="IPlaylist"/>.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <param name="description"></param>
+        /// <param name="suggestedExtension"></param>
+        /// <returns></returns>
+        IPlaylist CreatePlaylist(string fileName, string title, string? author = null,
+            string? description = null, string? suggestedExtension = null);
+
         /// <summary>
         /// Attempts to deserialize and return an <see cref="IPlaylist"/> from a stream.
         /// </summary>

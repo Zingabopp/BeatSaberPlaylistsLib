@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace BeatSaberPlaylistsLib.Legacy
 {
@@ -127,5 +128,28 @@ namespace BeatSaberPlaylistsLib.Legacy
         {
             return Deserialize(stream);
         }
+
+        /// <summary>
+        /// Creates a new <see cref="LegacyPlaylist"/> using the given parameters.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <param name="description"></param>
+        /// <param name="suggestedExtension"></param>
+        /// <returns></returns>
+        public LegacyPlaylist CreatePlaylist(string fileName, string title, string? author, string? description, string? suggestedExtension)
+        {
+            LegacyPlaylist playlist = new LegacyPlaylist(fileName, title, author)
+            {
+                Description = description,
+                SuggestedExtension = suggestedExtension
+            };
+            return playlist;
+        }
+
+        ///<inheritdoc/>
+        IPlaylist IPlaylistHandler.CreatePlaylist(string fileName, string title, string? author, string? description, string? suggestedExtension)
+        => CreatePlaylist(fileName, title, author, description, suggestedExtension);
     }
 }

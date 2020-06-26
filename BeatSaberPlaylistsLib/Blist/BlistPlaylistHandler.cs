@@ -176,6 +176,29 @@ namespace BeatSaberPlaylistsLib.Blist
             return Deserialize<BlistPlaylist>(stream);
         }
 
+        /// <summary>
+        /// Creates a new <see cref="BlistPlaylist"/> using the given parameters.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <param name="description"></param>
+        /// <param name="suggestedExtension"></param>
+        /// <returns></returns>
+        public BlistPlaylist CreatePlaylist(string fileName, string title, string? author, string? description, string? suggestedExtension)
+        {
+            BlistPlaylist playlist = new BlistPlaylist(fileName, title, author)
+            {
+                Description = description,
+                SuggestedExtension = suggestedExtension
+            };
+            return playlist;
+        }
+
+        ///<inheritdoc/>
+        IPlaylist IPlaylistHandler.CreatePlaylist(string fileName, string title, string? author, string? description, string? suggestedExtension)
+        => CreatePlaylist(fileName, title, author, description, suggestedExtension);
+
         ///<inheritdoc/>
         IPlaylist IPlaylistHandler.Deserialize(Stream stream)
         {

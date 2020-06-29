@@ -34,7 +34,8 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if(!HasCover)
                 {
-                    throw new NotImplementedException();
+                    // TODO: Default cover image?
+                    return null;
                 }
                 return Utilities.GetSpriteFromStream(GetCoverStream());
             }
@@ -46,7 +47,13 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Returns a new array of the songs in this playlist.
         /// </summary>
-        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels => Songs.ToArray();
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels 
+            => Songs
+            .Where(s => s.PreviewBeatmapLevel != null)
+            .Select(s => s.PreviewBeatmapLevel)
+            .ToArray();
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 #endif
 
         /// <summary>

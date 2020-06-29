@@ -47,6 +47,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <Reference Include="IPA.Loader">
+      <HintPath>$(BeatSaberReferences)\Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug-BeatSaber' OR '$(Configuration)' == 'Release-BeatSaber'">

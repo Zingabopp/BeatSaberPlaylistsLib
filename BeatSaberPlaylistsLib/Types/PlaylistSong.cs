@@ -47,7 +47,7 @@ namespace BeatSaberPlaylistsLib.Types
 
         [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.songName
-            => PreviewBeatmapLevel?.songName;
+            => PreviewBeatmapLevel?.songName ?? Name;
 
         [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.songSubName
@@ -59,7 +59,7 @@ namespace BeatSaberPlaylistsLib.Types
 
         [IgnoreDataMember]
         string? BeatSaber.IPreviewBeatmapLevel.levelAuthorName
-            => PreviewBeatmapLevel?.levelAuthorName;
+            => PreviewBeatmapLevel?.levelAuthorName ?? LevelAuthorName;
 
         [IgnoreDataMember]
         float BeatSaber.IPreviewBeatmapLevel.beatsPerMinute
@@ -106,7 +106,17 @@ namespace BeatSaberPlaylistsLib.Types
 
         Task<BeatSaber.UnityEngine.Texture2D>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageTexture2DAsync(CancellationToken cancellationToken) 
             => PreviewBeatmapLevel?.GetCoverImageTexture2DAsync(cancellationToken);
-
+        
+        public void RefreshFromSongCore()
+        {
+            if(LevelId != null && LevelId.Length > 0)
+            {
+                if (LevelId.StartsWith(CustomLevelIdPrefix))
+                    PreviewBeatmapLevel = SongCore.Loader.GetLevelById(LevelId);
+                else
+                    PreviewBeatmapLevel = SongCore.Loader.GetOfficialLevelById(LevelId).PreviewBeatmapLevel;
+            }
+        }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 #endif
         /// <summary>

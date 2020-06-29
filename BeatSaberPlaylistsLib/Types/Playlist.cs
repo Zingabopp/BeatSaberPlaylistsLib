@@ -25,6 +25,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// Name of the collection, uses <see cref="Title"/>.
         /// </summary>
         string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
+        Sprite _sprite;
         /// <summary>
         /// Cover image sprite.
         /// </summary>
@@ -32,12 +33,15 @@ namespace BeatSaberPlaylistsLib.Types
         {
             get
             {
+                if (_sprite != null)
+                    return _sprite;
                 if(!HasCover)
                 {
                     // TODO: Default cover image?
                     return null;
                 }
-                return Utilities.GetSpriteFromStream(GetCoverStream());
+                _sprite = Utilities.GetSpriteFromStream(GetCoverStream());
+                return _sprite;
             }
         }
         /// <summary>

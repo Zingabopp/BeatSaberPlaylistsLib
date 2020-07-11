@@ -390,6 +390,7 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <remarks>If there are multiple playlists with the same filename and no handler is specified, the first matching playlist with an extension registered to a handler will be read.</remarks>
         /// <param name="playlistFileName">Playlist filename with extension.</param>
+        /// <param name="searchChildren">Includes child managers in the search.</param>
         /// <param name="handler">Optional <see cref="IPlaylistHandler"/> to use if deserialization is necessary. If null, use the first registered handler for the file type.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="playlistFileName"/> doesn't have an extension or if a <paramref name="handler"/> is given that doesn't support the file extension.</exception>

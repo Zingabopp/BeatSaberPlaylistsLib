@@ -1,5 +1,6 @@
 ﻿using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -109,6 +110,30 @@ namespace BeatSaberPlaylistsLib.Legacy
                 _coverString = value;
             }
         }
+
+        public object? GetCustomData(string key)
+        {
+            if (AdditionalData.TryGetValue(key, out JToken value))
+                return value;
+            return null;
+        }
+
+        /// <summary>
+        /// Set custom data 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void SetCustomData(string key, JToken value)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key), "key cannot be null or empty for SetCustomData");
+            AdditionalData["key"] = value;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonExtensionData]
+        protected Dictionary<string, JToken> AdditionalData = new Dictionary<string, JToken>();
 
         ///<inheritdoc/>
         public override bool IsReadOnly => false;

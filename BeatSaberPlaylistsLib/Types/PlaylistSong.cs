@@ -26,14 +26,7 @@ namespace BeatSaberPlaylistsLib.Types
                     return _previewBeatmapLevel;
                 if (LevelId == null || LevelId.Length == 0)
                     return null;
-                if (LevelId.StartsWith("custom_level_"))
-                {
-                    _previewBeatmapLevel = SongCore.Loader.GetLevelById(LevelId);
-                }
-                else
-                {
-                    _previewBeatmapLevel = SongCore.Loader.GetOfficialLevelById(LevelId).PreviewBeatmapLevel;
-                }
+                _previewBeatmapLevel = SongCore.Loader.GetLevelById(LevelId);
                 return _previewBeatmapLevel;
             }
             internal set => _previewBeatmapLevel = value;
@@ -97,24 +90,21 @@ namespace BeatSaberPlaylistsLib.Types
             => PreviewBeatmapLevel?.allDirectionsEnvironmentInfo;
 
         [IgnoreDataMember]
-        BeatSaber.PreviewDifficultyBeatmapSet[]? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets 
+        BeatSaber.PreviewDifficultyBeatmapSet[]? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
 
 
         Task<BeatSaber.UnityEngine.AudioClip>? BeatSaber.IPreviewBeatmapLevel.GetPreviewAudioClipAsync(CancellationToken cancellationToken)
          => PreviewBeatmapLevel?.GetPreviewAudioClipAsync(cancellationToken);
 
-        Task<BeatSaber.UnityEngine.Texture2D>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageTexture2DAsync(CancellationToken cancellationToken) 
+        Task<BeatSaber.UnityEngine.Texture2D>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageTexture2DAsync(CancellationToken cancellationToken)
             => PreviewBeatmapLevel?.GetCoverImageTexture2DAsync(cancellationToken);
-        
+
         public void RefreshFromSongCore()
         {
-            if(LevelId != null && LevelId.Length > 0)
+            if (LevelId != null && LevelId.Length > 0)
             {
-                if (LevelId.StartsWith(CustomLevelIdPrefix))
-                    PreviewBeatmapLevel = SongCore.Loader.GetLevelById(LevelId);
-                else
-                    PreviewBeatmapLevel = SongCore.Loader.GetOfficialLevelById(LevelId).PreviewBeatmapLevel;
+                PreviewBeatmapLevel = SongCore.Loader.GetLevelById(LevelId);
             }
         }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

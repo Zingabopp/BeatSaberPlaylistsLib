@@ -16,6 +16,7 @@
   <PropertyGroup Condition="'$(NCRUNCH)' == '1'">
     <DisableCopyArtifacts>True</DisableCopyArtifacts>
     <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">
     <ArtifactDestination>$(OutputPath)BeatSaberRelease</ArtifactDestination>

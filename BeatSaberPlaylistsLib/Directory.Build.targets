@@ -31,9 +31,9 @@
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
   <Target Name="SetFullReleaseInfo" AfterTargets="Build"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
-    <GetCommitHash ProjectDir="$(ProjectDir)">
-      <Output TaskParameter="CommitShortHash" PropertyName="CommitShortHash" />
-    </GetCommitHash>
+    <GetCommitInfo ProjectDir="$(ProjectDir)">
+      <Output TaskParameter="CommitHash" PropertyName="CommitShortHash" />
+    </GetCommitInfo>
     <GetManifestInfo ErrorOnMismatch="True" ManifestPath="BeatSaberPlaylistsLib.manifest" KnownAssemblyVersion="$(Version)" Condition="'$(BeatSaberRelease)' == 'True'">
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />

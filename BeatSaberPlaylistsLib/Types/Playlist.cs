@@ -25,11 +25,11 @@ namespace BeatSaberPlaylistsLib.Types
         /// Name of the collection, uses <see cref="Title"/>.
         /// </summary>
         string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
-        Sprite _sprite;
+        Sprite? _sprite;
         /// <summary>
         /// Cover image sprite.
         /// </summary>
-        Sprite BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage
+        Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage
         {
             get
             {

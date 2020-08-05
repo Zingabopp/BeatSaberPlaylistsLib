@@ -15,6 +15,11 @@ namespace BeatSaberPlaylistsLib
     public class PlaylistManager
     {
         /// <summary>
+        /// Raised when an assembly requests consumers be notified of large changes to <see cref="PlaylistManager"/>'s contents.
+        /// </summary>
+        public event EventHandler<string>? PlaylistsRefreshRequested;
+
+        /// <summary>
         /// Lazy loader for <see cref="DefaultManager"/>. 
         /// </summary>
         protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() =>
@@ -148,6 +153,16 @@ namespace BeatSaberPlaylistsLib
         /// Path to the directory the <see cref="PlaylistManager"/> loads and stores playlists.
         /// </summary>
         public string PlaylistPath { get; protected set; }
+
+        /// <summary>
+        /// Call this after making large changes to playlists or the <see cref="PlaylistManager"/> to notify other assemblies.
+        /// Recommended for requesting a UI to update.
+        /// </summary>
+        /// <param name="requestSource"></param>
+        public void RequestRefresh(string requestSource)
+        {
+            PlaylistsRefreshRequested?.Invoke(this, requestSource);
+        }
 
         /// <summary>
         /// Creates a new <see cref="IPlaylist"/> using the given parameters.

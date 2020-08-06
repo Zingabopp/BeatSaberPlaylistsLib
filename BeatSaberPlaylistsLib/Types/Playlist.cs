@@ -13,12 +13,13 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
-    public abstract class Playlist
+    public abstract class Playlist : IDeferredSpriteLoad
     {
 #if BeatSaber
         public event EventHandler? SpriteLoaded;
         protected static readonly Queue<Action> SpriteQueue = new Queue<Action>();
         protected Sprite? _sprite;
+        protected bool SpriteLoadQueued;
         private static readonly object _loaderLock = new object();
         private static bool CoroutineRunning = false;
         protected static void QueueLoadSprite(Playlist playlist)
@@ -52,11 +53,33 @@ namespace BeatSaberPlaylistsLib.Types
                 loader?.Invoke();
             }
             CoroutineRunning = false;
-            if(SpriteQueue.Count > 0) // Just in case
+            if (SpriteQueue.Count > 0) // Just in case
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public Sprite? Sprite
+        {
+            get
+            {
+                if (_sprite != null)
+                    return _sprite;
+                if (!HasCover)
+                {
+                    // TODO: Default cover image?
+                    return null;
+                }
+                if (!SpriteLoadQueued)
+                {
+                    SpriteLoadQueued = true;
+                    QueueLoadSprite(this);
+                }
+                return _sprite;
+            }
+        }
+
 #endif
 
         /// <inheritdoc/>
@@ -122,21 +145,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Cover image sprite.
         /// </summary>
-        Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage
-        {
-            get
-            {
-                if (_sprite != null)
-                    return _sprite;
-                if (!HasCover)
-                {
-                    // TODO: Default cover image?
-                    return null;
-                }
-                _sprite = Utilities.GetSpriteFromStream(GetCoverStream());
-                return _sprite;
-            }
-        }
+        Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage => Sprite;
 
         /// <summary>
         /// Returns itself.

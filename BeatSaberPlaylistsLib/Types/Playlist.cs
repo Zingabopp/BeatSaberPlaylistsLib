@@ -40,8 +40,8 @@ namespace BeatSaberPlaylistsLib.Types
             if (!CoroutineRunning)
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
-        private static WaitForEndOfFrame LoadWait = new WaitForEndOfFrame();
-        protected static IEnumerator<WaitForEndOfFrame> SpriteLoadCoroutine()
+        public static YieldInstruction LoadWait = new WaitForEndOfFrame();
+        protected static IEnumerator<YieldInstruction> SpriteLoadCoroutine()
         {
             lock (_loaderLock)
             {

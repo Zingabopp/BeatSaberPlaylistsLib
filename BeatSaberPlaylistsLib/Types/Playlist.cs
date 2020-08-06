@@ -13,7 +13,10 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
-    public abstract class Playlist : IDeferredSpriteLoad
+    public abstract class Playlist
+#if BeatSaber
+         : IDeferredSpriteLoad
+#endif
     {
 #if BeatSaber
         public event EventHandler? SpriteLoaded;

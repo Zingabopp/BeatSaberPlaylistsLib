@@ -13,19 +13,112 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
+    public abstract class Playlist
+    {
+#if BeatSaber
+        public event EventHandler? SpriteLoaded;
+        protected static readonly Queue<Action> SpriteQueue = new Queue<Action>();
+        protected Sprite? _sprite;
+        private static readonly object _loaderLock = new object();
+        private static bool CoroutineRunning = false;
+        protected static void QueueLoadSprite(Playlist playlist)
+        {
+            SpriteQueue.Enqueue(() =>
+            {
+                if (!playlist.HasCover)
+                {
+                    return;
+                }
+                playlist._sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
+                playlist.SpriteLoaded?.Invoke(playlist, null);
+            });
+
+            if (!CoroutineRunning)
+                BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
+        }
+        private static WaitForEndOfFrame LoadWait = new WaitForEndOfFrame();
+        protected static IEnumerator<WaitForEndOfFrame> SpriteLoadCoroutine()
+        {
+            lock (_loaderLock)
+            {
+                if (CoroutineRunning)
+                    yield break;
+                CoroutineRunning = true;
+            }
+            while (SpriteQueue.Count > 0)
+            {
+                yield return LoadWait;
+                var loader = SpriteQueue.Dequeue();
+                loader?.Invoke();
+            }
+            CoroutineRunning = false;
+            if(SpriteQueue.Count > 0) // Just in case
+                BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
+        }
+
+        
+#endif
+
+        /// <inheritdoc/>
+        public event EventHandler? PlaylistChanged;
+
+        /// <inheritdoc/>
+        public abstract string Title { get; set; }
+        /// <inheritdoc/>
+        public abstract string? Author { get; set; }
+        /// <inheritdoc/>
+        public abstract string? Description { get; set; }
+        /// <inheritdoc/>
+        public virtual string Filename { get; set; } = "";
+        /// <inheritdoc/>
+        public string? SuggestedExtension { get; set; }
+        /// <inheritdoc/>
+        public bool AllowDuplicates { get; set; }
+
+        /// <inheritdoc/>
+        public virtual bool IsReadOnly => false;
+
+        /// <inheritdoc/>
+        public abstract bool HasCover { get; }
+
+        /// <inheritdoc/>
+        public abstract Stream GetCoverStream();
+
+        /// <inheritdoc/>
+        public abstract void SetCover(byte[] coverImage);
+
+        /// <inheritdoc/>
+        public abstract void SetCover(string? coverImageStr);
+
+        /// <inheritdoc/>
+        public abstract void SetCover(Stream stream);
+
+        /// <inheritdoc/>
+        public void RaisePlaylistChanged()
+        {
+            EventHandler? handler = PlaylistChanged;
+            handler?.Invoke(this, null);
+        }
+    }
+
+
+    /// <summary>
+    /// Base class for a Playlist.
+    /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class Playlist<T> : IPlaylist<T>
+    public abstract class Playlist<T> : Playlist, IPlaylist<T>
 #if BeatSaber
         , BeatSaber.IPlaylist, BeatSaber.IBeatmapLevelCollection
 #endif
         where T : class, IPlaylistSong, new()
     {
 #if BeatSaber
+
         /// <summary>
         /// Name of the collection, uses <see cref="Title"/>.
         /// </summary>
         string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
-        Sprite? _sprite;
+
         /// <summary>
         /// Cover image sprite.
         /// </summary>
@@ -35,7 +128,7 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (_sprite != null)
                     return _sprite;
-                if(!HasCover)
+                if (!HasCover)
                 {
                     // TODO: Default cover image?
                     return null;
@@ -44,6 +137,7 @@ namespace BeatSaberPlaylistsLib.Types
                 return _sprite;
             }
         }
+
         /// <summary>
         /// Returns itself.
         /// </summary>
@@ -52,7 +146,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// Returns a new array of the songs in this playlist.
         /// </summary>
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels 
+        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels
             => Songs
             .Where(s => s.PreviewBeatmapLevel != null)
             .Select(s => s.PreviewBeatmapLevel)
@@ -75,29 +169,9 @@ namespace BeatSaberPlaylistsLib.Types
             }
         }
 
-        /// <inheritdoc/>
-        public event EventHandler? PlaylistChanged;
 
-
-        /// <inheritdoc/>
-        public abstract string Title { get; set; }
-        /// <inheritdoc/>
-        public abstract string? Author { get; set; }
-        /// <inheritdoc/>
-        public abstract string? Description { get; set; }
-        /// <inheritdoc/>
-        public virtual string Filename { get; set; } = "";
-        /// <inheritdoc/>
-        public string? SuggestedExtension { get; set; }
-        /// <inheritdoc/>
-        public bool AllowDuplicates { get; set; }
         /// <inheritdoc/>
         public int Count => Songs.Count;
-        /// <inheritdoc/>
-        public virtual bool IsReadOnly => false;
-
-        /// <inheritdoc/>
-        public abstract bool HasCover { get; }
 
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.
@@ -160,9 +234,6 @@ namespace BeatSaberPlaylistsLib.Types
             }
         }
 
-        /// <inheritdoc/>
-        public abstract Stream GetCoverStream();
-
         /// <summary>
         /// Returns an <see cref="IEnumerator{T}"/> that iterates through the playlist's songs.
         /// </summary>
@@ -185,13 +256,6 @@ namespace BeatSaberPlaylistsLib.Types
         public void Insert(int index, IPlaylistSong item)
         {
             Songs.Insert(index, CreateFrom(item));
-        }
-
-        /// <inheritdoc/>
-        public void RaisePlaylistChanged()
-        {
-            EventHandler? handler = PlaylistChanged;
-            handler?.Invoke(this, null);
         }
 
         /// <inheritdoc/>
@@ -243,14 +307,6 @@ namespace BeatSaberPlaylistsLib.Types
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc/>
-        public abstract void SetCover(byte[] coverImage);
-
-        /// <inheritdoc/>
-        public abstract void SetCover(string? coverImageStr);
-
-        /// <inheritdoc/>
-        public abstract void SetCover(Stream stream);
 
         /// <inheritdoc/>
         public bool TryRemoveByHash(string songHash)

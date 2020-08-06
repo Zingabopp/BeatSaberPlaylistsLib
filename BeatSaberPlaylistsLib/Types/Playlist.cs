@@ -21,6 +21,7 @@ namespace BeatSaberPlaylistsLib.Types
 #if BeatSaber
         public event EventHandler? SpriteLoaded;
         protected static readonly Queue<Action> SpriteQueue = new Queue<Action>();
+        public static Sprite? DefaultCoverImage { get; set; }
         protected Sprite? _sprite;
         protected bool SpriteLoadQueued;
         private static readonly object _loaderLock = new object();
@@ -33,7 +34,8 @@ namespace BeatSaberPlaylistsLib.Types
                 {
                     return;
                 }
-                playlist._sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
+                Sprite sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
+                playlist._sprite = sprite ?? DefaultCoverImage;
                 playlist.SpriteLoaded?.Invoke(playlist, null);
             });
 
@@ -69,12 +71,8 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (_sprite != null)
                     return _sprite;
-                if (!HasCover)
-                {
-                    // TODO: Default cover image?
-                    return null;
-                }
-                if (!SpriteLoadQueued)
+                _sprite = DefaultCoverImage;
+                if (HasCover && !SpriteLoadQueued)
                 {
                     SpriteLoadQueued = true;
                     QueueLoadSprite(this);

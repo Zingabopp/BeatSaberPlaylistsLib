@@ -24,18 +24,20 @@ namespace BeatSaberPlaylistsLib.Types
         public static Sprite? DefaultCoverImage { get; set; }
         protected Sprite? _sprite;
         protected bool SpriteLoadQueued;
+        public bool SpriteWasLoaded { get; protected set; }
         private static readonly object _loaderLock = new object();
         private static bool CoroutineRunning = false;
         protected static void QueueLoadSprite(Playlist playlist)
         {
-            SpriteQueue.Enqueue(() =>
+            SpriteQueue.Enqueue(async () =>
             {
                 if (!playlist.HasCover)
                 {
                     return;
                 }
-                Sprite sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
+                Sprite? sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
                 playlist._sprite = sprite ?? DefaultCoverImage;
+                playlist.SpriteWasLoaded = true;
                 playlist.SpriteLoaded?.Invoke(playlist, null);
             });
 

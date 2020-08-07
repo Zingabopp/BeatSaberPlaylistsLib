@@ -10,6 +10,7 @@ namespace BeatSaberPlaylistsLib.Types
     public interface IDeferredSpriteLoad
     {
         event EventHandler? SpriteLoaded;
+        bool SpriteWasLoaded { get; }
         Sprite? Sprite { get; }
     }
 }

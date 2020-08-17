@@ -16,6 +16,7 @@
   <PropertyGroup Condition="'$(NCRUNCH)' == '1'">
     <DisableCopyArtifacts>True</DisableCopyArtifacts>
     <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">
     <ArtifactDestination>$(OutputPath)BeatSaberRelease</ArtifactDestination>
@@ -30,19 +31,19 @@
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
   <Target Name="SetFullReleaseInfo" AfterTargets="Build"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
-    <GetCommitHash ProjectDir="$(ProjectDir)">
-      <Output TaskParameter="CommitShortHash" PropertyName="CommitShortHash" />
-    </GetCommitHash>
+    <GetCommitInfo ProjectDir="$(ProjectDir)">
+      <Output TaskParameter="CommitHash" PropertyName="CommitHash" />
+    </GetCommitInfo>
     <GetManifestInfo ErrorOnMismatch="True" ManifestPath="BeatSaberPlaylistsLib.manifest" KnownAssemblyVersion="$(Version)" Condition="'$(BeatSaberRelease)' == 'True'">
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
       <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
     </GetManifestInfo>
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
-      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitShortHash)</ReleaseName>
+      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
     </PropertyGroup>
     <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
-      <ReleaseName>$(AssemblyName)-$(Version)-$(CommitShortHash)</ReleaseName>
+      <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
     </PropertyGroup>
     <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)" Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
     <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>

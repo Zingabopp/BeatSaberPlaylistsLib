@@ -90,61 +90,67 @@ namespace BeatSaberPlaylistsLib.Legacy
         [JsonProperty("playlistDescription", Order = 0, NullValueHandling = NullValueHandling.Ignore)]
         public override string? Description { get; set; }
 
-        private string? _coverString;
         /// <summary>
         /// A base64 string conversion of the cover image.
         /// </summary>
         [DataMember]
         [JsonProperty("image", Order = 10)]
-        protected string CoverString
+        protected string? CoverString
         {
             get
             {
-                if (_coverString == null)
-                    _coverString = ImageLoader?.Value ?? string.Empty;
-                return _coverString;
+                if (CoverData == null)
+                    return string.Empty;
+                return Utilities.ByteArrayToBase64(CoverData); ;
             }
             set
             {
-                _coverString = value;
+                if (value == null || value.Length == 0)
+                {
+                    CoverData = Array.Empty<byte>();
+                    return;
+                }
+                try
+                {
+                    CoverData = Utilities.Base64ToByteArray(value);
+                }
+                catch (FormatException)
+                {
+                    CoverData = Array.Empty<byte>();
+                }
             }
         }
+
+        /// <summary>
+        /// Raw data for the cover image.
+        /// </summary>
+        protected byte[]? CoverData;
 
         ///<inheritdoc/>
         public override bool IsReadOnly => false;
 
         ///<inheritdoc/>
-        public override bool HasCover => !string.IsNullOrEmpty(CoverString);
+        public override bool HasCover => CoverData != null && CoverData.Length > 0;
 
         ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
-            try
-            {
-                if (string.IsNullOrEmpty(CoverString))
-                    return new MemoryStream(Array.Empty<byte>());
-                return new MemoryStream(Utilities.Base64ToByteArray(CoverString));
-            }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch (FormatException)
-            {
+            if (HasCover)
+                return new MemoryStream(CoverData);
+            else
                 return new MemoryStream(Array.Empty<byte>());
-            }
-#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         ///<inheritdoc/>
         public override void SetCover(byte[]? coverImage)
         {
-            CoverString = Utilities.ByteArrayToBase64(coverImage);
+            CoverData = coverImage;
         }
 
         ///<inheritdoc/>
         public override void SetCover(string? coverImageStr)
         {
-            if (coverImageStr == null)
-                return;
-            ImageLoader = new Lazy<string>(() => coverImageStr);
+            CoverString = coverImageStr;
         }
 
         ///<inheritdoc/>
@@ -154,13 +160,11 @@ namespace BeatSaberPlaylistsLib.Legacy
                 CoverString = "";
             else if (stream is MemoryStream cast)
             {
-                CoverString = Utilities.ByteArrayToBase64(cast.ToArray());
+                CoverData = cast.ToArray();
             }
             else
             {
-                using MemoryStream ms = new MemoryStream();
-                stream.CopyTo(ms);
-                CoverString = Utilities.ByteArrayToBase64(ms.ToArray());
+                CoverData = stream.ToArray();
             }
         }
     }

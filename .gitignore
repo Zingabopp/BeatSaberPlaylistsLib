@@ -339,4 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /BeatSaberPlaylistsLib/BeatSaberPlaylistsLib.xml
-/Refs/Beat Saber_Data/Managed
+/Refs/Beat Saber_Data/Managed/*
+!/Refs/Beat Saber_Data/Managed/IPA.*

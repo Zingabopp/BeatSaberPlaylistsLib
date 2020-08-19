@@ -55,12 +55,16 @@ namespace BeatSaberPlaylistsLibTests.Utilities_Tests
             Color StringColor = System.Drawing.ColorTranslator.FromHtml("blue");
             string addedText = "Playlist Name and Word Wrapping with borders";
             string adjustedText = WordWrap(addedText, 20);
-            Point point = new Point(bitmap.Width / 2, bitmap.Height / 2 -40);
+            Point point = new Point(bitmap.Width / 2, bitmap.Height / 2 - 40);
             Font font = new Font("arial", 60, FontStyle.Regular);
             font = GetAdjustedFont(g, adjustedText, font, bitmap.Width, 100, 20, true);
 
             GraphicsPath p = new GraphicsPath();
-            g.RotateTransform(-10f);
+            float moveX = bitmap.Width / 2f + 20;
+            float moveY = bitmap.Height / 2f - 40 + 20;
+            g.TranslateTransform(moveX, moveY);
+            g.RotateTransform(-35f);
+            g.TranslateTransform(-moveX, -moveY);
             p.AddString(adjustedText, FontFamily.GenericSansSerif, (int)FontStyle.Regular, g.DpiY * font.Size / 72, point, centerFormat);
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.SmoothingMode = SmoothingMode.HighQuality;
@@ -79,7 +83,7 @@ namespace BeatSaberPlaylistsLibTests.Utilities_Tests
 
             //graphicsImage.DrawString(adjustedText, font, new SolidBrush(StringColor), point,
             //    centerFormat);
-
+            g.ResetTransform();
             Directory.CreateDirectory(OutputPath);
             bitmap.Save(Path.Combine(OutputPath, "outputBordered.png"), ImageFormat.Png);
 

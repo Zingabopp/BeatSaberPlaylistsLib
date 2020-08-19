@@ -12,7 +12,7 @@ namespace BeatSaberPlaylistsLibTests.Utilities_Tests
     [TestClass]
     public class DrawingTests
     {
-        public static readonly string ReadOnlyData = Path.Combine(TestTools.DataFolder, "BlisterPlaylists");
+        public static readonly string ReadOnlyData = Path.Combine(TestTools.DataFolder, "DrawingTests");
         public static readonly string OutputPath = Path.Combine(TestTools.OutputFolder, "DrawingTests");
         [TestMethod]
         public void DrawString()
@@ -43,7 +43,7 @@ namespace BeatSaberPlaylistsLibTests.Utilities_Tests
         [TestMethod]
         public void DrawBorderedString()
         {
-            string sourceFile = Path.Combine(ReadOnlyData, "testCover.jpg");
+            string sourceFile = Path.Combine(ReadOnlyData, "BeatSaverMapper.png");
             System.Drawing.Image bitmap = (Image)Bitmap.FromFile(sourceFile);
             System.Drawing.Image fillMap = (Image)Bitmap.FromFile(sourceFile);
             Graphics g = Graphics.FromImage(bitmap);
@@ -55,11 +55,12 @@ namespace BeatSaberPlaylistsLibTests.Utilities_Tests
             Color StringColor = System.Drawing.ColorTranslator.FromHtml("blue");
             string addedText = "Playlist Name and Word Wrapping with borders";
             string adjustedText = WordWrap(addedText, 20);
-            Point point = new Point(bitmap.Width / 2, bitmap.Height / 2 + 80);
+            Point point = new Point(bitmap.Width / 2, bitmap.Height / 2 -40);
             Font font = new Font("arial", 60, FontStyle.Regular);
             font = GetAdjustedFont(g, adjustedText, font, bitmap.Width, 100, 20, true);
 
             GraphicsPath p = new GraphicsPath();
+            g.RotateTransform(-10f);
             p.AddString(adjustedText, FontFamily.GenericSansSerif, (int)FontStyle.Regular, g.DpiY * font.Size / 72, point, centerFormat);
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.SmoothingMode = SmoothingMode.HighQuality;

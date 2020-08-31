@@ -229,6 +229,9 @@ namespace BeatSaberPlaylistsLib
         /// Default playlist cover, loaded on first access.
         /// </summary>
         public static Sprite? DefaultSprite => _defaultSpriteLoader.Value;
+        /// <summary>
+        /// Logger for debugging sprite loads.
+        /// </summary>
         public static Action<string?, Exception?>? Logger;
         /// <summary>
         /// Creates a <see cref="Sprite"/> from an image <see cref="Stream"/>.

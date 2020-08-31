@@ -173,7 +173,7 @@ namespace BeatSaberPlaylistsLib.Types
 #if BeatSaber
 
         /// <summary>
-        /// Name of the collection, uses <see cref="Title"/>.
+        /// Name of the collection, uses <see cref="Playlist.Title"/>.
         /// </summary>
         string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
 

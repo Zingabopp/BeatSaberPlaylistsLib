@@ -70,7 +70,7 @@ namespace BeatSaberPlaylistsLibTests
         }
 
         public static IPlaylist CreatePlaylist<T, TSong>(string fileName, string title, string author, int numSongs,
-            string description = null, string suggestedExtension = null)
+            string? description = null, string? suggestedExtension = null)
             where T : IPlaylistHandler, new()
             where TSong : IPlaylistSong, new()
         {

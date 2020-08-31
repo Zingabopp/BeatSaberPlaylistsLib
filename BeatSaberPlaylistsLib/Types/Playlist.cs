@@ -19,17 +19,33 @@ namespace BeatSaberPlaylistsLib.Types
 #endif
     {
 #if BeatSaber
-        public event EventHandler? SpriteLoaded;
+        /// <summary>
+        /// Queue of <see cref="Action"/>s to load playlist sprites.
+        /// </summary>
         protected static readonly Queue<Action> SpriteQueue = new Queue<Action>();
+        /// <summary>
+        /// Default cover image to use if a playlist has no cover image.
+        /// </summary>
         public static Sprite? DefaultCoverImage { get; set; }
+
+        /// <summary>
+        /// Instance of the playlist cover sprite.
+        /// </summary>
         protected Sprite? _sprite;
+        /// <summary>
+        /// Returns true if the sprite for the playlist is already queued.
+        /// </summary>
         protected bool SpriteLoadQueued;
-        public bool SpriteWasLoaded { get; protected set; }
         private static readonly object _loaderLock = new object();
         private static bool CoroutineRunning = false;
+
+        /// <summary>
+        /// Adds a playlist to the sprite load queue.
+        /// </summary>
+        /// <param name="playlist"></param>
         protected static void QueueLoadSprite(Playlist playlist)
         {
-            SpriteQueue.Enqueue(async () =>
+            SpriteQueue.Enqueue(() =>
             {
                 if (!playlist.HasCover)
                 {
@@ -44,7 +60,15 @@ namespace BeatSaberPlaylistsLib.Types
             if (!CoroutineRunning)
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
+        /// <summary>
+        /// Wait <see cref="YieldInstruction"/> between sprite loads.
+        /// </summary>
         public static YieldInstruction LoadWait = new WaitForEndOfFrame();
+
+        /// <summary>
+        /// Coroutine to load sprites in the queue.
+        /// </summary>
+        /// <returns></returns>
         protected static IEnumerator<YieldInstruction> SpriteLoadCoroutine()
         {
             lock (_loaderLock)
@@ -64,9 +88,15 @@ namespace BeatSaberPlaylistsLib.Types
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        #region IDeferredSpriteLoad
+
+        /// <inheritdoc/>
+        public event EventHandler? SpriteLoaded;
+
+        /// <inheritdoc/>
+        public bool SpriteWasLoaded { get; protected set; }
+
+        /// <inheritdoc/>
         public Sprite? Sprite
         {
             get
@@ -82,6 +112,8 @@ namespace BeatSaberPlaylistsLib.Types
                 return _sprite;
             }
         }
+
+        #endregion
 
 #endif
 

@@ -60,6 +60,10 @@
       <HintPath>$(BeatSaberReferences)\Beat Saber_Data\Managed\Main.dll</HintPath>
       <Aliases>BeatSaber</Aliases>
     </Reference>
+    <Reference Include="HMLib">
+      <HintPath>$(BeatSaberReferences)\Beat Saber_Data\Managed\HMLib.dll</HintPath>
+      <Aliases>BeatSaber</Aliases>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(BeatSaberReferences)\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Aliases>BeatSaber</Aliases>

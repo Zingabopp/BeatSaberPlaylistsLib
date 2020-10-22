@@ -97,8 +97,8 @@ namespace BeatSaberPlaylistsLib.Types
         Task<BeatSaber.UnityEngine.AudioClip>? BeatSaber.IPreviewBeatmapLevel.GetPreviewAudioClipAsync(CancellationToken cancellationToken)
          => PreviewBeatmapLevel?.GetPreviewAudioClipAsync(cancellationToken);
 
-        Task<BeatSaber.UnityEngine.Texture2D>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageTexture2DAsync(CancellationToken cancellationToken)
-            => PreviewBeatmapLevel?.GetCoverImageTexture2DAsync(cancellationToken);
+        Task<BeatSaber.UnityEngine.Sprite>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageAsync(CancellationToken cancellationToken)
+            => PreviewBeatmapLevel?.GetCoverImageAsync(cancellationToken);
 
         public void RefreshFromSongCore()
         {

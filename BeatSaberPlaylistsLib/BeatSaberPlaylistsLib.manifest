@@ -3,14 +3,13 @@
   "id": "BeatSaberPlaylistsLib",
   "name": "BeatSaberPlaylistsLib",
   "author": "Zingabopp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A playlist loading library.",
-  "gameVersion": "1.11.0",
+  "gameVersion": "1.12.2",
   "files": [
     "Libs/BeatSaberPlaylistsLib.dll"
   ],
   "dependsOn": {
-    "SongCore": "^2.9.10"
-  },
-  "features": []
+    "SongCore": "^3.0.0"
+  }
 }

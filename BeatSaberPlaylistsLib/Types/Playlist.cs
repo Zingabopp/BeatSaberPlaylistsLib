@@ -196,6 +196,20 @@ namespace BeatSaberPlaylistsLib.Types
             .Select(s => s.PreviewBeatmapLevel)
             .ToArray();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+        /// <inheritdoc/>
+        public IPlaylistSong? Add(BeatSaber.IPreviewBeatmapLevel beatmap)
+        {
+            if (beatmap == null)
+                return null;
+            IPlaylistSong? song = Add(new T()
+            {
+                LevelId = beatmap.levelID,
+                Name = beatmap.songName,
+                LevelAuthorName = beatmap.levelAuthorName,
+            });
+            song?.SetPreviewBeatmap(beatmap);
+            return song;
+        }
 #endif
 
         /// <summary>

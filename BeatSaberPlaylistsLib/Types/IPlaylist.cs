@@ -71,6 +71,15 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="song"></param>
         /// <returns>The added IPlaylistSong, null if nothing was added.</returns>
         IPlaylistSong? Add(ISong song);
+#if BeatSaber
+        /// <summary>
+        /// Adds the <see cref="BeatSaber.IPreviewBeatmapLevel"/> to the playlist. 
+        /// Does nothing if <see cref="AllowDuplicates"/> is false and the song is already in the playlist. 
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns>The added <see cref="IPlaylistSong"/> (not the <see cref="BeatSaber.IPreviewBeatmapLevel"/>), null if nothing was added.</returns>
+        IPlaylistSong? Add(BeatSaber.IPreviewBeatmapLevel song);
+#endif
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> and adds it to the playlist.
         /// Does nothing if <see cref="AllowDuplicates"/> is false and the song is already in the playlist. 

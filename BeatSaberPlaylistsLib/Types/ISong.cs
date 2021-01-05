@@ -18,7 +18,12 @@ namespace BeatSaberPlaylistsLib.Types
         /// The <see cref="BeatSaber.IPreviewBeatmapLevel"/> this playlist song is matched to, if any.
         /// Depends on SongCore being finished loading songs.
         /// </summary>
-        public BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel { get; }
+        BeatSaber.IPreviewBeatmapLevel? PreviewBeatmapLevel { get; }
+        /// <summary>
+        /// Sets the game's associated <see cref="BeatSaber.IPreviewBeatmapLevel"/>.
+        /// </summary>
+        /// <param name="beatmap"></param>
+        internal void SetPreviewBeatmap(BeatSaber.IPreviewBeatmapLevel beatmap);
 #endif
         /// <summary>
         /// Beat Saver hash of the song, always uppercase.

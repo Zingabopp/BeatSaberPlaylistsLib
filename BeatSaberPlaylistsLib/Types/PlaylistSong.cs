@@ -32,6 +32,11 @@ namespace BeatSaberPlaylistsLib.Types
             internal set => _previewBeatmapLevel = value;
         }
 
+        void ISong.SetPreviewBeatmap(BeatSaber.IPreviewBeatmapLevel beatmap)
+        {
+            PreviewBeatmapLevel = beatmap;
+        }
+        #region IPreviewBeatmapLevel passthrough
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
         [IgnoreDataMember]
@@ -99,7 +104,7 @@ namespace BeatSaberPlaylistsLib.Types
 
         Task<BeatSaber.UnityEngine.Sprite>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageAsync(CancellationToken cancellationToken)
             => PreviewBeatmapLevel?.GetCoverImageAsync(cancellationToken);
-
+        #endregion
         public void RefreshFromSongCore()
         {
             if (LevelId != null && LevelId.Length > 0)

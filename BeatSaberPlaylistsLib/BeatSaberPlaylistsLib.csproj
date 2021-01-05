@@ -25,7 +25,6 @@
     <Content Include="BeatSaberPlaylistsLib.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="BeatSaberPlaylistsLib.csproj.user" Condition="Exists('BeatSaberPlaylistsLib.csproj.user')" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icons\FolderIcon.png" />
@@ -85,51 +84,5 @@
       <InformationalVersion>$(VersionType)-$(GitBranch)-$(CommitHash)-$(GitModified)</InformationalVersion>
     </PropertyGroup>
     <Message Text="Version $(InformationalVersion)" Importance="high" />
-  </Target>
-  <Target Name="PreBuild" BeforeTargets="BeforeBuild" Condition="'$(NCRUNCH)' != '1'">
-    <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed." Condition="'$(BSMTTaskAssembly)' == ''" />
-    <GetCommitInfo ProjectDir="$(ProjectDir)">
-      <Output TaskParameter="CommitHash" PropertyName="CommitHash" />
-      <Output TaskParameter="Branch" PropertyName="GitBranch" />
-      <Output TaskParameter="IsPullRequest" PropertyName="IsPullRequest" />
-      <Output TaskParameter="Modified" PropertyName="GitModified" />
-      <Output TaskParameter="GitUser" PropertyName="GitUser" />
-    </GetCommitInfo>
-    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' AND '$(GitUser)' == 'Zingabopp' AND '$(IsPullRequest)' != 'true'">
-      <VersionType>Official</VersionType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(GitModified)' != 'Modified'">
-      <InformationalVersion>$(VersionType)-$(GitBranch)-$(CommitHash)</InformationalVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(GitModified)' == 'Modified'">
-      <InformationalVersion>$(VersionType)-$(GitBranch)-$(CommitHash)-$(GitModified)</InformationalVersion>
-    </PropertyGroup>
-    <Message Text="Version $(InformationalVersion)" Importance="high" />
-  </Target>
-  <Target Name="SetFullReleaseInfo" AfterTargets="PreBuild"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
-    <GetManifestInfo FailOnError="$(ErrorOnMismatchedVersions)" ManifestPath="BeatSaberPlaylistsLib.manifest" >
-      <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
-      <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
-    </GetManifestInfo>
-    <PropertyGroup>
-      <Version>$(PluginVersion)</Version>
-    </PropertyGroup>
-    <!--<GetAssemblyInfo FailOnError="$(ErrorOnMismatchedVersions)" Condition="'$(AssemblyVersion)' == ''">
-      <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
-    </GetAssemblyInfo>-->
-    <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(Version)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" />
-    <GetCommitInfo ProjectDir="$(ProjectDir)">
-      <Output TaskParameter="CommitHash" PropertyName="CommitHash" />
-      <Output TaskParameter="Branch" PropertyName="Branch" />
-      <Output TaskParameter="Modified" PropertyName="GitModified" />
-    </GetCommitInfo>
-    <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
-      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
-    </PropertyGroup>
-    <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
-      <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
-    </PropertyGroup>
-    <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)" Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
-    <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
   </Target>
 </Project>

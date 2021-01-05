@@ -59,12 +59,25 @@
   </Target>
   <!--Creates a BeatMods compliant zip file with the release.-->
   <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
-    <Message Text="Zipping '$(ArtifactDestination)' for release. $(ReleaseName)" Importance="high" />
-    <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile ="$(OutDir)zip\$(ReleaseName).zip" />
+    <!--Set 'ReleaseName' if it failed before.-->
+    <PropertyGroup Condition="'$(ReleaseName)' == '' AND '$(BeatSaberRelease)' == 'True'">
+      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
+    </PropertyGroup>
+    <PropertyGroup  Condition="'$(ReleaseName)' == '' AND '$(BeatSaberRelease)' != 'True'">
+      <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
+    </PropertyGroup>
+    <PropertyGroup>
+      <DestinationDirectory>$(OutDir)zip\</DestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <OldZips Include="$(DestinationDirectory)$(AssemblyName)*.zip"/>
+    </ItemGroup>
+    <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
+    <Delete Files="@(OldZips)" TreatErrorsAsWarnings="true" ContinueOnError="true" />
+    <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile="$(DestinationDirectory)$(ReleaseName).zip" />
   </Target>
   <!--Copies the assembly and pdb to the Beat Saber folder.-->
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyToPlugins)' != 'True'">
-    <Message Text="CopyToPlugins Running..." Importance="high" />
     <PropertyGroup>
       <PluginDir>$(BeatSaberDir)\Plugins</PluginDir>
       <LibsDir>$(BeatSaberDir)\Libs</LibsDir>
@@ -76,7 +89,7 @@
       <!--Error if 'BeatSaberDir' is the same as 'LocalRefsDir'-->
       <CopyToPluginsError Condition="'$(BeatSaberDir)' == '$(LocalRefsDir)' OR '$(BeatSaberDir)' == ''">Unable to copy to Plugins folder, 'BeatSaberDir' has not been set in your 'csproj.user' file.</CopyToPluginsError>
       <CanCopyToPlugins Condition="'$(CopyToPluginsError)' != ''">False</CanCopyToPlugins>
-  </PropertyGroup>
+    </PropertyGroup>
     <IsProcessRunning ProcessName="Beat Saber">
       <Output TaskParameter="IsRunning" PropertyName="IsRunning" />
     </IsProcessRunning>

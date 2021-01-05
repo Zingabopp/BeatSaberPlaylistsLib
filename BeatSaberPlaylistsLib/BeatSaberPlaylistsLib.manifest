@@ -3,7 +3,7 @@
   "id": "BeatSaberPlaylistsLib",
   "name": "BeatSaberPlaylistsLib",
   "author": "Zingabopp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A playlist loading library.",
   "gameVersion": "1.13.0",
   "files": [

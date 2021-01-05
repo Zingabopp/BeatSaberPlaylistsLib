@@ -9,29 +9,34 @@
     <!--Output assembly path without extension-->
     <OutputAssemblyName>$(OutputPath)$(AssemblyName)</OutputAssemblyName>
     <ReleaseName>$(AssemblyName)-$(Version)</ReleaseName>
-    <ErrorOnMismatchedVersions>True</ErrorOnMismatchedVersions>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
-    <DisableZipRelease>True</DisableZipRelease>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(NCRUNCH)' == '1'">
-    <DisableCopyArtifacts>True</DisableCopyArtifacts>
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
-    <DisableZipRelease>True</DisableZipRelease>
-  </PropertyGroup>
-  <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">
-    <ArtifactDestination>$(OutputPath)BeatSaberRelease</ArtifactDestination>
-  </PropertyGroup>
-  <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
-    <ArtifactDestination>$(OutputPath)Artifacts</ArtifactDestination>
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <!--Path to folder to be zipped. Needs to be relative to the project directory to work without changes to the 'BuildForCI' target.-->
+    <ArtifactDestination>$(OutputPath)Final</ArtifactDestination>
+    <ErrorOnMismatchedVersions Condition="'$(Configuration)' == 'Release' OR '$(Configuration)' == 'Release-BeatSaber'">True</ErrorOnMismatchedVersions>
   </PropertyGroup>
   <!--Build Targets-->
   <!--Displays a warning if BeatSaberModdingTools.Tasks is not installed.-->
-  <Target Name="CheckBSMTInstalled" BeforeTargets="Build" Condition="'$(BSMTTaskAssembly)' == ''">
+  <Target Name="CheckBSMTInstalled" AfterTargets="BeforeBuild" Condition="'$(BSMTTaskAssembly)' == ''">
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
-  
+  <Target Name="SetFullReleaseInfo" AfterTargets="CheckBSMTInstalled"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
+    <GetManifestInfo FailOnError="True" ManifestPath="BeatSaberPlaylistsLib.manifest" >
+      <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
+      <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
+    </GetManifestInfo>
+    <PropertyGroup>
+      <Version>$(PluginVersion)</Version>
+      <AssemblyVersion>$(PluginVersion)</AssemblyVersion>
+    </PropertyGroup>
+    <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(AssemblyVersion)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" Condition="'$(BeatSaberRelease)' == 'True'" />
+    <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
+      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
+    </PropertyGroup>
+    <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
+      <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
+    </PropertyGroup>
+    <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)" Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
+    <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
+  </Target>
   <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).dll" />
@@ -50,7 +55,7 @@
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
-    <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />
+    <Message Text="::set-output name=artifactpath::$(ArtifactDestination)" Importance="high" />
   </Target>
   <!--Creates a BeatMods compliant zip file with the release.-->
   <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
@@ -58,8 +63,20 @@
     <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile ="$(OutDir)zip\$(ReleaseName).zip" />
   </Target>
   <!--Copies the assembly and pdb to the Beat Saber folder.-->
-  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' AND '$(DisableCopyToPlugins)' != 'True'">
-    <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyToPlugins)' != 'True'">
+    <Message Text="CopyToPlugins Running..." Importance="high" />
+    <PropertyGroup>
+      <PluginDir>$(BeatSaberDir)\Plugins</PluginDir>
+      <LibsDir>$(BeatSaberDir)\Libs</LibsDir>
+      <CanCopyToPlugins>True</CanCopyToPlugins>
+      <CopyToPluginsError Condition="!Exists('$(PluginDir)')">Unable to copy assembly to game folder, did you set 'BeatSaberDir' correctly in your 'csproj.user' file? Plugins folder doesn't exist: '$(PluginDir)'.</CopyToPluginsError>
+      <CopyToPluginsError Condition="!Exists('$(LibsDir)')">Unable to copy assembly to game folder, did you set 'BeatSaberDir' correctly in your 'csproj.user' file? Libs folder doesn't exist: '$(LibsDir)'.</CopyToPluginsError>
+      <!--Error if 'BeatSaberDir' does not have 'Beat Saber.exe'-->
+      <CopyToPluginsError Condition="!Exists('$(BeatSaberDir)\Beat Saber.exe')">Unable to copy to Plugins folder, '$(BeatSaberDir)' does not appear to be a Beat Saber game install.</CopyToPluginsError>
+      <!--Error if 'BeatSaberDir' is the same as 'LocalRefsDir'-->
+      <CopyToPluginsError Condition="'$(BeatSaberDir)' == '$(LocalRefsDir)' OR '$(BeatSaberDir)' == ''">Unable to copy to Plugins folder, 'BeatSaberDir' has not been set in your 'csproj.user' file.</CopyToPluginsError>
+      <CanCopyToPlugins Condition="'$(CopyToPluginsError)' != ''">False</CanCopyToPlugins>
+  </PropertyGroup>
     <IsProcessRunning ProcessName="Beat Saber">
       <Output TaskParameter="IsRunning" PropertyName="IsRunning" />
     </IsProcessRunning>
@@ -71,10 +88,11 @@
       <PluginDir>$(BeatSaberDir)\Plugins</PluginDir>
       <LibsDir>$(BeatSaberDir)\Libs</LibsDir>
     </PropertyGroup>
-    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to $(LibsDir)" Importance="high" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(LibsDir)\$(AssemblyName).dll" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(LibsDir)\$(AssemblyName).pdb" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(LibsDir)\$(AssemblyName).xml" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).manifest" DestinationFiles="$(PluginDir)\$(AssemblyName).manifest" />
+    <Warning Text="$(CopyToPluginsError)" Condition="'$(CopyToPluginsError)' != ''" />
+    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to $(LibsDir)" Importance="high"  Condition="$(CanCopyToPlugins)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(LibsDir)\$(AssemblyName).dll"  Condition="$(CanCopyToPlugins)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(LibsDir)\$(AssemblyName).pdb"  Condition="$(CanCopyToPlugins)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(LibsDir)\$(AssemblyName).xml"  Condition="$(CanCopyToPlugins)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).manifest" DestinationFiles="$(PluginDir)\$(AssemblyName).manifest"  Condition="$(CanCopyToPlugins)" />
   </Target>
 </Project>

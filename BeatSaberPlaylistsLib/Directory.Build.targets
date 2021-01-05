@@ -55,7 +55,7 @@
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
-    <Message Text="::set-output name=artifactpath::$(ArtifactDestination)" Importance="high" />
+    <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />
   </Target>
   <!--Creates a BeatMods compliant zip file with the release.-->
   <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">

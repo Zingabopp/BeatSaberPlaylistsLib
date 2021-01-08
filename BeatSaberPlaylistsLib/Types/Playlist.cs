@@ -381,6 +381,14 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         /// <inheritdoc/>
+        public bool TryRemove(IPlaylistSong song)
+        {
+            if (song == null)
+                return false;
+            return RemoveAll((IPlaylistSong s) => s == song) > 0;
+        }
+
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return Songs.GetEnumerator();

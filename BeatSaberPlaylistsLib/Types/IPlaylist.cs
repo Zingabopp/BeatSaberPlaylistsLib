@@ -103,6 +103,12 @@ namespace BeatSaberPlaylistsLib.Types
         /// <returns></returns>
         bool TryRemoveByKey(string songKey);
         /// <summary>
+        /// Tries to remove the given song from the playlist. Returns true if successful.
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        bool TryRemove(IPlaylistSong song);
+        /// <summary>
         /// Removes all duplicate songs from the playlist.
         /// </summary>
         void RemoveDuplicates();

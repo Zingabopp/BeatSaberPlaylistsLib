@@ -171,11 +171,13 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="imageResourcePath"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static string ImageToBase64(string imageResourcePath)
         {
             try
             {
-                byte[]? resource = GetResource(Assembly.GetCallingAssembly(), imageResourcePath);
+                byte[] resource = GetResource(Assembly.GetCallingAssembly(), imageResourcePath);
                 if (resource.Length == 0)
                 {
                     //Logger.log?.Warn($"Unable to load image from path: {imagePath}");
@@ -196,20 +198,26 @@ namespace BeatSaberPlaylistsLib
         /// From https://github.com/brian91292/BeatSaber-CustomUI/blob/master/Utilities/Utilities.cs
         /// </summary>
         /// <param name="asm"></param>
-        /// <param name="ResourceName"></param>
+        /// <param name="resourceName"></param>
         /// <returns></returns>
-        public static byte[] GetResource(Assembly asm, string ResourceName)
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static byte[] GetResource(Assembly asm, string resourceName)
         {
+            if (asm == null)
+                throw new ArgumentNullException(nameof(asm));
+            if (string.IsNullOrEmpty(resourceName))
+                throw new ArgumentException($"'{resourceName}' is not a valid resource name.", nameof(resourceName));
             try
             {
-                using Stream stream = asm.GetManifestResourceStream(ResourceName);
+                using Stream stream = asm.GetManifestResourceStream(resourceName);
                 byte[] data = new byte[stream.Length];
                 stream.Read(data, 0, (int)stream.Length);
                 return data;
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException ex)
             {
-                throw;
+                throw new ArgumentException($"Could not load resource, '{resourceName}', from assembly '{asm.FullName}'", nameof(resourceName), ex);
                 //Logger.log?.Debug($"Resource {ResourceName} was not found.");
             }
         }

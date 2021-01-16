@@ -2,6 +2,7 @@
 extern alias BeatSaber;
 #endif
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -223,6 +224,11 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         /// <summary>
+        /// The optional recommended difficulties for the beatmap
+        /// </summary>
+        public List<Difficulty>? Difficulties { get; set; }
+
+        /// <summary>
         /// Adds the given flag to the <see cref="Identifiers"/> property.
         /// </summary>
         /// <param name="identifier"></param>
@@ -238,6 +244,31 @@ namespace BeatSaberPlaylistsLib.Types
         {
             Identifiers &= ~identifier;
         }
+
+
+        /// <summary>
+        /// Adds a <see cref="Difficulty"/> to the <see cref="PlaylistSong"/>.
+        /// </summary>
+        /// <param name="diff"></param>
+        public void AddDifficulty(Difficulty diff)
+        {
+
+            if (Difficulties == null) Difficulties = new List<Difficulty>();
+            if (Difficulties.Contains(diff))
+                return;
+            Difficulties.Add(diff);
+        }
+        /// <summary>
+        /// Adds a <see cref="Difficulty"/> with the given parameters to the <see cref="PlaylistSong"/>.
+        /// </summary>
+        /// <param name="characteristic"></param>
+        /// <param name="difficultyName"></param>
+        public void AddDifficulty(string characteristic, string difficultyName)
+        {
+            Difficulty diff = new Difficulty() { Characteristic = characteristic, Name = difficultyName };
+            AddDifficulty(diff);
+        }
+
         ///<inheritdoc/>
         public virtual string? Name { get; set; }
         ///<inheritdoc/>

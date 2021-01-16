@@ -47,28 +47,6 @@ namespace BeatSaberPlaylistsLib.Blist
             else
                 _customData.Add(key, value);
         }
-        /// <summary>
-        /// Adds a <see cref="Difficulty"/> to the <see cref="BlistPlaylistSong"/>.
-        /// </summary>
-        /// <param name="diff"></param>
-        public void AddDifficulty(Difficulty diff)
-        {
-
-            if (Difficulties == null) Difficulties = new List<Difficulty>();
-            if (Difficulties.Contains(diff))
-                return;
-            Difficulties.Add(diff);
-        }
-        /// <summary>
-        /// Adds a <see cref="Difficulty"/> with the given parameters to the <see cref="BlistPlaylistSong"/>.
-        /// </summary>
-        /// <param name="characteristic"></param>
-        /// <param name="difficultyName"></param>
-        public void AddDifficulty(string characteristic, string difficultyName)
-        {
-            Difficulty diff = new Difficulty() { Characteristic = characteristic, Name = difficultyName };
-            AddDifficulty(diff);
-        }
 
         /// <summary>
         /// Custom data not included in the schema. Returns null if there are no entries.
@@ -100,12 +78,6 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         /// <summary>
-        /// The optional recommended difficulties for the beatmap
-        /// </summary>
-        [JsonProperty("difficulties", NullValueHandling = NullValueHandling.Ignore)]
-        public List<Difficulty>? Difficulties { get; set; }
-
-        /// <summary>
         /// The SHA1 hash of the beatmap
         /// </summary>
         [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
@@ -133,6 +105,16 @@ namespace BeatSaberPlaylistsLib.Blist
         {
             get => LevelId;
             set => LevelId = value;
+        }
+
+        /// <summary>
+        /// The optional recommended difficulties for the beatmap
+        /// </summary>
+        [JsonProperty("difficulties", NullValueHandling = NullValueHandling.Ignore)]
+        public List<Difficulty>? _serializedDifficulties
+        {
+            get => Difficulties;
+            set => Difficulties = value;
         }
 
         /// <summary>

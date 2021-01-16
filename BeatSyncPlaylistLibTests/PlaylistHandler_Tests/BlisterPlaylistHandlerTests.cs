@@ -4,6 +4,7 @@ using BeatSaberPlaylistsLib.Legacy;
 using BeatSaberPlaylistsLib.Types;
 using BeatSaberPlaylistsLibTests.IPlaylistSong_Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,6 +52,49 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.AreEqual(7, playlist.Count);
             Assert.IsTrue(playlist.All(s => s.Hash != null && s.Hash.Length == 40));
         }
+
+
+        [TestMethod]
+        public void ReadPlaylist_AllowDuplicates()
+        {
+            string sourcePlaylist = Path.Combine(ReadOnlyData, "MDBB.blist");
+            IPlaylistHandler handler = new BlistPlaylistHandler();
+            Assert.IsTrue(File.Exists(sourcePlaylist), $"File doesn't exist: '{sourcePlaylist}'");
+            using Stream playlistStream = File.OpenRead(sourcePlaylist);
+            IPlaylist playlist = handler.Deserialize(playlistStream);
+            Assert.AreEqual(7, playlist.Count);
+            Assert.IsTrue(playlist.AllowDuplicates);
+            Assert.IsTrue(playlist.All(s => s.Hash != null && s.Hash.Length == 40));
+        }
+
+        [TestMethod]
+        public void ReadPlaylist_NestedCustomData()
+        {
+            string sourcePlaylist = Path.Combine(ReadOnlyData, "MDBB.blist");
+            IPlaylistHandler handler = new BlistPlaylistHandler();
+            Assert.IsTrue(File.Exists(sourcePlaylist), $"File doesn't exist: '{sourcePlaylist}'");
+            using Stream playlistStream = File.OpenRead(sourcePlaylist);
+            IPlaylist playlist = handler.Deserialize(playlistStream);
+            Assert.AreEqual(7, playlist.Count);
+            if (playlist.CustomData != null)
+            {
+                if (playlist.CustomData.TryGetValue("NestedObject", out object? value))
+                {
+                    if (value is JObject jObj)
+                    {
+                        Assert.AreEqual(jObj["NestedTest"], "test");
+                    }
+                    else
+                        Assert.Fail("value isn't a JObject");
+                }
+                else
+                    Assert.Fail("NestedObject not found in CustomData");
+            }
+            else
+                Assert.Fail("CustomData is null.");
+            Assert.IsTrue(playlist.All(s => s.Hash != null && s.Hash.Length == 40));
+        }
+
         [TestMethod]
         public void ReadPlaylist_NoImage()
         {

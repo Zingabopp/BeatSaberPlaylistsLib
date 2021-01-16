@@ -1,0 +1,51 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raftario/blist/master/playlist.schema.json",
+  "title": "Melodic Dubstep (Bloq Busters Vol. 2)",
+  "author": "Bloq Busters",
+  "description": "Bloq Busters Vol. 2\nSongs from Au5, Crystal Skies, Excision, Fractal, Jason Ross, Seven Lions, Warriyo, Wooli, and Virtual Riot\nMapped by baxter395, Bloodcloak, Checkthepan, Exce, Geckoh20, TranquilizeMe, and xScaramouche.",
+  "cover": "cover.jpg",
+  "maps": [
+    {
+      "type": "hash",
+      "hash": "16EE07235B8DB234CA1900532FF7EF17E6F6111A",
+      "customData": { "songName": "Don't Give Up On Me" }
+    },
+    {
+      "type": "hash",
+      "hash": "7AFCE73700754A31B92F04D31B8150EA2494801F",
+      "customData": { "songName": "Another Me" }
+    },
+    {
+      "type": "hash",
+      "hash": "0BC6562A0BDE3A933D656A514C67EEEC88A315DF",
+      "customData": { "songName": "Smoke" }
+    },
+    {
+      "type": "hash",
+      "hash": "2504335E18296809C6F964DA55389E019CA74ABC",
+      "customData": { "songName": "Battle Cry" }
+    },
+    {
+      "type": "hash",
+      "hash": "122D07B5950B56E5973895BFA8E067C6474A7C06",
+      "customData": { "songName": "Sojourn" }
+    },
+    {
+      "type": "hash",
+      "hash": "0dadd6ab18e3ca0011459f16366e41ecffa5029e",
+      "customData": { "songName": "The Sirens" }
+    },
+    {
+      "type": "hash",
+      "hash": "430317172790d9ec92edfc8e46991b36ebc1b907",
+      "customData": { "songName": "Throwback" }
+    }
+  ],
+  "customData": {
+      "AllowDuplicates": true,
+      "Test": "CustomDataTest",
+      "NestedObject": {
+        "NestedTest": "test"
+      }
+  }
+}

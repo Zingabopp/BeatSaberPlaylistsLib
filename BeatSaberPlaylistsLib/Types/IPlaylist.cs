@@ -35,6 +35,11 @@ namespace BeatSaberPlaylistsLib.Types
         /// Suggested file extension for the playlist. May be null.
         /// </summary>
         string? SuggestedExtension { get; set; }
+
+        /// <summary>
+        /// Custom data not included in the schema
+        /// </summary>
+        public Dictionary<string, object>? CustomData { get; set; }
         /// <summary>
         /// True if a playlist cover image is available.
         /// </summary>

@@ -90,6 +90,11 @@ namespace BeatSaberPlaylistsLib.Legacy
         [JsonProperty("playlistDescription", Order = 0, NullValueHandling = NullValueHandling.Ignore)]
         public override string? Description { get; set; }
 
+
+        ///<inheritdoc/>
+        [JsonProperty("customData", Order = 5, NullValueHandling = NullValueHandling.Ignore)]
+        public override Dictionary<string, object>? CustomData { get; set; }
+
         /// <summary>
         /// A base64 string conversion of the cover image.
         /// </summary>

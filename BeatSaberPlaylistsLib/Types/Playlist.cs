@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -131,7 +132,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public string? SuggestedExtension { get; set; }
         /// <inheritdoc/>
-        public bool AllowDuplicates { get; set; }
+        public bool AllowDuplicates { get; set; } = true;
 
         /// <inheritdoc/>
         public virtual bool IsReadOnly => false;
@@ -156,6 +157,24 @@ namespace BeatSaberPlaylistsLib.Types
         {
             EventHandler? handler = PlaylistChanged;
             handler?.Invoke(this, null);
+        }
+
+        /// <inheritdoc/>
+        public abstract Dictionary<string, object>? CustomData { get; set; }
+
+        /// <summary>
+        /// Runs after playlist has been deserialized.
+        /// </summary>
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if (CustomData != null && CustomData.TryGetValue("AllowDuplicates", out object value))
+            {
+                if (value is bool allowDuplicates)
+                {
+                    AllowDuplicates = allowDuplicates;
+                }
+            }
         }
     }
 
@@ -193,7 +212,7 @@ namespace BeatSaberPlaylistsLib.Types
         BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels
             => Songs
             .Where(s => s.PreviewBeatmapLevel != null)
-            .Select(s => s.PreviewBeatmapLevel)
+            .Select(s => s)
             .ToArray();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
         /// <inheritdoc/>

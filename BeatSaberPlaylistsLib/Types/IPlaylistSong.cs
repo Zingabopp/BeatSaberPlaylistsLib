@@ -11,5 +11,9 @@ namespace BeatSaberPlaylistsLib.Types
         /// Date and time the song added to the playlist.
         /// </summary>
         DateTime? DateAdded { get; set; }
+        /// <summary>
+        /// Unique identifier for playlist song, used for distinguishing between duplicates.
+        /// </summary>
+        public int playlistSongID { get; }
     }
 }

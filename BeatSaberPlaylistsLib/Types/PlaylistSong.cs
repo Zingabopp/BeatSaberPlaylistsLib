@@ -22,6 +22,12 @@ namespace BeatSaberPlaylistsLib.Types
         ///<inheritdoc/>
         public DateTime? DateAdded { get; set; }
         ///<inheritdoc/>
+        
+        /// <summary>
+        /// Unique identifier for playlist song, used for distinguishing between duplicates.
+        /// </summary>
+        public int playlistSongID => new Random().Next();
+
         public string? Hash
         {
             get

@@ -124,6 +124,21 @@ namespace BeatSaberPlaylistsLib.Types
         Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage => Sprite;
 
         /// <summary>
+        /// BeatmapLevelPack ID.
+        /// </summary>
+        public string packID => BeatSaber.CustomLevelLoader.kCustomLevelPackPrefixId + Title;
+
+        /// <summary>
+        /// BeatmapLevelPack Name, same as name of the collection.
+        /// </summary>
+        public string packName => Title;
+
+        /// <summary>
+        /// BeatmapLevelPack Short Name, same as name of the collection.
+        /// </summary>
+        public string shortPackName => Title;
+
+        /// <summary>
         /// Returns itself.
         /// </summary>
         BeatSaber.IBeatmapLevelCollection BeatSaber.IAnnotatedBeatmapLevelCollection.beatmapLevelCollection => this;

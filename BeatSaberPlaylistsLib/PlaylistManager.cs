@@ -198,6 +198,26 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Deletes an existing <see cref="IPlaylist"/> if found in the manager.
+        /// </summary>
+        /// <param name="playlist"></param>
+        /// <returns></returns>
+        public bool DeletePlaylist(IPlaylist playlist)
+        {
+            IPlaylistHandler handler = DefaultHandler ?? PlaylistHandlers.Values.FirstOrDefault() ?? throw new InvalidOperationException("PlaylistManager has no registered IPlaylistHandlers.");
+            string extension = String.IsNullOrEmpty(playlist.SuggestedExtension) ? handler.DefaultExtension : playlist.SuggestedExtension;
+            string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + extension);
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+                var playlistToDelete = LoadedPlaylists.First(p => p.Value.Equals(playlist));
+                LoadedPlaylists.TryRemove(playlistToDelete.Key, out playlist);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Loads all available playlists.
         /// </summary>
         /// <param name="loadedPlaylists"></param>

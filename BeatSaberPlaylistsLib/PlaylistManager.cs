@@ -204,7 +204,9 @@ namespace BeatSaberPlaylistsLib
         /// <returns></returns>
         public bool DeletePlaylist(IPlaylist playlist)
         {
-            string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + playlist.SuggestedExtension);
+            IPlaylistHandler handler = DefaultHandler ?? PlaylistHandlers.Values.FirstOrDefault() ?? throw new InvalidOperationException("PlaylistManager has no registered IPlaylistHandlers.");
+            string extension = String.IsNullOrEmpty(playlist.SuggestedExtension) ? handler.DefaultExtension : playlist.SuggestedExtension;
+            string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + extension);
             if(File.Exists(path))
             {
                 File.Delete(path);

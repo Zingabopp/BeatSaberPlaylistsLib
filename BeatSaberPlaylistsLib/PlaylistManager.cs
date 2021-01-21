@@ -202,10 +202,17 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="IOException"></exception>
         public bool DeletePlaylist(IPlaylist playlist)
         {
+            if (playlist == null)
+                throw new ArgumentNullException(nameof(playlist));
             IPlaylistHandler handler = DefaultHandler ?? PlaylistHandlers.Values.FirstOrDefault() ?? throw new InvalidOperationException("PlaylistManager has no registered IPlaylistHandlers.");
-            string extension = String.IsNullOrEmpty(playlist.SuggestedExtension) ? handler.DefaultExtension : playlist.SuggestedExtension;
+            string? suggestedExtension = string.IsNullOrWhiteSpace(playlist.SuggestedExtension) ? null : playlist.SuggestedExtension;
+            string extension = suggestedExtension ?? handler.DefaultExtension;
+
             string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + extension);
             if(File.Exists(path))
             {

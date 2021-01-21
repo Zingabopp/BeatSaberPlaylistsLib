@@ -16,7 +16,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         /// <summary>
         /// Array of the supported extensions (no leading '.').
         /// </summary>
-        protected string[] SupportedExtensions = new string[] { "bplist", "json" };
+        protected static string[] SupportedExtensions = new string[] { "bplist", "json" };
 
         ///<inheritdoc/>
         public string DefaultExtension => "bplist";

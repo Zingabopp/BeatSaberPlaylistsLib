@@ -9,7 +9,7 @@ namespace BeatSaberPlaylistsLib.Types
     public interface IPlaylistHandler
     {
         /// <summary>
-        /// The default extension used by this <see cref="IPlaylistHandler"/>.
+        /// The default extension used by this <see cref="IPlaylistHandler"/> (does not include the '.' prefix). 
         /// </summary>
         string DefaultExtension { get; }
         /// <summary>

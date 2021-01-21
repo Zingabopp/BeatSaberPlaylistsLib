@@ -14,6 +14,6 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Unique identifier for playlist song, used for distinguishing between duplicates.
         /// </summary>
-        public int playlistSongID { get; }
+        public Guid playlistSongID { get; }
     }
 }

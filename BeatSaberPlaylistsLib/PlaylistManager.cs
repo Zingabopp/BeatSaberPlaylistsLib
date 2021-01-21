@@ -176,6 +176,7 @@ namespace BeatSaberPlaylistsLib
         public IPlaylist CreatePlaylist(string fileName, string title, string author, Lazy<string> imageLoader, string? description = null)
         {
             IPlaylist playlist = new LegacyPlaylist(fileName, title, author, imageLoader) { Description = description };
+            playlist.SuggestedExtension = "bplist";
             return playlist;
         }
 

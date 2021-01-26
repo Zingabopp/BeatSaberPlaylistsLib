@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLib", "Be
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLibTests", "BeatSyncPlaylistLibTests\BeatSaberPlaylistsLibTests.csproj", "{4841AEA7-04C3-412E-A607-3C4D14F16F6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageExperiments", "ImageExperiments\ImageExperiments.csproj", "{B5AD9C40-1498-46F2-8B4B-46270ED502A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,14 @@ Global
 		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug-BeatSaber|Any CPU.Build.0 = Debug|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Release-BeatSaber|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

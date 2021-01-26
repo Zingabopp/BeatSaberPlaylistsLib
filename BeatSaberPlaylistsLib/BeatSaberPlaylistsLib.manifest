@@ -11,6 +11,5 @@
   ],
   "dependsOn": {
     "SongCore": "^3.0.3"
-  },
-  "features": []
+  }
 }

@@ -9,8 +9,18 @@ using System.Drawing.Imaging;
 
 namespace BeatSaberPlaylistsLib
 {
+    /// <summary>
+    /// Utilities for modifying images.
+    /// </summary>
     public static class ImageUtilities
     {
+        /// <summary>
+        /// Draw a string on the given <see cref="Image"/>.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="bitmap"></param>
+        /// <param name="drawSettings"></param>
+        /// <returns></returns>
         public static Image DrawString(string str, Image bitmap, DrawSettings drawSettings)
         {
             if (drawSettings.DrawStyle == DrawStyle.Bordered)
@@ -70,7 +80,7 @@ namespace BeatSaberPlaylistsLib
             return bitmap;
         }
 
-        public static Font GetAdjustedFont(Graphics GraphicRef, string GraphicString, Font OriginalFont, int ContainerWidth, int MaxFontSize, int MinFontSize, bool SmallestOnFail)
+        private static Font GetAdjustedFont(Graphics GraphicRef, string GraphicString, Font OriginalFont, int ContainerWidth, int MaxFontSize, int MinFontSize, bool SmallestOnFail)
         {
             // We utilize MeasureString which we get via a control instance           
             for (int AdjustedSize = MaxFontSize; AdjustedSize >= MinFontSize; AdjustedSize--)
@@ -176,20 +186,53 @@ namespace BeatSaberPlaylistsLib
 
     }
 
+    /// <summary>
+    /// Settings for drawing text.
+    /// </summary>
     public struct DrawSettings
     {
+        /// <summary>
+        /// <see cref="StringFormat"/> settings.
+        /// </summary>
         public StringFormat StringFormat;
+        /// <summary>
+        /// Color of the text.
+        /// </summary>
         public Color Color;
+        /// <summary>
+        /// Font of the text.
+        /// </summary>
         public Font Font;
+        /// <summary>
+        /// Width, in characters, to wrap text.
+        /// </summary>
         public int WrapWidth;
+        /// <summary>
+        /// Minimum text size.
+        /// </summary>
         public int MinTextSize;
+        /// <summary>
+        /// Maximum text size.
+        /// </summary>
         public int MaxTextSize;
+        /// <summary>
+        /// Style of text to draw.
+        /// </summary>
         public DrawStyle DrawStyle;
     }
 
+    /// <summary>
+    /// Draw style.
+    /// </summary>
     public enum DrawStyle
     {
+        /// <summary>
+        /// Basic text drawing.
+        /// </summary>
         Normal,
+        /// <summary>
+        /// Text with a border.
+        /// </summary>
         Bordered
     }
 }

@@ -31,6 +31,8 @@ jobs:
       run: unzip -q -n bsfiles.zip -d ./Refs
     - name: Build For Beat Saber
       id: Build-BeatSaber
+      env: 
+        FrameworkPathOverride: /usr/lib/mono/4.8-api
       run: dotnet build --configuration Release-BeatSaber
     - name: Upload Lib Artifact
       uses: actions/upload-artifact@v1

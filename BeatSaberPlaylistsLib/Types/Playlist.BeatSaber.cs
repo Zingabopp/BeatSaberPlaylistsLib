@@ -3,6 +3,7 @@ extern alias BeatSaber;
 using BeatSaber::UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BeatSaberPlaylistsLib.Types
@@ -56,7 +57,8 @@ namespace BeatSaberPlaylistsLib.Types
                 }
                 else
                 {
-                    Sprite? sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
+                    using Stream stream = playlist.GetCoverStream();
+                    Sprite? sprite = Utilities.GetSpriteFromStream(stream);
                     playlist._sprite = sprite ?? GetDefaultCoverSprite(playlist);
                 }
                 playlist.SpriteWasLoaded = true;

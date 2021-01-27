@@ -12,7 +12,7 @@ namespace BeatSaberPlaylistsLib
         private static Lazy<Sprite?> _defaultSpriteLoader = new Lazy<Sprite?>(() =>
         {
             Logger?.Invoke("Loading default sprite.", null);
-            Stream stream = GetDefaultImageStream();
+            using Stream stream = GetDefaultImageStream();
             if (stream == null)
                 throw new InvalidOperationException("Couldn't get image stream from resources.");
             Logger?.Invoke($"Manifest stream is {stream.Length} bytes.", null);

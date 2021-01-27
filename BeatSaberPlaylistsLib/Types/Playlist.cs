@@ -10,10 +10,12 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
-    public abstract partial class Playlist
+    public abstract partial class Playlist : INotifyCoverChanged
     {
         /// <inheritdoc/>
         public event EventHandler? PlaylistChanged;
+        /// <inheritdoc/>
+        public event EventHandler? CoverImageChanged;
 
         /// <inheritdoc/>
         public abstract string Title { get; set; }
@@ -53,6 +55,19 @@ namespace BeatSaberPlaylistsLib.Types
             handler?.Invoke(this, null);
         }
 
+        /// <summary>
+        /// Raises the <see cref="CoverImageChanged"/> event.
+        /// </summary>
+        protected void RaiseCoverImageChanged()
+        {
+#if BeatSaber
+            _previousSprite = _sprite;
+            _sprite = null;
+
+#endif
+            CoverImageChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <inheritdoc/>
         public abstract Dictionary<string, object>? CustomData { get; set; }
 
@@ -84,6 +99,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// Internal collection of songs in the playlist.
         /// </summary>
         protected List<T> Songs { get; set; } = new List<T>();
+
 
         /// <inheritdoc/>
         public IPlaylistSong this[int index]

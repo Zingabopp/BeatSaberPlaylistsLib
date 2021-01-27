@@ -126,10 +126,20 @@ namespace BeatSaberPlaylistsLib.Legacy
             }
         }
 
+        private byte[]? _coverData;
+
         /// <summary>
         /// Raw data for the cover image.
         /// </summary>
-        protected byte[]? CoverData;
+        protected byte[]? CoverData
+        {
+            get => _coverData;
+            set
+            {
+                _coverData = value;
+                RaiseCoverImageChanged();
+            }
+        }
 
         ///<inheritdoc/>
         public override bool IsReadOnly => false;
@@ -171,6 +181,7 @@ namespace BeatSaberPlaylistsLib.Legacy
             {
                 CoverData = stream.ToArray();
             }
+
         }
     }
 }

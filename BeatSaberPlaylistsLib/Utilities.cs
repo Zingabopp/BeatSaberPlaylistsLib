@@ -1,6 +1,9 @@
-﻿using System;
+﻿using BeatSaberPlaylistsLib.Types;
+using System;
 using System.IO;
 using System.Reflection;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -9,6 +12,10 @@ namespace BeatSaberPlaylistsLib
     /// </summary>
     public static partial class Utilities
     {
+        private static Stream GetDefaultImageStream() =>
+            Assembly.GetExecutingAssembly().GetManifestResourceStream("BeatSaberPlaylistsLib.Icons.FolderIcon.png");
+
+
         /// <summary>
         /// Prefix in some base64 image strings.
         /// </summary>
@@ -159,7 +166,38 @@ namespace BeatSaberPlaylistsLib
             return result;
         }
 
-        #region Image converting
+        #region Image
+
+        private static DrawSettings defaultDrawSettings = new DrawSettings
+        {
+            Color = Color.Black,
+            DrawStyle = DrawStyle.Normal,
+            Font = new Font("arial", 60, FontStyle.Regular),
+            StringFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            },
+            MinTextSize = 30,
+            MaxTextSize = 60,
+            WrapWidth = 10
+        };
+
+        /// <summary>
+        /// Generates a cover for a playlist.
+        /// </summary>
+        /// <param name="playlist"></param>
+        /// <returns></returns>
+        public static Stream GenerateCoverForPlaylist(IPlaylist playlist)
+        {
+            Stream? stream = GetDefaultImageStream();
+            Console.WriteLine($"Drawing string {playlist.Title}");
+            Image img = ImageUtilities.DrawString(playlist.Title, Image.FromStream(stream), defaultDrawSettings);
+            MemoryStream ms = new MemoryStream();
+            img.Save(ms, ImageFormat.Png);
+            // TODO: Generate cover.
+            return ms;
+        }
 
         /// <summary>
         /// Converts an image at the given resource path to a base64 string.

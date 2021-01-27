@@ -130,10 +130,21 @@ namespace BeatSaberPlaylistsLib.Blist
         ///<inheritdoc/>
         public override bool HasCover => (CoverData?.Length ?? 0) > 0;
 
+
+        private byte[]? _coverData;
+
         /// <summary>
         /// Raw data for the cover image.
         /// </summary>
-        protected byte[]? CoverData;
+        protected byte[]? CoverData
+        {
+            get => _coverData;
+            set
+            {
+                _coverData = value;
+                RaiseCoverImageChanged();
+            }
+        }
 
     }
 

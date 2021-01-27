@@ -19,12 +19,20 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Default cover image to use if a playlist has no cover image.
         /// </summary>
-        public static Sprite? DefaultCoverImage { get; set; }
+        public static Sprite? GetDefaultCoverSprite(Playlist playlist)
+        {
+            // TODO: Generate playlist cover with title.
+            return Utilities.GetSpriteFromStream(Utilities.GenerateCoverForPlaylist((IPlaylist)playlist));
+        }
 
         /// <summary>
         /// Instance of the playlist cover sprite.
         /// </summary>
         protected Sprite? _sprite;
+        /// <summary>
+        /// Instance of the previous cover sprite.
+        /// </summary>
+        protected Sprite? _previousSprite;
         /// <summary>
         /// Returns true if the sprite for the playlist is already queued.
         /// </summary>
@@ -40,14 +48,20 @@ namespace BeatSaberPlaylistsLib.Types
         {
             SpriteQueue.Enqueue(() =>
             {
+                Console.WriteLine($"Loading sprite for playlist '{playlist.Title}'");
                 if (!playlist.HasCover)
                 {
-                    return;
+
+                    playlist._sprite = GetDefaultCoverSprite(playlist);
                 }
-                Sprite? sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
-                playlist._sprite = sprite ?? DefaultCoverImage;
+                else
+                {
+                    Sprite? sprite = Utilities.GetSpriteFromStream(playlist.GetCoverStream());
+                    playlist._sprite = sprite ?? GetDefaultCoverSprite(playlist);
+                }
                 playlist.SpriteWasLoaded = true;
                 playlist.SpriteLoaded?.Invoke(playlist, null);
+                playlist._previousSprite = null;
             });
 
             if (!CoroutineRunning)
@@ -96,8 +110,8 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (_sprite != null)
                     return _sprite;
-                _sprite = DefaultCoverImage;
-                if (HasCover && !SpriteLoadQueued)
+                _sprite = _previousSprite ?? Utilities.DefaultSprite;
+                if (!SpriteLoadQueued)
                 {
                     SpriteLoadQueued = true;
                     QueueLoadSprite(this);

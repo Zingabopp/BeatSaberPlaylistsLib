@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
-namespace ImageExperiments
+namespace BeatSaberPlaylistsLib
 {
     public static class ImageUtilities
     {
@@ -24,7 +24,7 @@ namespace ImageExperiments
             {
                 str = WordWrap(str, drawSettings.WrapWidth);
             }
-            Font font = GetAdjustedFont(graphicsImage, str, drawSettings.Font, bitmap.Width, drawSettings.MaxTextSize, drawSettings.MinTextSize, true);
+            Font font = GetAdjustedFont(graphicsImage, str, drawSettings.Font, (int)(bitmap.Width * .9f), drawSettings.MaxTextSize, drawSettings.MinTextSize, true);
             graphicsImage.DrawString(str, font, new SolidBrush(StringColor), point,
                 drawSettings.StringFormat);
             bitmap.Save("testOutput.png");

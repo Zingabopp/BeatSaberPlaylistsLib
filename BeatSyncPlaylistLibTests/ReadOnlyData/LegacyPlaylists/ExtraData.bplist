@@ -1,0 +1,530 @@
+{
+  "playlistTitle": "Lightshow Test",
+  "playlistAuthor": "ManDynasty",
+  "customArchiveUrl": "https://cdn.discordapp.com/attachments/[KEY]",
+  "extensionStringList": [
+    "abc",
+    "123",
+    "efg",
+    "456"
+  ],
+  "extensionIntList": [
+    123,
+    456,
+    789
+  ],
+  "extensionFloat": 123.456,
+  "extensionInt": 123,
+  "extensionString": "test string",
+  "customInt": 456,
+  "customData": {
+    "customList": [
+      "abc",
+      "123",
+      "efg",
+      "456"
+    ],
+    "customFloat": 123.456,
+    "customInt": 123,
+    "customString": "test string"
+  },
+  "image": "",
+  "songs": [
+    {
+      "key": "479362218362798091/567092548355489792/lightshow-0001-0001.zip",
+      "songName": "lightshow-0001-0001"
+    },
+    {
+      "key": "479362218362798091/567092803864231936/lightshow-0002-0002.zip",
+      "songName": "lightshow-0002-0002"
+    },
+    {
+      "key": "479362218362798091/567092634926055434/lightshow-0003-0003.zip",
+      "songName": "lightshow-0003-0003"
+    },
+    {
+      "key": "479362218362798091/567092796398501888/lightshow-0004-0004.zip",
+      "songName": "lightshow-0004-0004"
+    },
+    {
+      "key": "479362218362798091/567092814450655236/lightshow-0005-0005.zip",
+      "songName": "lightshow-0005-0005"
+    },
+    {
+      "key": "479362218362798091/567092471478222848/lightshow-0006-0006.zip",
+      "songName": "lightshow-0006-0006"
+    },
+    {
+      "key": "479362218362798091/567091854118748170/lightshow-0007-0007.zip",
+      "songName": "lightshow-0007-0007"
+    },
+    {
+      "key": "479362218362798091/567091875618619403/lightshow-0008-0008.zip",
+      "songName": "lightshow-0008-0008"
+    },
+    {
+      "key": "479362218362798091/567092508216000531/lightshow-0009-0009.zip",
+      "songName": "lightshow-0009-0009"
+    },
+    {
+      "key": "479362218362798091/567091945667690506/lightshow-0010-0010.zip",
+      "songName": "lightshow-0010-0010"
+    },
+    {
+      "key": "479362218362798091/567092061342269461/lightshow-0011-0011.zip",
+      "songName": "lightshow-0011-0011"
+    },
+    {
+      "key": "479362218362798091/567092582237208576/lightshow-0012-0012.zip",
+      "songName": "lightshow-0012-0012"
+    },
+    {
+      "key": "479362218362798091/567092780695027733/lightshow-0013-0013.zip",
+      "songName": "lightshow-0013-0013"
+    },
+    {
+      "key": "479362218362798091/567092568798789652/lightshow-0014-0014.zip",
+      "songName": "lightshow-0014-0014"
+    },
+    {
+      "key": "479362218362798091/567092246831431683/lightshow-0015-0015.zip",
+      "songName": "lightshow-0015-0015"
+    },
+    {
+      "key": "479362218362798091/567091949434044418/lightshow-0016-0016.zip",
+      "songName": "lightshow-0016-0016"
+    },
+    {
+      "key": "479362218362798091/567092117269118979/lightshow-0017-0017.zip",
+      "songName": "lightshow-0017-0017"
+    },
+    {
+      "key": "479362218362798091/567092327261405184/lightshow-0018-0018.zip",
+      "songName": "lightshow-0018-0018"
+    },
+    {
+      "key": "479362218362798091/567092108771721226/lightshow-0019-0019.zip",
+      "songName": "lightshow-0019-0019"
+    },
+    {
+      "key": "479362218362798091/567092472103174167/lightshow-0020-0020.zip",
+      "songName": "lightshow-0020-0020"
+    },
+    {
+      "key": "479362218362798091/567092276820574218/lightshow-0021-0021.zip",
+      "songName": "lightshow-0021-0021"
+    },
+    {
+      "key": "479362218362798091/567092572519137280/lightshow-0022-0022.zip",
+      "songName": "lightshow-0022-0022"
+    },
+    {
+      "key": "479362218362798091/567092432936632341/lightshow-0023-0023.zip",
+      "songName": "lightshow-0023-0023"
+    },
+    {
+      "key": "479362218362798091/567091804168650766/lightshow-0024-0024.zip",
+      "songName": "lightshow-0024-0024"
+    },
+    {
+      "key": "479362218362798091/567092477203447852/lightshow-0025-0025.zip",
+      "songName": "lightshow-0025-0025"
+    },
+    {
+      "key": "479362218362798091/567091157826535444/lightshow-0026-0026.zip",
+      "songName": "lightshow-0026-0026"
+    },
+    {
+      "key": "479362218362798091/567092580211359744/lightshow-0027-0027.zip",
+      "songName": "lightshow-0027-0027"
+    },
+    {
+      "key": "479362218362798091/567092326472744991/lightshow-0028-0028.zip",
+      "songName": "lightshow-0028-0028"
+    },
+    {
+      "key": "479362218362798091/567092758473342996/lightshow-0029-0029.zip",
+      "songName": "lightshow-0029-0029"
+    },
+    {
+      "key": "479362218362798091/567092684481757187/lightshow-0030-0030.zip",
+      "songName": "lightshow-0030-0030"
+    },
+    {
+      "key": "479362218362798091/567092806435471360/lightshow-0031-0031.zip",
+      "songName": "lightshow-0031-0031"
+    },
+    {
+      "key": "479362218362798091/567092689645076490/lightshow-0032-0032.zip",
+      "songName": "lightshow-0032-0032"
+    },
+    {
+      "key": "479362218362798091/567092140333596672/lightshow-0033-0033.zip",
+      "songName": "lightshow-0033-0033"
+    },
+    {
+      "key": "479362218362798091/567091461120720911/lightshow-0034-0034.zip",
+      "songName": "lightshow-0034-0034"
+    },
+    {
+      "key": "479362218362798091/567092080686399488/lightshow-0035-0035.zip",
+      "songName": "lightshow-0035-0035"
+    },
+    {
+      "key": "479362218362798091/567091626187423756/lightshow-0036-0036.zip",
+      "songName": "lightshow-0036-0036"
+    },
+    {
+      "key": "479362218362798091/567091784224866304/lightshow-0037-0037.zip",
+      "songName": "lightshow-0037-0037"
+    },
+    {
+      "key": "479362218362798091/567091819142184960/lightshow-0038-0038.zip",
+      "songName": "lightshow-0038-0038"
+    },
+    {
+      "key": "479362218362798091/567092266988994561/lightshow-0039-0039.zip",
+      "songName": "lightshow-0039-0039"
+    },
+    {
+      "key": "479362218362798091/567092674692251648/lightshow-0040-0040.zip",
+      "songName": "lightshow-0040-0040"
+    },
+    {
+      "key": "479362218362798091/567092109165985803/lightshow-0041-0041.zip",
+      "songName": "lightshow-0041-0041"
+    },
+    {
+      "key": "479362218362798091/567092735002148879/lightshow-0042-0042.zip",
+      "songName": "lightshow-0042-0042"
+    },
+    {
+      "key": "479362218362798091/567091907201597487/lightshow-0043-0043.zip",
+      "songName": "lightshow-0043-0043"
+    },
+    {
+      "key": "479362218362798091/567092702416470047/lightshow-0044-0044.zip",
+      "songName": "lightshow-0044-0044"
+    },
+    {
+      "key": "479362218362798091/567092737682309140/lightshow-0045-0045.zip",
+      "songName": "lightshow-0045-0045"
+    },
+    {
+      "key": "479362218362798091/567092713615392797/lightshow-0046-0046.zip",
+      "songName": "lightshow-0046-0046"
+    },
+    {
+      "key": "479362218362798091/567092587345739792/lightshow-0047-0047.zip",
+      "songName": "lightshow-0047-0047"
+    },
+    {
+      "key": "479362218362798091/567092775217004571/lightshow-0048-0048.zip",
+      "songName": "lightshow-0048-0048"
+    },
+    {
+      "key": "479362218362798091/567092762189758495/lightshow-0049-0049.zip",
+      "songName": "lightshow-0049-0049"
+    },
+    {
+      "key": "479362218362798091/567092732699344897/lightshow-0050-0050.zip",
+      "songName": "lightshow-0050-0050"
+    },
+    {
+      "key": "479362218362798091/567092226820276224/lightshow-0051-0051.zip",
+      "songName": "lightshow-0051-0051"
+    },
+    {
+      "key": "479362218362798091/567092733102129153/lightshow-0052-0052.zip",
+      "songName": "lightshow-0052-0052"
+    },
+    {
+      "key": "479362218362798091/567092716924829697/lightshow-0053-0053.zip",
+      "songName": "lightshow-0053-0053"
+    },
+    {
+      "key": "479362218362798091/567092805671976975/lightshow-0054-0054.zip",
+      "songName": "lightshow-0054-0054"
+    },
+    {
+      "key": "479362218362798091/567091521694859284/lightshow-0055-0055.zip",
+      "songName": "lightshow-0055-0055"
+    },
+    {
+      "key": "479362218362798091/567092402523734046/lightshow-0056-0056.zip",
+      "songName": "lightshow-0056-0056"
+    },
+    {
+      "key": "479362218362798091/567092668098674841/lightshow-0057-0057.zip",
+      "songName": "lightshow-0057-0057"
+    },
+    {
+      "key": "479362218362798091/567091017346711562/lightshow-0058-0058.zip",
+      "songName": "lightshow-0058-0058"
+    },
+    {
+      "key": "479362218362798091/567092519394082837/lightshow-0059-0059.zip",
+      "songName": "lightshow-0059-0059"
+    },
+    {
+      "key": "479362218362798091/567091239904608270/lightshow-0060-0060.zip",
+      "songName": "lightshow-0060-0060"
+    },
+    {
+      "key": "479362218362798091/567092780518735912/lightshow-0061-0061.zip",
+      "songName": "lightshow-0061-0061"
+    },
+    {
+      "key": "479362218362798091/567090962082431128/lightshow-0062-0062.zip",
+      "songName": "lightshow-0062-0062"
+    },
+    {
+      "key": "479362218362798091/567091151245410329/lightshow-0063-0063.zip",
+      "songName": "lightshow-0063-0063"
+    },
+    {
+      "key": "479362218362798091/567092683353489409/lightshow-0064-0064.zip",
+      "songName": "lightshow-0064-0064"
+    },
+    {
+      "key": "479362218362798091/567091667027361811/lightshow-0065-0065.zip",
+      "songName": "lightshow-0065-0065"
+    },
+    {
+      "key": "479362218362798091/567091529282486273/lightshow-0066-0066.zip",
+      "songName": "lightshow-0066-0066"
+    },
+    {
+      "key": "479362218362798091/567092052597145604/lightshow-0067-0067.zip",
+      "songName": "lightshow-0067-0067"
+    },
+    {
+      "key": "479362218362798091/567091311321153546/lightshow-0068-0068.zip",
+      "songName": "lightshow-0068-0068"
+    },
+    {
+      "key": "479362218362798091/567092364443648020/lightshow-0069-0069.zip",
+      "songName": "lightshow-0069-0069"
+    },
+    {
+      "key": "479362218362798091/567092173909000192/lightshow-0070-0070.zip",
+      "songName": "lightshow-0070-0070"
+    },
+    {
+      "key": "479362218362798091/567090533881741322/lightshow-0071-0071.zip",
+      "songName": "lightshow-0071-0071"
+    },
+    {
+      "key": "479362218362798091/567092596401373185/lightshow-0072-0072.zip",
+      "songName": "lightshow-0072-0072"
+    },
+    {
+      "key": "479362218362798091/567092414603329536/lightshow-0073-0073.zip",
+      "songName": "lightshow-0073-0073"
+    },
+    {
+      "key": "479362218362798091/567090929920376847/lightshow-0074-0074.zip",
+      "songName": "lightshow-0074-0074"
+    },
+    {
+      "key": "479362218362798091/567092349771972638/lightshow-0075-0075.zip",
+      "songName": "lightshow-0075-0075"
+    },
+    {
+      "key": "479362218362798091/567091154835996675/lightshow-0076-0076.zip",
+      "songName": "lightshow-0076-0076"
+    },
+    {
+      "key": "479362218362798091/567090761313550338/lightshow-0077-0077.zip",
+      "songName": "lightshow-0077-0077"
+    },
+    {
+      "key": "479362218362798091/567090950544031744/lightshow-0078-0078.zip",
+      "songName": "lightshow-0078-0078"
+    },
+    {
+      "key": "479362218362798091/567090663473152030/lightshow-0079-0079.zip",
+      "songName": "lightshow-0079-0079"
+    },
+    {
+      "key": "479362218362798091/567091400345255964/lightshow-0080-0080.zip",
+      "songName": "lightshow-0080-0080"
+    },
+    {
+      "key": "479362218362798091/567091749051432971/lightshow-0081-0081.zip",
+      "songName": "lightshow-0081-0081"
+    },
+    {
+      "key": "479362218362798091/567091234041102354/lightshow-0082-0082.zip",
+      "songName": "lightshow-0082-0082"
+    },
+    {
+      "key": "479362218362798091/567092309536276500/lightshow-0083-0083.zip",
+      "songName": "lightshow-0083-0083"
+    },
+    {
+      "key": "479362218362798091/567091086074576927/lightshow-0084-0084.zip",
+      "songName": "lightshow-0084-0084"
+    },
+    {
+      "key": "479362218362798091/567090816296812555/lightshow-0085-0085.zip",
+      "songName": "lightshow-0085-0085"
+    },
+    {
+      "key": "479362218362798091/567091107406544926/lightshow-0086-0086.zip",
+      "songName": "lightshow-0086-0086"
+    },
+    {
+      "key": "479362218362798091/567091735541579777/lightshow-0087-0087.zip",
+      "songName": "lightshow-0087-0087"
+    },
+    {
+      "key": "479362218362798091/567090795853774858/lightshow-0088-0088.zip",
+      "songName": "lightshow-0088-0088"
+    },
+    {
+      "key": "479362218362798091/567091161571917845/lightshow-0089-0089.zip",
+      "songName": "lightshow-0089-0089"
+    },
+    {
+      "key": "479362218362798091/567090952746041385/lightshow-0090-0090.zip",
+      "songName": "lightshow-0090-0090"
+    },
+    {
+      "key": "479362218362798091/567091401356083241/lightshow-0091-0091.zip",
+      "songName": "lightshow-0091-0091"
+    },
+    {
+      "key": "479362218362798091/567090856150958080/lightshow-0092-0092.zip",
+      "songName": "lightshow-0092-0092"
+    },
+    {
+      "key": "479362218362798091/567091569275043840/lightshow-0093-0093.zip",
+      "songName": "lightshow-0093-0093"
+    },
+    {
+      "key": "479362218362798091/567092559348760576/lightshow-0094-0094.zip",
+      "songName": "lightshow-0094-0094"
+    },
+    {
+      "key": "479362218362798091/567091047272808458/lightshow-0095-0095.zip",
+      "songName": "lightshow-0095-0095"
+    },
+    {
+      "key": "479362218362798091/567091996146008064/lightshow-0096-0096.zip",
+      "songName": "lightshow-0096-0096"
+    },
+    {
+      "key": "479362218362798091/567091547976499201/lightshow-0097-0097.zip",
+      "songName": "lightshow-0097-0097"
+    },
+    {
+      "key": "479362218362798091/567091082706550809/lightshow-0098-0098.zip",
+      "songName": "lightshow-0098-0098"
+    },
+    {
+      "key": "479362218362798091/567091167691407360/lightshow-0099-0099.zip",
+      "songName": "lightshow-0099-0099"
+    },
+    {
+      "key": "479362218362798091/567091432523956226/lightshow-0100-0100.zip",
+      "songName": "lightshow-0100-0100"
+    },
+    {
+      "key": "479362218362798091/567092000952680459/lightshow-0101-0101.zip",
+      "songName": "lightshow-0101-0101"
+    },
+    {
+      "key": "479362218362798091/567091650896199686/lightshow-0102-0102.zip",
+      "songName": "lightshow-0102-0102"
+    },
+    {
+      "key": "479362218362798091/567091516162572317/lightshow-0103-0103.zip",
+      "songName": "lightshow-0103-0103"
+    },
+    {
+      "key": "479362218362798091/567092266687266866/lightshow-0104-0104.zip",
+      "songName": "lightshow-0104-0104"
+    },
+    {
+      "key": "479362218362798091/567091991985389569/lightshow-0105-0105.zip",
+      "songName": "lightshow-0105-0105"
+    },
+    {
+      "key": "479362218362798091/567090893367017473/lightshow-0106-0106.zip",
+      "songName": "lightshow-0106-0106"
+    },
+    {
+      "key": "479362218362798091/567090538486956054/lightshow-0107-0107.zip",
+      "songName": "lightshow-0107-0107"
+    },
+    {
+      "key": "479362218362798091/567090991408873514/lightshow-0108-0108.zip",
+      "songName": "lightshow-0108-0108"
+    },
+    {
+      "key": "479362218362798091/567091740960620564/lightshow-0109-0109.zip",
+      "songName": "lightshow-0109-0109"
+    },
+    {
+      "key": "479362218362798091/567091332598988810/lightshow-0110-0110.zip",
+      "songName": "lightshow-0110-0110"
+    },
+    {
+      "key": "479362218362798091/567090445730185234/lightshow-0111-0111.zip",
+      "songName": "lightshow-0111-0111"
+    },
+    {
+      "key": "479362218362798091/567092380142927902/lightshow-0112-0112.zip",
+      "songName": "lightshow-0112-0112"
+    },
+    {
+      "key": "479362218362798091/567092555829870605/lightshow-0113-0113.zip",
+      "songName": "lightshow-0113-0113"
+    },
+    {
+      "key": "479362218362798091/567092763875737620/lightshow-0114-0114.zip",
+      "songName": "lightshow-0114-0114"
+    },
+    {
+      "key": "479362218362798091/567092759026991104/lightshow-0115-0115.zip",
+      "songName": "lightshow-0115-0115"
+    },
+    {
+      "key": "479362218362798091/567092517762236438/lightshow-0116-0116.zip",
+      "songName": "lightshow-0116-0116"
+    },
+    {
+      "key": "479362218362798091/567092722104795138/lightshow-0117-0117.zip",
+      "songName": "lightshow-0117-0117"
+    },
+    {
+      "key": "479362218362798091/567092799854477315/lightshow-0118-0118.zip",
+      "songName": "lightshow-0118-0118"
+    },
+    {
+      "key": "479362218362798091/567092762391085056/lightshow-0119-0119.zip",
+      "songName": "lightshow-0119-0119"
+    },
+    {
+      "key": "479362218362798091/567092678676971532/lightshow-0120-0120.zip",
+      "songName": "lightshow-0120-0120"
+    },
+    {
+      "key": "479362218362798091/567092443346894869/lightshow-0121-0121.zip",
+      "songName": "lightshow-0121-0121"
+    },
+    {
+      "key": "479362218362798091/567092276317257749/lightshow-0122-0122.zip",
+      "songName": "lightshow-0122-0122"
+    },
+    {
+      "key": "479362218362798091/567091876394434579/lightshow-0123-0123.zip",
+      "songName": "lightshow-0123-0123"
+    },
+    {
+      "key": "479362218362798091/567092423117766666/lightshow-0124-0124.zip",
+      "songName": "lightshow-0124-0124"
+    }
+  ]
+}

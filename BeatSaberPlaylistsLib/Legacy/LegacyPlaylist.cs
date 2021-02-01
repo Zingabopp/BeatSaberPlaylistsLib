@@ -1,8 +1,10 @@
 ﻿using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -12,17 +14,9 @@ namespace BeatSaberPlaylistsLib.Legacy
     /// An <see cref="IPlaylist"/> that can be serialized by a <see cref="LegacyPlaylistHandler"/>.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class LegacyPlaylist : Playlist<LegacyPlaylistSong>
+    public class LegacyPlaylist : JSONPlaylist<LegacyPlaylistSong>
     {
 
-        ///<inheritdoc/>
-        [DataMember]
-        [JsonProperty("songs", Order = 5)]
-        protected List<LegacyPlaylistSong> _serializedSongs
-        {
-            get => Songs;
-            set => Songs = value ?? new List<LegacyPlaylistSong>();
-        }
         private Lazy<string>? ImageLoader;
         /// <summary>
         /// Creates an empty <see cref="LegacyPlaylist"/>.
@@ -89,17 +83,22 @@ namespace BeatSaberPlaylistsLib.Legacy
         [DataMember]
         [JsonProperty("playlistDescription", Order = 0, NullValueHandling = NullValueHandling.Ignore)]
         public override string? Description { get; set; }
-
-
         ///<inheritdoc/>
         [JsonProperty("customData", Order = 5, NullValueHandling = NullValueHandling.Ignore)]
         public override Dictionary<string, object>? CustomData { get; set; }
-
+        ///<inheritdoc/>
+        [DataMember]
+        [JsonProperty("songs", Order = 90)]
+        protected List<LegacyPlaylistSong> _serializedSongs
+        {
+            get => Songs;
+            set => Songs = value ?? new List<LegacyPlaylistSong>();
+        }
         /// <summary>
         /// A base64 string conversion of the cover image.
         /// </summary>
         [DataMember]
-        [JsonProperty("image", Order = 10)]
+        [JsonProperty("image", Order = 100)]
         protected string? CoverString
         {
             get

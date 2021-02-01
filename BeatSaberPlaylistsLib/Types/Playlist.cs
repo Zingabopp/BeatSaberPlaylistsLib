@@ -48,6 +48,22 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public abstract void SetCover(Stream stream);
 
+        /// <summary>
+        /// Action to take when additional data that wasn't deserialized is found.
+        /// </summary>
+        /// <param name="extensionData"></param>
+        protected virtual void OnExtensionData(IEnumerable<KeyValuePair<string, object>> extensionData)
+        {
+            if (CustomData == null)
+                CustomData = new Dictionary<string, object>();
+            foreach (var item in extensionData)
+            {
+                string key = item.Key;
+                if (!CustomData.ContainsKey(key))
+                    CustomData[key] = item.Value;
+            }
+        }
+
         /// <inheritdoc/>
         public void RaisePlaylistChanged()
         {

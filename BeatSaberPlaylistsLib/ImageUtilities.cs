@@ -41,6 +41,13 @@ namespace BeatSaberPlaylistsLib
             return bitmap;
         }
 
+        /// <summary>
+        /// Draws a bordered string on a bitmap.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="bitmap"></param>
+        /// <param name="drawSettings"></param>
+        /// <returns></returns>
         public static Image DrawBorderedString(string str, Image bitmap, DrawSettings drawSettings)
         {
             Graphics g = Graphics.FromImage(bitmap);

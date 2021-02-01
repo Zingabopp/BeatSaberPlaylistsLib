@@ -23,7 +23,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         string? Name { get; set; }
         /// <summary>
-        /// Beat Saver key of the song, always uppercase. 
+        /// Beat Saver key of the song, always uppercase unless the length is >= 12. 
         /// </summary>
         string? Key { get; set; }
         /// <summary>

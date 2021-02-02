@@ -262,7 +262,10 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public void RemoveDuplicates()
         {
-            throw new NotImplementedException();
+            int previousCount = Songs.Count;
+            Songs = Songs.Distinct(IPlaylistSongComparer<T>.Default).ToList();
+            if (Songs.Count != previousCount)
+                RaisePlaylistChanged();
         }
 
 

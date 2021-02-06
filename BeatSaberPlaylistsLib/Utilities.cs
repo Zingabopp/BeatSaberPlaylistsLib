@@ -191,7 +191,7 @@ namespace BeatSaberPlaylistsLib
         public static Stream GenerateCoverForPlaylist(IPlaylist playlist)
         {
             using Stream? stream = GetDefaultImageStream();
-            Console.WriteLine($"Drawing string {playlist.Title}");
+            //Console.WriteLine($"Drawing string {playlist.Title}");
             Image img = ImageUtilities.DrawString(playlist.Title, Image.FromStream(stream), defaultDrawSettings);
             MemoryStream ms = new MemoryStream();
             img.Save(ms, ImageFormat.Png);

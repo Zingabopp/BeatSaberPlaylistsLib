@@ -49,7 +49,7 @@ namespace BeatSaberPlaylistsLib.Types
         {
             SpriteQueue.Enqueue(() =>
             {
-                Console.WriteLine($"Loading sprite for playlist '{playlist.Title}'");
+                //Console.WriteLine($"Loading sprite for playlist '{playlist.Title}'");
                 if (!playlist.HasCover)
                 {
 

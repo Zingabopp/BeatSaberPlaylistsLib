@@ -114,8 +114,13 @@ namespace BeatSaberPlaylistsLib.Types
                     return;
                 if (value != null && value.Length > 0)
                 {
-                    _key = value.ToUpper();
-                    AddIdentifierFlag(Identifier.Key);
+                    if (value.Length < 12) // TODO: Hacky way to allow Key to be used as a URL
+                    {
+                        _key = value.ToUpper();
+                        AddIdentifierFlag(Identifier.Key);
+                    }
+                    else
+                        _key = value;
                 }
                 else
                 {

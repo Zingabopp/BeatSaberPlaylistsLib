@@ -25,12 +25,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ReadOnlyData\IPlaylistHandlerTests\" />
     <Folder Include="ReadOnlyData\NestedDirectories\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="ReadOnlyData\BlisterPlaylists\AnniversarySongPack.blist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\BlisterPlaylists\ExtraData.blist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ReadOnlyData\BlisterPlaylists\testCover.jpg">
@@ -67,6 +69,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ReadOnlyData\LegacyPlaylists\ImageTypePrefix.bplist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ReadOnlyData\LegacyPlaylists\ExtraData.bplist">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ReadOnlyData\NestedDirectories\NestedPlaylists\L1_1.bplist">

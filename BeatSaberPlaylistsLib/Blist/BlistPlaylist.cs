@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using BeatSaberPlaylistsLib.Blist.Converters;
 using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 // Schema: https://github.com/raftario/blist/blob/master/playlist.schema.json
 namespace BeatSaberPlaylistsLib.Blist
@@ -17,7 +19,7 @@ namespace BeatSaberPlaylistsLib.Blist
     /// A Beat Saber playlist
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class BlistPlaylist : Playlist<BlistPlaylistSong>
+    public partial class BlistPlaylist : JSONPlaylist<BlistPlaylistSong>
     {
         /// <summary>
         /// Creates an empty <see cref="BlistPlaylist"/>.
@@ -39,36 +41,36 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         /// <summary>
-        /// The playlist author
+        /// The playlist title
         /// </summary>
-        [JsonProperty("author", NullValueHandling = NullValueHandling.Ignore)]
-        public override string? Author { get; set; }
+        [JsonProperty("title", Order = -10)]
+        public override string Title { get; set; } = "";
 
         /// <summary>
-        /// The filename of the optional playlist cover image
+        /// The playlist author
         /// </summary>
-        [JsonProperty("cover", NullValueHandling = NullValueHandling.Ignore)]
-        public string? Cover { get; set; }
-
-        ///<inheritdoc/>
-        [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
-        public override Dictionary<string, object>? CustomData { get; set; }
-
+        [JsonProperty("author", NullValueHandling = NullValueHandling.Ignore, Order = -5)]
+        public override string? Author { get; set; }
 
         private string? _description;
         /// <summary>
         /// The optional playlist description
         /// </summary>
-        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore, Order = 0)]
         public override string? Description
         {
             get => string.IsNullOrEmpty(_description) ? null : _description;
             set => _description = string.IsNullOrEmpty(value) ? null : value;
         }
+
+        ///<inheritdoc/>
+        [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore, Order = 5)]
+        public override Dictionary<string, object>? CustomData { get; set; }
+
         /// <summary>
         /// The beatmaps contained in the playlist
         /// </summary>
-        [JsonProperty("maps")]
+        [JsonProperty("maps", Order = 90)]
         protected List<BlistPlaylistSong> _serializedSongs
         {
             get => Songs;
@@ -76,10 +78,10 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         /// <summary>
-        /// The playlist title
+        /// The filename of the optional playlist cover image
         /// </summary>
-        [JsonProperty("title")]
-        public override string Title { get; set; } = "";
+        [JsonProperty("cover", NullValueHandling = NullValueHandling.Ignore, Order = 100)]
+        public string? Cover { get; set; }
 
         ///<inheritdoc/>
         protected override BlistPlaylistSong CreateFrom(ISong song)

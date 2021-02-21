@@ -3,6 +3,7 @@ using BeatSaberPlaylistsLib.Legacy;
 using BeatSaberPlaylistsLib.Types;
 using BeatSaberPlaylistsLibTests.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,10 +14,12 @@ using static BeatSaberPlaylistsLibTests.TestTools;
 namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
 {
     [TestClass]
-    public class LegacyPlaylistHandlerTests
+    public class LegacyPlaylistHandlerTests : PlaylistHandlerTestBase
     {
-        public static readonly string ReadOnlyData = Path.Combine(TestTools.DataFolder, "LegacyPlaylistHandler_Tests");
-        public static readonly string OutputPath = Path.Combine(TestTools.OutputFolder, "LegacyPlaylistHandler_Tests");
+        public static readonly string kReadOnlyData = TestTools.DataFolder;
+        public static readonly string kOutputPath = Path.Combine(TestTools.OutputFolder, "LegacyPlaylistHandler_Tests");
+        public override string ReadOnlyData => kReadOnlyData;
+        public override string OutputPath => kOutputPath;
         [TestMethod]
         public void StorePlaylist()
         {
@@ -64,6 +67,13 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             playlist = manager.GetHandler<LegacyPlaylistHandler>()?.Deserialize<DerivedLegacyPlaylist>(File.OpenRead(Path.Combine(playlistDir, "5LegacySongs.bplist")));
             if (Directory.Exists(playlistDir))
                 Directory.Delete(playlistDir, true);
+        }
+
+        [TestMethod]
+        public void DeserializeExtraData()
+        {
+            string playlistFile = Path.Combine(ReadOnlyData, "LegacyPlaylists", "ExtraData.bplist");
+            TestDeserializedExtraData(new LegacyPlaylistHandler(), playlistFile);
         }
     }
 }

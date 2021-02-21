@@ -16,10 +16,12 @@ using static BeatSaberPlaylistsLibTests.TestTools;
 namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
 {
     [TestClass]
-    public class BlisterPlaylistHandlerTests
+    public class BlisterPlaylistHandlerTests : PlaylistHandlerTestBase
     {
-        public static readonly string ReadOnlyData = Path.Combine(TestTools.DataFolder, "BlisterPlaylists");
-        public static readonly string OutputPath = Path.Combine(TestTools.OutputFolder, "BlisterPlaylistHandler_Tests");
+        public static readonly string kReadOnlyData = Path.Combine(TestTools.DataFolder, "BlisterPlaylists");
+        public static readonly string kOutputPath = Path.Combine(TestTools.OutputFolder, "BlisterPlaylistHandler_Tests");
+        public override string ReadOnlyData => kReadOnlyData;
+        public override string OutputPath => kOutputPath;
         [TestMethod]
         public void StorePlaylist()
         {
@@ -248,6 +250,14 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsNotNull(playlist);
             Assert.AreEqual(1, playlist.Count);
             Assert.IsTrue(playlist.HasCover);
+        }
+
+
+        [TestMethod]
+        public void DeserializeExtraData()
+        {
+            string playlistFile = Path.Combine(ReadOnlyData, "ExtraData.blist");
+            TestDeserializedExtraData(new BlistPlaylistHandler(), playlistFile);
         }
     }
 }

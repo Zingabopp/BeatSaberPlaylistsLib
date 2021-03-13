@@ -1,11 +1,8 @@
 ﻿using BeatSaberPlaylistsLib.Blist.Converters;
 using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 // Schema: https://github.com/raftario/blist/blob/master/playlist.schema.json
 namespace BeatSaberPlaylistsLib.Blist
@@ -14,7 +11,7 @@ namespace BeatSaberPlaylistsLib.Blist
     /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="BlistPlaylist"/>.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class BlistPlaylistSong : PlaylistSong
+    public class BlistPlaylistSong : JSONPlaylistSong
     {
         private Dictionary<string, object>? _customData;
 
@@ -53,19 +50,7 @@ namespace BeatSaberPlaylistsLib.Blist
         /// Use <see cref="SetCustomData(string, object)"/> to add entries.
         /// </summary>
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, object>? CustomData
-        {
-            get
-            {
-                if (_customData == null) return _customData;
-                if (_customData.Count == 0) return null;
-                return _customData;
-            }
-            set
-            {
-                _customData = value;
-            }
-        }
+        public override Dictionary<string, object>? CustomData { get; set; }
 
         /// <summary>
         /// The optional RFC3339 date and time the beatmap was added to the playlist

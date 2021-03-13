@@ -206,7 +206,7 @@ namespace BeatSaberPlaylistsLib
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="IOException"></exception>
-        public bool DeletePlaylist(IPlaylist playlist)
+        public void DeletePlaylist(IPlaylist playlist)
         {
             if (playlist == null)
                 throw new ArgumentNullException(nameof(playlist));
@@ -220,9 +220,24 @@ namespace BeatSaberPlaylistsLib
                 File.Delete(path);
                 var playlistToDelete = LoadedPlaylists.First(p => p.Value.Equals(playlist));
                 LoadedPlaylists.TryRemove(playlistToDelete.Key, out playlist);
-                return true;
+                return;
             }
-            return false;
+            throw new FileNotFoundException("Playlist not found in current manager.");
+        }
+
+        /// <summary>
+        /// Creates a new child <see cref="PlaylistManager"/>.
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public PlaylistManager CreateChildManager(string folderName)
+        {
+            string newDirectory = Path.Combine(PlaylistPath, folderName);
+            Directory.CreateDirectory(newDirectory);
+            PlaylistManager childManager = new PlaylistManager(newDirectory, this);
+            ChildManagers.Add(childManager);
+            return childManager;
         }
 
         /// <summary>

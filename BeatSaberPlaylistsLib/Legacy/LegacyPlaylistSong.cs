@@ -1,6 +1,7 @@
 ﻿using BeatSaberPlaylistsLib.Types;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace BeatSaberPlaylistsLib.Legacy
 {
@@ -8,8 +9,10 @@ namespace BeatSaberPlaylistsLib.Legacy
     /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="LegacyPlaylist"/>.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public class LegacyPlaylistSong : PlaylistSong, IEquatable<IPlaylistSong>
+    public class LegacyPlaylistSong : JSONPlaylistSong, IEquatable<IPlaylistSong>
     {
+        private Dictionary<string, object>? _customData;
+
         /// <summary>
         /// Creates an empty <see cref="LegacyPlaylistSong"/>.
         /// </summary>
@@ -73,6 +76,26 @@ namespace BeatSaberPlaylistsLib.Legacy
             DateAdded = Utilities.CurrentTime;
         }
 
+        /// <summary>
+        /// Sets custom data for a <see cref="BlistPlaylistSong"/>.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void SetCustomData(string key, object value)
+        {
+            if (_customData == null) _customData = new Dictionary<string, object>();
+            if (_customData.ContainsKey(key))
+                _customData[key] = value;
+            else
+                _customData.Add(key, value);
+        }
+
+        /// <summary>
+        /// Custom data not included in the schema. Returns null if there are no entries.
+        /// Use <see cref="SetCustomData(string, object)"/> to add entries.
+        /// </summary>
+        [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
+        public override Dictionary<string, object>? CustomData { get; set; }
 
         ///<inheritdoc/>
         [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore, Order = -10)]

@@ -31,10 +31,6 @@ namespace BeatSaberPlaylistsLib.Types
         string? SuggestedExtension { get; set; }
 
         /// <summary>
-        /// Custom data not included in the schema
-        /// </summary>
-        public Dictionary<string, object>? CustomData { get; set; }
-        /// <summary>
         /// True if a playlist cover image is available.
         /// </summary>
         bool HasCover { get; }

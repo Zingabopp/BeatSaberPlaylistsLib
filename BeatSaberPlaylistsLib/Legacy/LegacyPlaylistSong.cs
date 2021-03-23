@@ -95,7 +95,11 @@ namespace BeatSaberPlaylistsLib.Legacy
         /// Use <see cref="SetCustomData(string, object)"/> to add entries.
         /// </summary>
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
-        public override Dictionary<string, object>? CustomData { get; set; }
+        private Dictionary<string, object>? _serializedCustomData
+        {
+            get => CustomData;
+            set => CustomData = value;
+        }
 
         ///<inheritdoc/>
         [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore, Order = -10)]
@@ -143,6 +147,16 @@ namespace BeatSaberPlaylistsLib.Legacy
         {
             get => DateAdded;
             set => DateAdded = value;
+        }
+
+        /// <summary>
+        /// The optional recommended difficulties for the beatmap
+        /// </summary>
+        [JsonProperty("difficulties", NullValueHandling = NullValueHandling.Ignore, Order = 12)]
+        public List<Difficulty>? _serializedDifficulties
+        {
+            get => Difficulties;
+            set => Difficulties = value;
         }
 
         ///<inheritdoc/>

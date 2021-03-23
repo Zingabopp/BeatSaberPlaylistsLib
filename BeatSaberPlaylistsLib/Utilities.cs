@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -170,7 +171,7 @@ namespace BeatSaberPlaylistsLib
 
         private static DrawSettings defaultDrawSettings = new DrawSettings
         {
-            Color = Color.Black,
+            Color = Color.White,
             DrawStyle = DrawStyle.Normal,
             Font = new Font("arial", 60, FontStyle.Regular),
             StringFormat = new StringFormat()
@@ -192,7 +193,8 @@ namespace BeatSaberPlaylistsLib
         {
             using Stream? stream = GetDefaultImageStream();
             //Console.WriteLine($"Drawing string {playlist.Title}");
-            Image img = ImageUtilities.DrawString(playlist.Title, Image.FromStream(stream), defaultDrawSettings);
+            string firstLetterOnly = string.Join("", (from word in playlist.Title.Split() select word[0]));
+            Image img = ImageUtilities.DrawString(firstLetterOnly, Image.FromStream(stream), defaultDrawSettings);
             MemoryStream ms = new MemoryStream();
             img.Save(ms, ImageFormat.Png);
             return ms;

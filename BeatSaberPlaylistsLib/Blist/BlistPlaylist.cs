@@ -65,7 +65,11 @@ namespace BeatSaberPlaylistsLib.Blist
 
         ///<inheritdoc/>
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore, Order = 5)]
-        public override Dictionary<string, object>? CustomData { get; set; }
+        private Dictionary<string, object>? _serializedCustomData
+        {
+            get => CustomData;
+            set => CustomData = value;
+        }
 
         /// <summary>
         /// The beatmaps contained in the playlist

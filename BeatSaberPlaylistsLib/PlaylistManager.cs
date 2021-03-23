@@ -165,6 +165,26 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
+        /// Call this if you want to fully clear all playlists in the manager (so they can be reloaded again)
+        /// Example use case: Playlist or folders modified externally while lib is open, and all playlists need to be reloaded
+        /// </summary>
+        /// <param name="clearChildren"></param>
+        public void ClearManager(bool clearChildren)
+        {
+            LoadedPlaylists.Clear();
+
+            if (clearChildren)
+            {
+                string[] subDirectories = Directory.GetDirectories(PlaylistPath);
+                ChildManagers.Clear();
+                for (int i = 0; i < subDirectories.Length; i++)
+                {
+                    ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a new <see cref="IPlaylist"/> using the given parameters.
         /// </summary>
         /// <param name="fileName"></param>
@@ -238,6 +258,39 @@ namespace BeatSaberPlaylistsLib
             PlaylistManager childManager = new PlaylistManager(newDirectory, this);
             ChildManagers.Add(childManager);
             return childManager;
+        }
+
+        /// <summary>
+        /// Deletes a child and its directories recursively <see cref="PlaylistManager"/>.
+        /// </summary>
+        /// <param name="managerToDelete"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public void DeleteChildManager(PlaylistManager managerToDelete)
+        {
+            if (ChildManagers.Contains(managerToDelete))
+            {
+                Directory.Delete(managerToDelete.PlaylistPath, true);
+                ChildManagers.Remove(managerToDelete);
+            }
+            else
+            {
+                throw new FileNotFoundException("Folder not found under current manager");
+            }
+        }
+
+        /// <summary>
+        /// Renames the current manager folder <see cref="PlaylistManager"/>.
+        /// </summary>
+        /// <param name="folderName"></param>
+        /// <returns></returns>
+        /// <exception cref="IOException"></exception>
+        public void RenameManager(string folderName)
+        {
+            folderName.Replace("\\", "").Replace("/", "");
+            string newDirectory = Path.Combine(Path.GetDirectoryName(PlaylistPath), folderName);
+            Directory.Move(PlaylistPath, newDirectory);
+            PlaylistPath = newDirectory;
         }
 
         /// <summary>
@@ -401,8 +454,9 @@ namespace BeatSaberPlaylistsLib
                 return this;
             foreach (PlaylistManager? manager in ChildManagers)
             {
-                if (manager.GetManagerForPlaylist(playlist) != null)
-                    return manager;
+                var foundManager = manager.GetManagerForPlaylist(playlist);
+                if (foundManager != null)
+                    return foundManager;
             }
             return null;
         }

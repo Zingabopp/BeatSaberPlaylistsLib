@@ -50,7 +50,11 @@ namespace BeatSaberPlaylistsLib.Blist
         /// Use <see cref="SetCustomData(string, object)"/> to add entries.
         /// </summary>
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
-        public override Dictionary<string, object>? CustomData { get; set; }
+        private Dictionary<string, object>? _serializedCustomData
+        {
+            get => CustomData;
+            set => CustomData = value;
+        }
 
         /// <summary>
         /// The optional RFC3339 date and time the beatmap was added to the playlist

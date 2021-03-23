@@ -85,7 +85,11 @@ namespace BeatSaberPlaylistsLib.Legacy
         public override string? Description { get; set; }
         ///<inheritdoc/>
         [JsonProperty("customData", Order = 5, NullValueHandling = NullValueHandling.Ignore)]
-        public override Dictionary<string, object>? CustomData { get; set; }
+        private Dictionary<string, object>? _serializedCustomData
+        {
+            get => CustomData;
+            set => CustomData = value;
+        }
         ///<inheritdoc/>
         [DataMember]
         [JsonProperty("songs", Order = 90)]

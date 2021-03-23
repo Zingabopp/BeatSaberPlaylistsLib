@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -152,7 +149,26 @@ namespace BeatSaberPlaylistsLib.Types
         public List<Difficulty>? Difficulties { get; set; }
 
         /// <inheritdoc/>
-        public abstract Dictionary<string, object>? CustomData { get; set; }
+        protected Dictionary<string, object>? CustomData { get; set; }
+
+        /// <summary>
+        /// Tries to access the object for key in <see cref="CustomData"/> if found and returns true. Else, returns false.
+        /// </summary>
+        public bool TryGetCustomData(string key, out object value)
+        {
+            value = null;
+            return CustomData?.TryGetValue(key, out value) ?? false;
+        }
+
+        /// <summary>
+        /// Sets value for key in <see cref="CustomData"/>.
+        /// </summary>
+        public void SetCustomData(string key, object value)
+        {
+            if (CustomData == null)
+                CustomData = new Dictionary<string, object>();
+            CustomData[key] = value;
+        }
 
         /// <summary>
         /// Adds the given flag to the <see cref="Identifiers"/> property.

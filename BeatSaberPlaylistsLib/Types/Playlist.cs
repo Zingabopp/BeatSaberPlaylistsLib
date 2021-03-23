@@ -28,7 +28,15 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public string? SuggestedExtension { get; set; }
         /// <inheritdoc/>
-        public bool AllowDuplicates { get; set; } = true;
+        public bool AllowDuplicates
+        {
+            get
+            {
+                object returnVal;
+                return TryGetCustomData("AllowDuplicates", out returnVal) ? (bool)returnVal : true;
+            }
+            set => SetCustomData("AllowDuplicates", value);
+        }
 
         /// <inheritdoc/>
         public virtual bool IsReadOnly => false;
@@ -85,21 +93,30 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         /// <inheritdoc/>
-        public abstract Dictionary<string, object>? CustomData { get; set; }
+        protected Dictionary<string, object>? CustomData { get; set; }
 
         /// <summary>
-        /// Runs after playlist has been deserialized.
+        /// Tries to access the object for key in <see cref="CustomData"/> if found and returns true. Else, returns false.
         /// </summary>
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
+        public bool TryGetCustomData(string key, out object value)
         {
-            if (CustomData != null && CustomData.TryGetValue("AllowDuplicates", out object value))
+            value = null;
+            return CustomData?.TryGetValue(key, out value) ?? false;
+        }
+
+        /// <summary>
+        /// Sets value for key in <see cref="CustomData"/>.
+        /// </summary>
+        public void SetCustomData(string key, object value)
+        {
+            if (CustomData == null)
+                CustomData = new Dictionary<string, object>();
+            if (key.Equals("AllowDuplicates", StringComparison.OrdinalIgnoreCase))
             {
-                if (value is bool allowDuplicates)
-                {
-                    AllowDuplicates = allowDuplicates;
-                }
+                if (!(value is bool))
+                    throw new ArgumentException("'AllowDuplicates' must have a boolean value.", nameof(value));
             }
+            CustomData[key] = value;
         }
     }
 

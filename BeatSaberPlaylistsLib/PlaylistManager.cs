@@ -165,22 +165,15 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Call this if you want to fully clear all playlists in the manager (so they can be reloaded again)
-        /// Example use case: Playlist or folders modified externally while lib is open, and all playlists need to be reloaded
+        /// Call this if you want to reload all child managers
         /// </summary>
-        /// <param name="clearChildren"></param>
-        public void ClearManager(bool clearChildren)
+        public void RefreshChildManagers()
         {
-            LoadedPlaylists.Clear();
-
-            if (clearChildren)
+            string[] subDirectories = Directory.GetDirectories(PlaylistPath);
+            ChildManagers.Clear();
+            for (int i = 0; i < subDirectories.Length; i++)
             {
-                string[] subDirectories = Directory.GetDirectories(PlaylistPath);
-                ChildManagers.Clear();
-                for (int i = 0; i < subDirectories.Length; i++)
-                {
-                    ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
-                }
+                ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
             }
         }
 

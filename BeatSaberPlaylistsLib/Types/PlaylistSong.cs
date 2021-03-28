@@ -19,6 +19,9 @@ namespace BeatSaberPlaylistsLib.Types
         ///<inheritdoc/>
         public DateTime? DateAdded { get; set; }
 
+        ///<inheritdoc/>
+        public List<Difficulty>? Difficulties { get; set; }
+
         /// <summary>
         /// Unique identifier for playlist song, used for distinguishing between duplicates.
         /// </summary>
@@ -142,11 +145,6 @@ namespace BeatSaberPlaylistsLib.Types
                     CustomData[key] = item.Value;
             }
         }
-
-        /// <summary>
-        /// The optional recommended difficulties for the beatmap
-        /// </summary>
-        public List<Difficulty>? Difficulties { get; set; }
 
         /// <inheritdoc/>
         protected Dictionary<string, object>? CustomData { get; set; }

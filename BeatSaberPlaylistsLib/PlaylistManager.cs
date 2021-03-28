@@ -77,7 +77,10 @@ namespace BeatSaberPlaylistsLib
             ChildManagers = new List<PlaylistManager>(subDirectories.Length);
             for (int i = 0; i < subDirectories.Length; i++)
             {
-                ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
+                if (Directory.GetFiles(subDirectories[i], "*.plignore").Length == 0)
+                {
+                    ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
+                }
             }
         }
 
@@ -167,13 +170,36 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// Call this if you want to reload all child managers
         /// </summary>
-        public void RefreshChildManagers()
+        public void RefreshPlaylists(bool refreshChildren)
         {
-            string[] subDirectories = Directory.GetDirectories(PlaylistPath);
-            ChildManagers.Clear();
-            for (int i = 0; i < subDirectories.Length; i++)
+            IPlaylistHandler handler = DefaultHandler ?? PlaylistHandlers.Values.FirstOrDefault() ?? throw new InvalidOperationException("PlaylistManager has no registered IPlaylistHandlers.");
+
+            if (refreshChildren)
             {
-                ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
+                string[] subDirectories = Directory.GetDirectories(PlaylistPath);
+                ChildManagers.Clear();
+                for (int i = 0; i < subDirectories.Length; i++)
+                {
+                    if (Directory.GetFiles(subDirectories[i], "*.plignore").Length == 0)
+                    {
+                        ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
+                    }
+                }
+            }
+
+            foreach (var playlist in GetAllPlaylists(refreshChildren))
+            {
+                string? suggestedExtension = string.IsNullOrWhiteSpace(playlist.SuggestedExtension) ? null : playlist.SuggestedExtension;
+                string extension = suggestedExtension ?? handler.DefaultExtension;
+                string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + extension);
+                if (File.Exists(path) && handler.SupportsExtension(extension))
+                {
+                    using (FileStream fs = File.OpenRead(path))
+                    {
+                        playlist.RemoveAll((playlistSong) => true);
+                        handler.Populate(fs, playlist);
+                    }
+                }
             }
         }
 

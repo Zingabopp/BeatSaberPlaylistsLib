@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -15,5 +16,9 @@ namespace BeatSaberPlaylistsLib.Types
         /// Unique identifier for playlist song, used for distinguishing between duplicates.
         /// </summary>
         public Guid playlistSongID { get; }
+        /// <summary>
+        /// The optional recommended difficulties for the beatmap
+        /// </summary>
+        public List<Difficulty>? Difficulties { get; set; }
     }
 }

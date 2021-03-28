@@ -182,6 +182,26 @@ namespace BeatSaberPlaylistsLib.Types
             song?.SetPreviewBeatmap(beatmap);
             return song;
         }
+
+        /// <inheritdoc/>
+        public IPlaylistSong? Add(BeatSaber.IDifficultyBeatmap beatmap)
+        {
+            if (beatmap == null)
+                return null;
+
+            Difficulty difficulty = new Difficulty();
+            difficulty.Name = Difficulty.DifficultyValueToString((int)beatmap.difficulty);
+            difficulty.Characteristic = beatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
+            IPlaylistSong? song = Add(new T()
+            {
+                LevelId = beatmap.level.levelID,
+                Name = beatmap.level.songName,
+                LevelAuthorName = beatmap.level.levelAuthorName,
+                Difficulties = new List<Difficulty>{ difficulty },
+            });
+            song?.SetPreviewBeatmap(beatmap.level);
+            return song;
+        }
     }
 }
 #endif

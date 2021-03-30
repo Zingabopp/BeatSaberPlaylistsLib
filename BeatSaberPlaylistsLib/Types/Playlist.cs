@@ -92,21 +92,19 @@ namespace BeatSaberPlaylistsLib.Types
             CoverImageChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Dictionary for the CustomData key in the playlist file.
+        /// </summary>
         protected Dictionary<string, object>? CustomData { get; set; }
 
-        /// <summary>
-        /// Tries to access the object for key in <see cref="CustomData"/> if found and returns true. Else, returns false.
-        /// </summary>
+        /// <inheritdoc/>
         public bool TryGetCustomData(string key, out object value)
         {
             value = null;
             return CustomData?.TryGetValue(key, out value) ?? false;
         }
 
-        /// <summary>
-        /// Sets value for key in <see cref="CustomData"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void SetCustomData(string key, object value)
         {
             if (CustomData == null)

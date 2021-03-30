@@ -177,17 +177,22 @@ namespace BeatSaberPlaylistsLib
             if (refreshChildren)
             {
                 string[] subDirectories = Directory.GetDirectories(PlaylistPath);
-                ChildManagers.Clear();
                 for (int i = 0; i < subDirectories.Length; i++)
                 {
-                    if (Directory.GetFiles(subDirectories[i], "*.plignore").Length == 0)
+                    PlaylistManager childManager = ChildManagers.Where((child) => Path.GetFullPath(child.PlaylistPath) == Path.GetFullPath(subDirectories[i])).FirstOrDefault();
+                    if (childManager != null)
+                    {
+                        childManager.RefreshPlaylists(true);
+                        continue;
+                    }
+                    else if (Directory.GetFiles(subDirectories[i], "*.plignore").Length == 0)
                     {
                         ChildManagers.Add(new PlaylistManager(subDirectories[i], this));
                     }
                 }
             }
 
-            foreach (var playlist in GetAllPlaylists(refreshChildren))
+            foreach (var playlist in GetAllPlaylists(false))
             {
                 string? suggestedExtension = string.IsNullOrWhiteSpace(playlist.SuggestedExtension) ? null : playlist.SuggestedExtension;
                 string extension = suggestedExtension ?? handler.DefaultExtension;
@@ -273,8 +278,13 @@ namespace BeatSaberPlaylistsLib
         public PlaylistManager CreateChildManager(string folderName)
         {
             string newDirectory = Path.Combine(PlaylistPath, folderName);
+            PlaylistManager childManager = ChildManagers.Where((child) => Path.GetFullPath(child.PlaylistPath) == Path.GetFullPath(newDirectory)).FirstOrDefault();
+            if (childManager != null)
+            {
+                return childManager;
+            }
             Directory.CreateDirectory(newDirectory);
-            PlaylistManager childManager = new PlaylistManager(newDirectory, this);
+            childManager = new PlaylistManager(newDirectory, this);
             ChildManagers.Add(childManager);
             return childManager;
         }
@@ -294,7 +304,7 @@ namespace BeatSaberPlaylistsLib
             }
             else
             {
-                throw new FileNotFoundException("Folder not found under current manager");
+                throw new DirectoryNotFoundException("Folder not found under current manager");
             }
         }
 

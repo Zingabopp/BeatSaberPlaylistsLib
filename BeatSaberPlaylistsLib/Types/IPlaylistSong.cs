@@ -20,5 +20,13 @@ namespace BeatSaberPlaylistsLib.Types
         /// The optional recommended difficulties for the beatmap
         /// </summary>
         public List<Difficulty>? Difficulties { get; set; }
+        /// <summary>
+        /// Tries to access the object for key in <see cref="CustomData"/> if found and returns true. Else, returns false.
+        /// </summary>
+        public bool TryGetCustomData(string key, out object value);
+        /// <summary>
+        /// Sets value for key in <see cref="CustomData"/>.
+        /// </summary>
+        public void SetCustomData(string key, object value);
     }
 }

@@ -64,6 +64,7 @@ namespace BeatSaberPlaylistsLib.Types
                 playlist.SpriteWasLoaded = true;
                 playlist.SpriteLoaded?.Invoke(playlist, null);
                 playlist._previousSprite = null;
+                playlist.SpriteLoadQueued = false;
             });
 
             if (!CoroutineRunning)

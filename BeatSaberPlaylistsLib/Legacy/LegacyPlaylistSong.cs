@@ -11,8 +11,6 @@ namespace BeatSaberPlaylistsLib.Legacy
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class LegacyPlaylistSong : JSONPlaylistSong, IEquatable<IPlaylistSong>
     {
-        private Dictionary<string, object>? _customData;
-
         /// <summary>
         /// Creates an empty <see cref="LegacyPlaylistSong"/>.
         /// </summary>

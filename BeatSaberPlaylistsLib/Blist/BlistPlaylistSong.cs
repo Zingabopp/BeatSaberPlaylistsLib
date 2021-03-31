@@ -13,8 +13,6 @@ namespace BeatSaberPlaylistsLib.Blist
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class BlistPlaylistSong : JSONPlaylistSong
     {
-        private Dictionary<string, object>? _customData;
-
         /// <summary>
         /// Creates an empty <see cref="BlistPlaylistSong"/>.
         /// </summary>

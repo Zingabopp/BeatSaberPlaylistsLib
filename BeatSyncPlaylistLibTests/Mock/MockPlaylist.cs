@@ -28,7 +28,6 @@ namespace BeatSaberPlaylistsLibTests.Mock
 
         public override bool HasCover => false;
 
-        public override Dictionary<string, object>? CustomData { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public override void SetCover(byte[] coverImage)
         {

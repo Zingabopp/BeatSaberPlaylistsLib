@@ -78,22 +78,17 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             using Stream playlistStream = File.OpenRead(sourcePlaylist);
             IPlaylist playlist = handler.Deserialize(playlistStream);
             Assert.AreEqual(7, playlist.Count);
-            if (playlist.CustomData != null)
+            if (playlist.TryGetCustomData("NestedObject", out object? value))
             {
-                if (playlist.CustomData.TryGetValue("NestedObject", out object? value))
+                if (value is JObject jObj)
                 {
-                    if (value is JObject jObj)
-                    {
-                        Assert.AreEqual(jObj["NestedTest"], "test");
-                    }
-                    else
-                        Assert.Fail("value isn't a JObject");
+                    Assert.AreEqual(jObj["NestedTest"], "test");
                 }
                 else
-                    Assert.Fail("NestedObject not found in CustomData");
+                    Assert.Fail("value isn't a JObject");
             }
             else
-                Assert.Fail("CustomData is null.");
+                Assert.Fail("NestedObject not found in CustomData");
             Assert.IsTrue(playlist.All(s => s.Hash != null && s.Hash.Length == 40));
         }
 
@@ -146,7 +141,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsTrue(File.Exists(playlistFile));
             Console.WriteLine(Path.GetFullPath(playlistFile));
             using FileStream newFileStream = File.OpenRead(playlistFile);
-            BlistPlaylist? readPlaylist = handler.Deserialize(newFileStream) as BlistPlaylist 
+            BlistPlaylist? readPlaylist = handler.Deserialize(newFileStream) as BlistPlaylist
                 ?? throw new AssertFailedException("readPlaylist is null.");
             Assert.AreEqual(playlist.Count, readPlaylist.Count);
             Assert.IsTrue(readPlaylist.HasCover);
@@ -179,7 +174,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.IsFalse(Directory.Exists(playlistDir));
             Directory.CreateDirectory(playlistDir);
             var songs = CreateSongArray<LegacyPlaylistSong>("Blister_", "BlisterAuthor_", 1000, Identifier.LevelId | Identifier.Hash | Identifier.Key);
-            BlistPlaylist playlist = new BlistPlaylist(fileName, playlistTitle, playlistAuthor )
+            BlistPlaylist playlist = new BlistPlaylist(fileName, playlistTitle, playlistAuthor)
             {
                 Description = playlistDescription,
                 SuggestedExtension = playlistExtension

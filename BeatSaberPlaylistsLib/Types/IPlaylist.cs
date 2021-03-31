@@ -121,12 +121,12 @@ namespace BeatSaberPlaylistsLib.Types
         int RemoveAll(Func<IPlaylistSong, bool> match);
 
         /// <summary>
-        /// Tries to access the object for key in <see cref="CustomData"/> if found and returns true. Else, returns false.
+        /// Tries to access custom data, returns true if <paramref name="key"/> is found. Returns false otherwise.
         /// </summary>
         public bool TryGetCustomData(string key, out object value);
 
         /// <summary>
-        /// Sets value for key in <see cref="CustomData"/>.
+        /// Sets value for the given key in custom data.
         /// </summary>
         public void SetCustomData(string key, object value);
     }

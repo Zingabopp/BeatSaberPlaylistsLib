@@ -77,22 +77,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         /// <summary>
-        /// Sets custom data for a <see cref="BlistPlaylistSong"/>.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        public void SetCustomData(string key, object value)
-        {
-            if (_customData == null) _customData = new Dictionary<string, object>();
-            if (_customData.ContainsKey(key))
-                _customData[key] = value;
-            else
-                _customData.Add(key, value);
-        }
-
-        /// <summary>
         /// Custom data not included in the schema. Returns null if there are no entries.
-        /// Use <see cref="SetCustomData(string, object)"/> to add entries.
         /// </summary>
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
         private Dictionary<string, object>? _serializedCustomData

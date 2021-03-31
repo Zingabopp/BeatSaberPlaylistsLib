@@ -100,7 +100,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public bool TryGetCustomData(string key, out object value)
         {
-            value = null;
+            value = null!;
             return CustomData?.TryGetValue(key, out value) ?? false;
         }
 

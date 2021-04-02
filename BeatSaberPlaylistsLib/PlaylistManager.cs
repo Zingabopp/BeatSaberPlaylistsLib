@@ -201,7 +201,7 @@ namespace BeatSaberPlaylistsLib
                 {
                     using (FileStream fs = File.OpenRead(path))
                     {
-                        playlist.RemoveAll((playlistSong) => true);
+                        playlist.Clear();
                         handler.Populate(fs, playlist);
                     }
                 }

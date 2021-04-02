@@ -356,6 +356,13 @@ namespace BeatSaberPlaylistsLib
             }
             if (includeChildren)
             {
+                // Delete any folders that are since deleted to save an exception
+                List<PlaylistManager> managersToDelete = GetChildManagers().Where((childManager) => !Directory.Exists(childManager.PlaylistPath)).ToList();
+                foreach (var manager in managersToDelete)
+                {
+                    ChildManagers.Remove(manager);
+                }
+
                 foreach (var manager in GetChildManagers())
                 {
                     manager.LoadAllPlaylists(loadedPlaylists, includeChildren, erroredPlaylists, exceptions);

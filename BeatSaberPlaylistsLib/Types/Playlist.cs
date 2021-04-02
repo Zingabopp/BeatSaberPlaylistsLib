@@ -27,6 +27,10 @@ namespace BeatSaberPlaylistsLib.Types
         public virtual string Filename { get; set; } = "";
         /// <inheritdoc/>
         public string? SuggestedExtension { get; set; }
+        /// <summary>
+        /// Unique identifier for the playlist, used for distinguishing between duplicates.
+        /// </summary>
+        public Guid playlistID { get; } = Guid.NewGuid();
         /// <inheritdoc/>
         public bool AllowDuplicates
         {

@@ -143,7 +143,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// BeatmapLevelPack ID.
         /// </summary>
-        public string packID => BeatSaber.CustomLevelLoader.kCustomLevelPackPrefixId + Title;
+        public string packID => BeatSaber.CustomLevelLoader.kCustomLevelPackPrefixId + playlistID;
 
         /// <summary>
         /// BeatmapLevelPack Name, same as name of the collection.
@@ -163,11 +163,19 @@ namespace BeatSaberPlaylistsLib.Types
         /// Returns a new array of the songs in this playlist.
         /// </summary>
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels
-            => Songs
-            .Where(s => s.PreviewBeatmapLevel != null)
-            .Select(s => s)
-            .ToArray();
+        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels {
+            get
+            {
+                Songs.ForEach(delegate(T s) {
+                    if (s is PlaylistSong playlistSong)
+                    {
+                        playlistSong.RefreshFromSongCore();
+                    }
+                });
+                return Songs.Where(s => s.PreviewBeatmapLevel != null).Select(s => s).ToArray();
+            }
+        }
+
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
         /// <inheritdoc/>
         public IPlaylistSong? Add(BeatSaber.IPreviewBeatmapLevel beatmap)

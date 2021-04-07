@@ -41,13 +41,9 @@ jobs:
       env: 
         FrameworkPathOverride: /usr/lib/mono/4.8-api
       run: dotnet pack
-    - name: Upload Lib Artifact
+    - name: Upload Beat Saber Artifact
       uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.Build.outputs.filename }}
-        path: ${{ steps.Build.outputs.artifactpath }}
-    - name: Upload ${{ matrix.configuration }} Artifact
-      uses: actions/upload-artifact@v2
+      if: matrix.configuration == 'Release-BeatSaber'
       with:
         name: ${{ steps.Build.outputs.filename }}
         path: ${{ steps.Build.outputs.artifactpath }}

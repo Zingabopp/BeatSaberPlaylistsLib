@@ -5,7 +5,8 @@
     <Version>1.2.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' 
-                         OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
+                         OR ('$(ContinuousIntegrationBuild)' == 'True' AND '$(Configuration.Contains(BeatSaber))' != 'True')
+                         OR '$(NCRUNCH)' == '1'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration.Contains(BeatSaber))' != 'True'">

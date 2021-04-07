@@ -48,7 +48,8 @@
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
   </Target>
   <!--Build target for Continuous Integration builds. Set up for GitHub Actions.-->
-  <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo" Condition="'$(ContinuousIntegrationBuild)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
+  <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo"
+          Condition="'$(ContinuousIntegrationBuild)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />

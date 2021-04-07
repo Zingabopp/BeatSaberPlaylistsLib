@@ -23,7 +23,7 @@
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
     </GetManifestInfo>
-    <Message Text="Comparing versions: '$(PluginVersion)' | '$(AssemblyVersion)'" Importance="high" />
+    <Message Text="Comparing versions: '$(PluginVersion)' | '$(Version)'" Importance="high" />
     <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(Version)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" />
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
       <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
@@ -48,7 +48,7 @@
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
   </Target>
   <!--Build target for Continuous Integration builds. Set up for GitHub Actions.-->
-  <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo" Condition="'$(ContinuousIntegrationBuild)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
+  <Target Name="BuildForCI" AfterTargets="CopyArtifacts;CopyBeatSaberArtifacts" DependsOnTargets="SetFullReleaseInfo" Condition="'$(ContinuousIntegrationBuild)' != 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />

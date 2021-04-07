@@ -3,16 +3,16 @@
 <Project>
   <PropertyGroup>
     <Version>1.2.1</Version>
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' 
                          OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(BeatSaberRelease)' != 'True'">
+  <PropertyGroup Condition="'$(Configuration.Contains(BeatSaber))' != 'True'">
     <ArtifactDestination>$(OutputPath)Artifacts</ArtifactDestination>
+    <DisableCopyToPlugins>True</DisableCopyToPlugins>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == ''">
+  <PropertyGroup Condition="'$(TargetFramework)' == '' AND '$(Configuration.Contains(BeatSaber))' != 'True'">
     <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
     <DisableCopyArtifacts>True</DisableCopyArtifacts>
     <DisableCopyToPlugins>true</DisableCopyToPlugins>

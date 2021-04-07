@@ -42,6 +42,11 @@ jobs:
       id: Build
       env: 
         FrameworkPathOverride: /usr/lib/mono/4.8-api
+      run: dotnet build
+    - name: Pack ${{ matrix.configuration }}
+      id: Pack
+      env: 
+        FrameworkPathOverride: /usr/lib/mono/4.8-api
       run: dotnet pack
     - name: Upload Beat Saber Artifact
       uses: actions/upload-artifact@v2

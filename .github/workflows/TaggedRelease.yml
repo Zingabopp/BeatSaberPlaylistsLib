@@ -33,7 +33,12 @@ jobs:
       id: Build
       env: 
         FrameworkPathOverride: /usr/lib/mono/4.8-api
-      run: dotnet pack -p:DisableZipRelease=False
+      run: dotnet build
+    - name: Pack ${{ matrix.configuration }}
+      id: Pack
+      env: 
+        FrameworkPathOverride: /usr/lib/mono/4.8-api
+      run: dotnet pack
     - name: Echo
       run: echo ${{ steps.Build.outputs.zippath }}
     - name: Make Release
@@ -46,4 +51,4 @@ jobs:
         draft: true
         files: |
           ${{ steps.Build.outputs.zippath }}
-          BeatSaberPlaylistsLib/bin/${{ matrix.configuration }}/*pkg
+          ${{ steps.Build.outputs.projectdir }}bin/${{ matrix.configuration }}/*pkg

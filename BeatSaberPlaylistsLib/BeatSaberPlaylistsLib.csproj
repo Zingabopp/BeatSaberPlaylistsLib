@@ -14,6 +14,23 @@
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
     <GitModified></GitModified>
+    <Description>A library to interact with Beat Saber playlists.</Description>
+    <Copyright>Copyright © Zingabopp 2021</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Beat Saber</PackageTags>
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Authors>Zingabopp</Authors>
+    <Company>Zingabopp</Company>
   </PropertyGroup>
   <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
@@ -21,6 +38,10 @@
   <ItemGroup>
     <None Remove="BeatSaberPlaylistsLib.manifest" />
     <None Remove="Icons\FolderIcon.png" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="BeatSaberPlaylistsLib.manifest">
@@ -37,9 +58,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.1"  Condition="'$(Configuration)' != 'Debug-BeatSaber' AND '$(Configuration)' != 'Release-BeatSaber'"/>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.1" Condition="'$(Configuration)' != 'Debug-BeatSaber' AND '$(Configuration)' != 'Release-BeatSaber'" />
 
-    <Reference Include="System.Drawing" Condition="'$(Configuration)' == 'Debug-BeatSaber' OR '$(Configuration)' == 'Release-BeatSaber'"/>
+    <Reference Include="System.Drawing" Condition="'$(Configuration)' == 'Debug-BeatSaber' OR '$(Configuration)' == 'Release-BeatSaber'" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug-BeatSaber' OR '$(Configuration)' == 'Release-BeatSaber'">
     <Reference Include="IPA.Loader">

@@ -26,6 +26,7 @@
     <PropertyGroup>
       <Version>$(PluginVersion)</Version>
       <AssemblyVersion>$(PluginVersion)</AssemblyVersion>
+      <PackageVersion>$(PluginVersion)</PackageVersion>
     </PropertyGroup>
     <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(AssemblyVersion)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" Condition="'$(BeatSaberRelease)' == 'True'" />
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">

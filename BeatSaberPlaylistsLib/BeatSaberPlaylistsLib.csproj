@@ -13,7 +13,7 @@
     <PackageId>BeatSaberPlaylistsLib</PackageId>
     <Product>BeatSaberPlaylistsLib</Product>
     <Title>BeatSaberPlaylistsLib</Title>
-    <Description>A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber if this library is being used inside a mod.</Description>
+    <Description>A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber package if this library is being used inside a mod.</Description>
     <Copyright>Copyright © Zingabopp 2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>

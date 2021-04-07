@@ -14,35 +14,42 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        configuration: ['Release', 'Release-BeatSaber']
+    env:
+      Configuration: ${{ matrix.configuration }}
     steps:
     - uses: actions/checkout@v2
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build Lib
-      id: Build-Lib
-      env: 
-        FrameworkPathOverride: /usr/lib/mono/4.8-api
-      run: dotnet build --configuration Release
     - name: GetStrippedRefs
       env:
         FILES_URL: ${{ secrets.BSFILES_URL }}
       run: wget --no-check-certificate "$FILES_URL" -q -O bsfiles.zip
+      if: matrix.configuration == 'Release-BeatSaber'
     - name: ExtractRefs
       run: unzip -q -n bsfiles.zip -d ./Refs
-    - name: Build For Beat Saber
-      id: Build-BeatSaber
+      if: matrix.configuration == 'Release-BeatSaber'
+    - name: Build ${{ matrix.configuration }}
+      id: Build
       env: 
         FrameworkPathOverride: /usr/lib/mono/4.8-api
-      run: dotnet build --configuration Release-BeatSaber
+      run: dotnet pack
     - name: Upload Lib Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ steps.Build-Lib.outputs.filename }}
-        path: ${{ steps.Build-Lib.outputs.artifactpath }}
-    - name: Upload Beat Saber Artifact
+        name: ${{ steps.Build.outputs.filename }}
+        path: ${{ steps.Build.outputs.artifactpath }}
+    - name: Upload ${{ matrix.configuration }} Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ steps.Build-BeatSaber.outputs.filename }}
-        path: ${{ steps.Build-BeatSaber.outputs.artifactpath }}
+        name: ${{ steps.Build.outputs.filename }}
+        path: ${{ steps.Build.outputs.artifactpath }}
+    - name: Upload ${{ matrix.configuration }} Nuget
+      uses: actions/upload-artifact@v1
+      with:
+        name: Nuget-${{ steps.Build.outputs.filename }}
+        path: ${{ steps.Build.outputs.artifactpath }}/../../*pkg

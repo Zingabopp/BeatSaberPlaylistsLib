@@ -19,8 +19,7 @@
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
   <Target Name="SetFullReleaseInfo" AfterTargets="CheckBSMTInstalled"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
-    <Message Text="Beat Saber Release? '$(BeatSaberRelease)'" Importance="high"/>
-    <GetManifestInfo FailOnError="True" ManifestPath="BeatSaberPlaylistsLib.manifest" >
+    <GetManifestInfo FailOnError="True" ManifestPath="..\BeatSaberPlaylistsLib.manifest" >
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
     </GetManifestInfo>
@@ -57,6 +56,7 @@
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
+    <Message Text="::set-output name=projectdir::$(ProjectDir)" Importance="high" />
     <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />
     <Message Condition="'$(BeatSaberRelease)' == 'True'"
       Text="::set-output name=release-title::$(AssemblyName).BeatSaber v$(PluginVersion)" Importance="high" />

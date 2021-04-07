@@ -2,7 +2,7 @@
 <!-- This file contains project properties used by the build. -->
 <Project>
   <PropertyGroup>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' 
                          OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">

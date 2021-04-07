@@ -1,4 +1,4 @@
-# New in v1.2.1
+# New in v1.2.2
 * CustomData support for `bplist` and `blist` playlists.
   * Access with `TryGetCustomData` and `SetCustomData`
 * New `PlaylistManager` operations:

@@ -56,12 +56,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\Directory.Build.props">
-      <Pack>False</Pack>
-    </None>
-    <None Include="..\Directory.Build.targets">
-      <Pack>False</Pack>
-    </None>
   </ItemGroup>
 
   <!-- Item Links -->

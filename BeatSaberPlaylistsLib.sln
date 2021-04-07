@@ -11,6 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageExperiments", "ImageEx
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLib.BeatSaber", "BeatSaberPlaylistsLib.BeatSaber\BeatSaberPlaylistsLib.BeatSaber.csproj", "{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{7035BBEF-9026-410F-95A9-380D50E9F130}"
+	ProjectSection(SolutionItems) = preProject
+		BeatSaberPlaylistsLib.manifest = BeatSaberPlaylistsLib.manifest
+		CHANGELOG.md = CHANGELOG.md
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

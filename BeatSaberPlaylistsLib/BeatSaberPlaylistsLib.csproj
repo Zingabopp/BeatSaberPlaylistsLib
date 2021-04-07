@@ -49,21 +49,12 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\Directory.Build.props">
-      <Pack>False</Pack>
-    </None>
-    <None Include="..\Directory.Build.targets">
-      <Pack>False</Pack>
-    </None>
   </ItemGroup>
   
   <!-- Item Links -->
   <ItemGroup>
     <Compile Include="..\src\**\*.cs" LinkBase="" />
     <EmbeddedResource Include="..\src\Icons\*" LinkBase="Icons" />
-    <None Include="..\BeatSaberPlaylistsLib.manifest" Link="BeatSaberPlaylistsLib.manifest">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <!-- End Item Links -->
   <ItemGroup>

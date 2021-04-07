@@ -4,18 +4,8 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
-  <PropertyGroup  Condition="'$(BeatSaberRelease)' == 'True'">
-    <ArtifactDestination>$(OutputPath)BeatSaberRelease</ArtifactDestination>
-  </PropertyGroup>
-  <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
+  <PropertyGroup>
     <ArtifactDestination>$(OutputPath)Artifacts</ArtifactDestination>
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == ''">
-    <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
-    <DisableCopyArtifacts>True</DisableCopyArtifacts>
-    <DisableCopyToPlugins>true</DisableCopyToPlugins>
-    <DisableZipRelease>true</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup Condition="'$(NCrunch)' == '1'">
     <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>

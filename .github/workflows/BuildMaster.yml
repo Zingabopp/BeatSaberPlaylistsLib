@@ -5,6 +5,8 @@ on:
     branches: [ master ]
     paths:
       - 'BeatSaberPlaylistsLib/**'
+      - 'BeatSaberPlaylistsLib.BeatSaber/**'
+      - 'src/**'
       - '.github/workflows/BuildMaster.yml'
       - 'Refs/**'
   pull_request:
@@ -38,6 +40,11 @@ jobs:
       if: matrix.configuration == 'Release-BeatSaber'
     - name: Build ${{ matrix.configuration }}
       id: Build
+      env: 
+        FrameworkPathOverride: /usr/lib/mono/4.8-api
+      run: dotnet build
+    - name: Pack ${{ matrix.configuration }}
+      id: Pack
       env: 
         FrameworkPathOverride: /usr/lib/mono/4.8-api
       run: dotnet pack

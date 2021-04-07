@@ -13,12 +13,6 @@
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
     <GitModified></GitModified>
-    <Description Condition="'$(Configuration)' == 'Release'">
-      A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber if this library is being used inside a mod.
-    </Description>
-    <Description Condition="'$(Configuration)' == 'Release-BeatSaber'">
-      A library for Beat Saber mods to interact with playlists. 
-    </Description>
     <Copyright>Copyright © Zingabopp 2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
@@ -36,6 +30,20 @@
     <Authors>Zingabopp</Authors>
     <Company>Zingabopp</Company>
   </PropertyGroup>
+  <!-- Configuration Specific Properties -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Title>BeatSaberPlaylistsLib</Title>
+    <Description>
+      A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber if this library is being used inside a mod.
+    </Description>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release-BeatSaber'">
+    <Title>BeatSaberPlaylistsLib.BeatSaber</Title>
+    <Description>
+      A library for Beat Saber mods to interact with playlists.
+    </Description>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <DisableCopyToPlugins>true</DisableCopyToPlugins>

@@ -2,7 +2,8 @@ name: Tagged-Release
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - "v*"
 
 jobs:
   build:

@@ -37,10 +37,12 @@ jobs:
     - name: Echo
       run: echo ${{ steps.Build.outputs.zippath }}
     - name: Make Release
-      uses: "marvinpinto/action-automatic-releases@latest"
+      uses: softprops/action-gh-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with: 
-        title: "${{ steps.Build.outputs.release-title }}"
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        name: "${{ steps.Build.outputs.release-title }}"
+        body_path: CHANGELOG.md
         draft: true
         files: |
           ${{ steps.Build.outputs.zippath }}

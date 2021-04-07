@@ -52,4 +52,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Nuget-${{ steps.Build.outputs.filename }}
-        path: ${{ steps.Build.outputs.artifactpath }}/../../*pkg
+        path: BeatSaberPlaylistsLib/bin/${{ matrix.configuration }}/*pkg

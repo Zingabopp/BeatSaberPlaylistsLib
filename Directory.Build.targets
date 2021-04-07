@@ -19,6 +19,10 @@
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
   <Target Name="SetFullReleaseInfo" AfterTargets="CheckBSMTInstalled"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
+    <Message Text="DisableCopyArtifacts: '$(DisableCopyArtifacts)'" Importance="high" />
+    <Message Text="DisableZipRelease: '$(DisableZipRelease)'" Importance="high" />
+    <Message Text="DisableCopyToPlugins: '$(DisableCopyToPlugins)'" Importance="high" />
+    <Message Text="ContinuousIntegrationBuild: '$(ContinuousIntegrationBuild)'" Importance="high" />
     <GetManifestInfo FailOnError="True" ManifestPath="..\BeatSaberPlaylistsLib.manifest" >
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
@@ -31,7 +35,8 @@
     <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
     </PropertyGroup>
-    <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)" Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
+    <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)"
+             Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
     <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
   </Target>
   <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
@@ -61,7 +66,9 @@
       Text="::set-output name=release-title::$(AssemblyName) v$(PluginVersion)" Importance="high" />
   </Target>
   <!--Creates a BeatMods compliant zip file with the release.-->
-  <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
+  <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" 
+          DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" 
+          Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
     <!--Set 'ReleaseName' if it failed before.-->
     <PropertyGroup Condition="'$(ReleaseName)' == '' AND '$(BeatSaberRelease)' == 'True'">
       <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>

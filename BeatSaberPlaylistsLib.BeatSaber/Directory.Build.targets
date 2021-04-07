@@ -56,6 +56,7 @@
     <Message Text="Building for CI" Importance="high" />
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
+    <Message Text="::set-output name=projectdir::$(ProjectDir)" Importance="high" />
     <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />
     <Message Condition="'$(BeatSaberRelease)' == 'True'"
       Text="::set-output name=release-title::$(AssemblyName).BeatSaber v$(PluginVersion)" Importance="high" />

@@ -35,8 +35,9 @@ jobs:
       run: dotnet pack -p:DisableZipRelease=False
     - name: Make Release
       uses: "marvinpinto/action-automatic-releases@latest"
-      with: repo_token: "${{ secrets.RELEASE_TOKEN }}"
-      draft: true
-      files: |
-        ${{ steps.Build.outputs.zippath }}
-        BeatSaberPlaylistsLib/bin/${{ matrix.configuration }}/*pkg
+      with: 
+        repo_token: "${{ secrets.RELEASE_TOKEN }}"
+        draft: true
+        files: |
+          ${{ steps.Build.outputs.zippath }}
+          BeatSaberPlaylistsLib/bin/${{ matrix.configuration }}/*pkg

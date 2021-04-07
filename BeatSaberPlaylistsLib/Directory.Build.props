@@ -19,14 +19,6 @@
     <ArtifactDestination>$(OutputPath)Artifacts</ArtifactDestination>
     <DisableCopyToPlugins>True</DisableCopyToPlugins>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <DisableCopyToPlugins>true</DisableCopyToPlugins>
-    <DisableZipRelease>true</DisableZipRelease>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
-  </ItemGroup>
   <PropertyGroup Condition="'$(NCrunch)' == '1'">
     <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
     <DisableCopyArtifacts>True</DisableCopyArtifacts>

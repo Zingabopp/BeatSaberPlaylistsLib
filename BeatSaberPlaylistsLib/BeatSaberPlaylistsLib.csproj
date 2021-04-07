@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework Condition="'$(Configuration)' == 'Debug-BeatSaber' OR '$(Configuration)' == 'Release-BeatSaber'">net48</TargetFramework>
     <TargetFramework Condition="'$(Configuration)' != 'Debug-BeatSaber' AND '$(Configuration)' != 'Release-BeatSaber'">netstandard2.0</TargetFramework>
@@ -31,6 +30,18 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Authors>Zingabopp</Authors>
     <Company>Zingabopp</Company>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <DisableCopyToPlugins>true</DisableCopyToPlugins>
+    <DisableZipRelease>true</DisableZipRelease>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <SourceRoot Include="$(MSBuildThisFileDirectory)/"/>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release-BeatSaber'">
+    <PackageId>BeatSaberPlaylistsLib.BeatSaber</PackageId>
+    <Product>BeatSaberPlaylistsLib.BeatSaber</Product>
   </PropertyGroup>
   <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />

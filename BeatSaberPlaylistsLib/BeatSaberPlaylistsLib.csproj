@@ -117,12 +117,5 @@
     <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' AND '$(GitUser)' == 'Zingabopp' AND '$(IsPullRequest)' != 'true'">
       <VersionType>Official</VersionType>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(GitModified)' != 'Modified'">
-      <InformationalVersion>$(VersionType)-$(GitBranch)-$(CommitHash)</InformationalVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(GitModified)' == 'Modified'">
-      <InformationalVersion>$(VersionType)-$(GitBranch)-$(CommitHash)-$(GitModified)</InformationalVersion>
-    </PropertyGroup>
-    <Message Text="Version $(InformationalVersion)" Importance="high" />
   </Target>
 </Project>

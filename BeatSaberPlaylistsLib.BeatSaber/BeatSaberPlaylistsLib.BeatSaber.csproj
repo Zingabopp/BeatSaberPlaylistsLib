@@ -11,8 +11,7 @@
     <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
     <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
     <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
-    <Version>0.0.0</Version>
-    <!--Version should be set in BeatSaberPlaylistsLib.manifest-->
+    <!--Version should be set in Directory.Build.props-->
     <VersionType>Unofficial</VersionType>
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
@@ -20,9 +19,7 @@
     <PackageId>BeatSaberPlaylistsLib.BeatSaber</PackageId>
     <Product>BeatSaberPlaylistsLib.BeatSaber</Product>
     <Title>BeatSaberPlaylistsLib.BeatSaber</Title>
-    <Description>
-      A library for Beat Saber mods to interact with playlists.
-    </Description>
+    <Description>A library for Beat Saber mods to interact with playlists.</Description>
     <Copyright>Copyright © Zingabopp 2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
@@ -58,6 +55,12 @@
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Directory.Build.props">
+      <Pack>False</Pack>
+    </None>
+    <None Include="..\Directory.Build.targets">
+      <Pack>False</Pack>
     </None>
   </ItemGroup>
 

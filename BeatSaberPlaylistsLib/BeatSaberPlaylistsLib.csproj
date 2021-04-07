@@ -3,12 +3,9 @@
     <TargetFrameworks>netstandard2.0;net48;net5.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <Nullable>Enable</Nullable>
-    <Configurations>Debug;Release;</Configurations>
-    <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
-    <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
+    <Configurations>Debug;Release</Configurations>
     <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
-    <Version>0.0.0</Version>
-    <!--Version should be set in BeatSaberPlaylistsLib.manifest-->
+    <!--Version should be set in Directory.Build.props-->
     <VersionType>Unofficial</VersionType>
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
@@ -16,9 +13,7 @@
     <PackageId>BeatSaberPlaylistsLib</PackageId>
     <Product>BeatSaberPlaylistsLib</Product>
     <Title>BeatSaberPlaylistsLib</Title>
-    <Description>
-      A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber if this library is being used inside a mod.
-    </Description>
+    <Description>A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber if this library is being used inside a mod.</Description>
     <Copyright>Copyright © Zingabopp 2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
@@ -35,6 +30,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Authors>Zingabopp</Authors>
     <Company>Zingabopp</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
@@ -44,23 +41,29 @@
   <ItemGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
   </ItemGroup>
+  <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\Directory.Build.props">
+      <Pack>False</Pack>
+    </None>
     <None Include="..\Directory.Build.targets">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <Pack>False</Pack>
     </None>
   </ItemGroup>
+  
   <!-- Item Links -->
   <ItemGroup>
     <Compile Include="..\src\**\*.cs" LinkBase="" />
     <EmbeddedResource Include="..\src\Icons\*" LinkBase="Icons" />
-    <Content Include="..\BeatSaberPlaylistsLib.manifest" Link="BeatSaberPlaylistsLib.manifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="..\BeatSaberPlaylistsLib.manifest" Link="BeatSaberPlaylistsLib.manifest">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <!-- End Item Links -->
   <ItemGroup>
@@ -71,10 +74,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.1" />
   </ItemGroup>
-  <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
-  
+
   
   <Target Name="PreBuild" BeforeTargets="BeforeBuild" Condition="'$(NCRUNCH)' != '1'">
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed." Condition="'$(BSMTTaskAssembly)' == ''" />

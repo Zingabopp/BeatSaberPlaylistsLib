@@ -1,12 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- This file contains project properties used by the build. -->
 <Project>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
+  <PropertyGroup>
+    <Version>1.2.1</Version>
+    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' 
+                         OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(BeatSaberRelease)' != 'True'">
     <ArtifactDestination>$(OutputPath)Artifacts</ArtifactDestination>
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == ''">
     <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>

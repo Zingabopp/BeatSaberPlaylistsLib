@@ -23,12 +23,8 @@
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
     </GetManifestInfo>
-    <PropertyGroup>
-      <Version>$(PluginVersion)</Version>
-      <AssemblyVersion>$(PluginVersion)</AssemblyVersion>
-      <PackageVersion>$(PluginVersion)</PackageVersion>
-    </PropertyGroup>
-    <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(AssemblyVersion)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" Condition="'$(BeatSaberRelease)' == 'True'" />
+    <Message Text="Comparing versions: '$(PluginVersion)' | '$(AssemblyVersion)'" Importance="high" />
+    <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(Version)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" />
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
       <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
     </PropertyGroup>

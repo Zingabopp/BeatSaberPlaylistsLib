@@ -57,6 +57,10 @@
     <Message Text="::set-output name=filename::$(ReleaseName)" Importance="high" />
     <Message Text="::set-output name=assemblyname::$(AssemblyName)" Importance="high" />
     <Message Text="::set-output name=artifactpath::$(ProjectDir)$(ArtifactDestination)" Importance="high" />
+    <Message Condition="'$(BeatSaberRelease)' == 'True'"
+      Text="::set-output name=release-title::$(AssemblyName).BeatSaber v$(PluginVersion)" Importance="high" />
+    <Message Condition="'$(BeatSaberRelease)' != 'True'"
+      Text="::set-output name=release-title::$(AssemblyName) v$(PluginVersion)" Importance="high" />
   </Target>
   <!--Creates a BeatMods compliant zip file with the release.-->
   <Target Name="ZipRelease" AfterTargets="CopyBeatSaberArtifacts;CopyArtifacts" DependsOnTargets="CopyArtifacts;CopyBeatSaberArtifacts;SetFullReleaseInfo" Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">

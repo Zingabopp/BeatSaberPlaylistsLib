@@ -19,6 +19,7 @@
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed, advanced build targets will not work." ContinueOnError="true" />
   </Target>
   <Target Name="SetFullReleaseInfo" AfterTargets="CheckBSMTInstalled"  Condition="'$(BSMTTaskAssembly)' != '' AND '$(NCRUNCH)' != '1'">
+    <Message Text="Beat Saber Release? '$(BeatSaberRelease)'" Importance="high"/>
     <GetManifestInfo FailOnError="True" ManifestPath="BeatSaberPlaylistsLib.manifest" >
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
@@ -39,14 +40,14 @@
     <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
   </Target>
   <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
-    <Message Text="Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
+    <Message Text="Copying Beat Saber artifacts to '$(ArtifactDestination)'" Importance="high"/>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).dll" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).xml" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).manifest" DestinationFiles="$(ArtifactDestination)\Plugins\$(AssemblyName).manifest" />
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
   </Target>
   <Target Name="CopyArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True'">
-    <Message Text="Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
+    <Message Text="Copying $(TargetFramework) artifacts to '$(ArtifactDestination)'" Importance="high"/>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ArtifactDestination)\$(AssemblyName).dll" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ArtifactDestination)\$(AssemblyName).xml" />
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>

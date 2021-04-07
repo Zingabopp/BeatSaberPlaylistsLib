@@ -179,7 +179,7 @@ namespace BeatSaberPlaylistsLib
                 string[] subDirectories = Directory.GetDirectories(PlaylistPath);
                 for (int i = 0; i < subDirectories.Length; i++)
                 {
-                    PlaylistManager childManager = ChildManagers.Where((child) => Path.GetFullPath(child.PlaylistPath) == Path.GetFullPath(subDirectories[i])).FirstOrDefault();
+                    PlaylistManager? childManager = ChildManagers.Where((child) => Path.GetFullPath(child.PlaylistPath) == Path.GetFullPath(subDirectories[i])).FirstOrDefault();
                     if (childManager != null)
                     {
                         childManager.RefreshPlaylists(true);
@@ -259,11 +259,11 @@ namespace BeatSaberPlaylistsLib
             string extension = suggestedExtension ?? handler.DefaultExtension;
 
             string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + extension);
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Delete(path);
                 var playlistToDelete = LoadedPlaylists.First(p => p.Value.Equals(playlist));
-                LoadedPlaylists.TryRemove(playlistToDelete.Key, out playlist);
+                LoadedPlaylists.TryRemove(playlistToDelete.Key, out _);
                 return;
             }
             throw new FileNotFoundException("Playlist not found in current manager.");
@@ -278,7 +278,7 @@ namespace BeatSaberPlaylistsLib
         public PlaylistManager CreateChildManager(string folderName)
         {
             string newDirectory = Path.Combine(PlaylistPath, folderName);
-            PlaylistManager childManager = ChildManagers.Where((child) => Path.GetFullPath(child.PlaylistPath) == Path.GetFullPath(newDirectory)).FirstOrDefault();
+            PlaylistManager? childManager = ChildManagers.Where((child) => Path.GetFullPath(child.PlaylistPath) == Path.GetFullPath(newDirectory)).FirstOrDefault();
             if (childManager != null)
             {
                 return childManager;
@@ -314,10 +314,12 @@ namespace BeatSaberPlaylistsLib
         /// <param name="folderName"></param>
         /// <returns></returns>
         /// <exception cref="IOException"></exception>
+        /// <exception cref="InvalidOperationException">Thrown if a directory name can't be determined from <see cref="PlaylistPath"/></exception>
         public void RenameManager(string folderName)
         {
             folderName.Replace("\\", "").Replace("/", "");
-            string newDirectory = Path.Combine(Path.GetDirectoryName(PlaylistPath), folderName);
+            string rootDir = Path.GetDirectoryName(PlaylistPath) ?? throw new InvalidOperationException($"Could not determine root directory name from PlaylistPath '{PlaylistPath}'");
+            string newDirectory = Path.Combine(rootDir, folderName);
             Directory.Move(PlaylistPath, newDirectory);
             PlaylistPath = newDirectory;
         }
@@ -905,8 +907,9 @@ namespace BeatSaberPlaylistsLib
             string? fileExtension = Path.GetExtension(fileName);
             if (fileExtension != null && SupportsExtension(fileExtension))
                 fileName = Path.GetFileNameWithoutExtension(fileName);
-            string file = files.FirstOrDefault(f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase)
-                                                    && SupportsExtension(Path.GetExtension(f)));
+            string? file = files.FirstOrDefault(
+                f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase) 
+                        && SupportsExtension(Path.GetExtension(f)));
             if (file != null)
             {
                 fileExtension = Path.GetExtension(file).TrimStart('.');
@@ -933,7 +936,7 @@ namespace BeatSaberPlaylistsLib
             return playlist;
         }
 
-        private void OnPlaylistChanged(object sender, EventArgs e)
+        private void OnPlaylistChanged(object? sender, EventArgs e)
         {
             if (sender is IPlaylist playlist)
             {

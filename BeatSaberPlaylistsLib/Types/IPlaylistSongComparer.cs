@@ -17,7 +17,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// Compares two <see cref="IPlaylistSong"/> using their <see cref="ISong.LevelId"/>.
         /// Falls back to using <see cref="ISong.Key"/> if <see cref="ISong.LevelId"/> is null.
         /// </summary>
-        public bool Equals(IPlaylistSong x, IPlaylistSong y)
+        public bool Equals(IPlaylistSong? x, IPlaylistSong? y)
         {
             if (x == null)
                 return y == null;
@@ -59,7 +59,7 @@ namespace BeatSaberPlaylistsLib.Types
         public static new readonly IPlaylistSongComparer<T> Default = new IPlaylistSongComparer<T>();
 
         ///<inheritdoc/>
-        public bool Equals(T x, T y)
+        public bool Equals(T? x, T? y)
         {
             return base.Equals(x, y);
         }

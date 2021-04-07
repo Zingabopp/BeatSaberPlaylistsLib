@@ -23,7 +23,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Tries to access custom data, returns true if <paramref name="key"/> is found. Returns false otherwise.
         /// </summary>
-        public bool TryGetCustomData(string key, out object value);
+        public bool TryGetCustomData(string key, out object? value);
         /// <summary>
         /// Sets value for the given key in custom data.
         /// </summary>

@@ -153,7 +153,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
-            if (HasCover)
+            if (HasCover && CoverData != null)
                 return new MemoryStream(CoverData);
             else
                 return new MemoryStream(Array.Empty<byte>());

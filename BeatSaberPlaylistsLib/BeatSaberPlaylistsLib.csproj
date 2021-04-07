@@ -1,14 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Condition="'$(Configuration)'=='Debug-BeatSaber' OR '$(Configuration)'=='Release-BeatSaber'" >
+    <DefineConstants>BeatSaber</DefineConstants>
+    <BeatSaberRelease>True</BeatSaberRelease>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BeatSaberRelease)' != 'True'">
+    <TargetFrameworks>netstandard2.0;net48;net5.0</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework Condition="'$(Configuration)' == 'Debug-BeatSaber' OR '$(Configuration)' == 'Release-BeatSaber'">net48</TargetFramework>
-    <TargetFramework Condition="'$(Configuration)' != 'Debug-BeatSaber' AND '$(Configuration)' != 'Release-BeatSaber'">netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>Enable</Nullable>
     <Configurations>Debug;Release;Debug-BeatSaber;Release-BeatSaber</Configurations>
     <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
     <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
     <DocumentationFile>BeatSaberPlaylistsLib.xml</DocumentationFile>
-    <Version>0.0.0</Version> <!--Version should be set in BeatSaberPlaylistsLib.manifest-->
+    <Version>0.0.0</Version>
+    <!--Version should be set in BeatSaberPlaylistsLib.manifest-->
     <VersionType>Unofficial</VersionType>
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
@@ -43,7 +52,7 @@
       A library for Beat Saber mods to interact with playlists.
     </Description>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <DisableCopyToPlugins>true</DisableCopyToPlugins>

@@ -116,7 +116,7 @@ namespace BeatSaberPlaylistsLib.Blist
             get
             {
                 if (CustomData == null) return null;
-                if (CustomData.TryGetValue(SongNameKey, out object value))
+                if (CustomData.TryGetValue(SongNameKey, out object? value) && value != null)
                 {
                     return value.ToString();
                 }
@@ -141,7 +141,7 @@ namespace BeatSaberPlaylistsLib.Blist
             get
             {
                 if (CustomData == null) return null;
-                if (CustomData.TryGetValue(LevelAuthorNameKey, out object value))
+                if (CustomData.TryGetValue(LevelAuthorNameKey, out object? value) && value != null)
                 {
                     return value.ToString();
                 }
@@ -170,7 +170,7 @@ namespace BeatSaberPlaylistsLib.Blist
 
 
         ///<inheritdoc/>
-        public override bool Equals(IPlaylistSong other)
+        public override bool Equals(IPlaylistSong? other)
         {
             if (other == null)
                 return false;

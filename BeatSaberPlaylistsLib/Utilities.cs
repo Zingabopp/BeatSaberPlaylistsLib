@@ -13,7 +13,7 @@ namespace BeatSaberPlaylistsLib
     /// </summary>
     public static partial class Utilities
     {
-        private static Stream GetDefaultImageStream() =>
+        private static Stream? GetDefaultImageStream() =>
             Assembly.GetExecutingAssembly().GetManifestResourceStream("BeatSaberPlaylistsLib.Icons.FolderIcon.png");
 
 
@@ -242,18 +242,12 @@ namespace BeatSaberPlaylistsLib
                 throw new ArgumentNullException(nameof(asm));
             if (string.IsNullOrEmpty(resourceName))
                 throw new ArgumentException($"'{resourceName}' is not a valid resource name.", nameof(resourceName));
-            try
-            {
-                using Stream stream = asm.GetManifestResourceStream(resourceName);
-                byte[] data = new byte[stream.Length];
-                stream.Read(data, 0, (int)stream.Length);
-                return data;
-            }
-            catch (NullReferenceException ex)
-            {
-                throw new ArgumentException($"Could not load resource, '{resourceName}', from assembly '{asm.FullName}'", nameof(resourceName), ex);
-                //Logger.log?.Debug($"Resource {ResourceName} was not found.");
-            }
+
+            using Stream? stream = asm.GetManifestResourceStream(resourceName)
+                ?? throw new ArgumentException($"Could not load resource, '{resourceName}', from assembly '{asm.FullName}'", nameof(resourceName));
+            byte[] data = new byte[stream.Length];
+            stream.Read(data, 0, (int)stream.Length);
+            return data;
         }
         #endregion
 

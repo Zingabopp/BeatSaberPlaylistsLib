@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- This file contains project properties used by the build. -->
 <Project>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-BeatSaber|AnyCPU'">
-    <DefineConstants>BeatSaber</DefineConstants>
-    <BeatSaberRelease>true</BeatSaberRelease>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-BeatSaber|AnyCPU'">
-    <DefineConstants>BeatSaber</DefineConstants>
-    <BeatSaberRelease>true</BeatSaberRelease>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' OR '$(ContinuousIntegrationBuild)' == 'True' OR '$(NCRUNCH)' == '1'">
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
@@ -18,6 +10,12 @@
   <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
     <ArtifactDestination>$(OutputPath)Artifacts</ArtifactDestination>
     <DisableCopyToPlugins>True</DisableCopyToPlugins>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == ''">
+    <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>
+    <DisableCopyArtifacts>True</DisableCopyArtifacts>
+    <DisableCopyToPlugins>true</DisableCopyToPlugins>
+    <DisableZipRelease>true</DisableZipRelease>
   </PropertyGroup>
   <PropertyGroup Condition="'$(NCrunch)' == '1'">
     <ContinuousIntegrationBuild>false</ContinuousIntegrationBuild>

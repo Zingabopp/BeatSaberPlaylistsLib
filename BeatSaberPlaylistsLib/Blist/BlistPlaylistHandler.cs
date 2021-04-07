@@ -98,7 +98,7 @@ namespace BeatSaberPlaylistsLib.Blist
             try
             {
                 using ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Update);
-                ZipArchiveEntry playlistEntry = zipArchive.GetEntry("playlist.json");
+                ZipArchiveEntry? playlistEntry = zipArchive.GetEntry("playlist.json");
                 if (playlistEntry != null)
                     playlistEntry.Delete();
                 playlistEntry = zipArchive.CreateEntry("playlist.json");
@@ -106,7 +106,7 @@ namespace BeatSaberPlaylistsLib.Blist
                 {
                     if (string.IsNullOrEmpty(playlist.Cover))
                         playlist.Cover = "cover";
-                    ZipArchiveEntry coverEntry = zipArchive.GetEntry(playlist.Cover);
+                    ZipArchiveEntry? coverEntry = zipArchive.GetEntry(playlist.Cover);
                     if (coverEntry != null)
                         coverEntry.Delete();
                     coverEntry = zipArchive.CreateEntry(playlist.Cover);

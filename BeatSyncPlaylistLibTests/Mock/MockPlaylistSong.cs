@@ -29,7 +29,7 @@ namespace BeatSaberPlaylistsLibTests.Mock
             LevelAuthorName = mapper;
             DateAdded = Utilities.CurrentTime;
         }
-        public override bool Equals(IPlaylistSong other)
+        public override bool Equals(IPlaylistSong? other)
         {
             if (other == null)
                 return false;

@@ -150,7 +150,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        public override bool Equals(IPlaylistSong other)
+        public override bool Equals(IPlaylistSong? other)
         {
             if (other == null)
                 return false;

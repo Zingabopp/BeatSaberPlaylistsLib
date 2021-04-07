@@ -152,7 +152,7 @@ namespace BeatSaberPlaylistsLib.Types
         protected Dictionary<string, object>? CustomData { get; set; }
 
         /// <inheritdoc/>
-        public bool TryGetCustomData(string key, out object value)
+        public bool TryGetCustomData(string key, out object? value)
         {
             value = null!;
             return CustomData?.TryGetValue(key, out value) ?? false;
@@ -214,6 +214,6 @@ namespace BeatSaberPlaylistsLib.Types
         ///<inheritdoc/>
         public Identifier Identifiers { get; protected set; }
         ///<inheritdoc/>
-        public abstract bool Equals(IPlaylistSong other);
+        public abstract bool Equals(IPlaylistSong? other);
     }
 }

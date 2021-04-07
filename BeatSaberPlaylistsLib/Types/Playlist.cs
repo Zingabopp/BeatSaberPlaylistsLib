@@ -36,8 +36,9 @@ namespace BeatSaberPlaylistsLib.Types
         {
             get
             {
-                object returnVal;
-                return TryGetCustomData("AllowDuplicates", out returnVal) ? (bool)returnVal : true;
+                if (TryGetCustomData("AllowDuplicates", out object? returnVal) && returnVal is bool boolVal)
+                    return boolVal;
+                return  true;
             }
             set => SetCustomData("AllowDuplicates", value);
         }
@@ -80,7 +81,7 @@ namespace BeatSaberPlaylistsLib.Types
         public void RaisePlaylistChanged()
         {
             EventHandler? handler = PlaylistChanged;
-            handler?.Invoke(this, null);
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace BeatSaberPlaylistsLib.Types
         protected Dictionary<string, object>? CustomData { get; set; }
 
         /// <inheritdoc/>
-        public bool TryGetCustomData(string key, out object value)
+        public bool TryGetCustomData(string key, out object? value)
         {
             value = null!;
             return CustomData?.TryGetValue(key, out value) ?? false;
@@ -243,7 +244,7 @@ namespace BeatSaberPlaylistsLib.Types
                 songRemoved = Songs.Remove(matchedType);
             else
             {
-                T song = Songs.FirstOrDefault(s => s.Equals(item));
+                T? song = Songs.FirstOrDefault(s => s.Equals(item));
                 if (song != null)
                     songRemoved = Songs.Remove(song);
             }

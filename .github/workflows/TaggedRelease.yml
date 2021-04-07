@@ -37,7 +37,7 @@ jobs:
     - name: Echo
       run: echo ${{ steps.Build.outputs.zippath }}
     - name: Make Release
-      uses: softprops/action-gh-release@latest
+      uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with: 

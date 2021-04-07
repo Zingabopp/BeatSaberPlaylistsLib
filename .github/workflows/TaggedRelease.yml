@@ -1,0 +1,42 @@
+name: Tagged-Release
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        configuration: ['Release', 'Release-BeatSaber']
+    env:
+      Configuration: ${{ matrix.configuration }}
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_NOLOGO: true
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: GetStrippedRefs
+      env:
+        FILES_URL: ${{ secrets.BSFILES_URL }}
+      run: wget --no-check-certificate "$FILES_URL" -q -O bsfiles.zip
+      if: matrix.configuration == 'Release-BeatSaber'
+    - name: ExtractRefs
+      run: unzip -q -n bsfiles.zip -d ./Refs
+      if: matrix.configuration == 'Release-BeatSaber'
+    - name: Build ${{ matrix.configuration }}
+      id: Build
+      env: 
+        FrameworkPathOverride: /usr/lib/mono/4.8-api
+      run: dotnet pack -p:DisableZipRelease=False
+    - name: Make Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with: repo_token: "${{ secrets.RELEASE_TOKEN }}"
+      draft: true
+      files: |
+        ${{ steps.Build.outputs.zippath }}
+        BeatSaberPlaylistsLib/bin/${{ matrix.configuration }}/*pkg

@@ -80,8 +80,8 @@
     <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
     <Delete Files="@(OldZips)" TreatErrorsAsWarnings="true" ContinueOnError="true" />
     <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile="$(DestinationDirectory)$(ReleaseName).zip" />
-    <Message Condition="'$(ContinuousIntegrationBuild)' == 'True'"
-      Text="::set-output name=zippath::$(DestinationDirectory)$(ReleaseName).zip" Importance="high" />
+    <Message Condition="'$(ContinuousIntegrationBuild)' != 'True'"
+      Text="::set-output name=zippath::$(ProjectDir)$(DestinationDirectory)$(ReleaseName).zip" Importance="high" />
   </Target>
   <!--Copies the assembly and pdb to the Beat Saber folder.-->
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyToPlugins)' != 'True'">

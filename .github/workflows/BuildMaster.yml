@@ -9,6 +9,7 @@ on:
       - 'src/**'
       - '.github/workflows/BuildMaster.yml'
       - 'Refs/**'
+      - 'Directory.Build.*'
   pull_request:
     branches: [ master ]
     paths: 'BeatSaberPlaylistsLib/**'

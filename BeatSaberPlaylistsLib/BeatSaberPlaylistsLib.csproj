@@ -43,12 +43,6 @@
   <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'True'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\BeatSaberModdingTools.Tasks\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
   
   <!-- Item Links -->
   <ItemGroup>

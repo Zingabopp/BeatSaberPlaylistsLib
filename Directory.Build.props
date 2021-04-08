@@ -2,8 +2,20 @@
 <!-- This file contains project properties used by the build. -->
 <Project>
   <PropertyGroup>
+    <Authors>Zingabopp</Authors>
+    
     <Version>1.2.2</Version>
+    <GameVersion>1.14.0</GameVersion>
+    
+    <Copyright>Copyright © Zingabopp 2021</Copyright>
+    <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</RepositoryUrl>
+    <DonationUrl>https://ko-fi.com/zingabopp</DonationUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <RequiredFile Include="Libs/BeatSaberPlaylistsLib.dll" />
+    <Dependency Include="SongCore" Version="^3.2.0"/>
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Debug-BeatSaber' 
                          OR ('$(ContinuousIntegrationBuild)' == 'True' AND '$(Configuration.Contains(BeatSaber))' != 'True')
                          OR '$(NCRUNCH)' == '1'">

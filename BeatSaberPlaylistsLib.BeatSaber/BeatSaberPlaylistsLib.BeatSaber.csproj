@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>BeatSaberPlaylistsLib.BeatSaber</PackageId>
+    <Product>BeatSaberPlaylistsLib.BeatSaber</Product>
+    <Title>BeatSaberPlaylistsLib.BeatSaber</Title>
     <AssemblyName>BeatSaberPlaylistsLib</AssemblyName>
     <RootNamespace>BeatSaberPlaylistsLib</RootNamespace>
     <DefineConstants>BeatSaber</DefineConstants>
@@ -16,9 +19,6 @@
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
     <GitModified></GitModified>
-    <PackageId>BeatSaberPlaylistsLib.BeatSaber</PackageId>
-    <Product>BeatSaberPlaylistsLib.BeatSaber</Product>
-    <Title>BeatSaberPlaylistsLib.BeatSaber</Title>
     <Description>A library for Beat Saber mods to interact with playlists.</Description>
     <Copyright>Copyright © Zingabopp 2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -61,14 +61,11 @@
   <ItemGroup>
     <Compile Include="..\src\**\*.cs" LinkBase="" />
     <EmbeddedResource Include="..\src\Icons\*" LinkBase="Icons" />
-    <Content Include="..\BeatSaberPlaylistsLib.manifest" Link="BeatSaberPlaylistsLib.manifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <!-- End Item Links -->
 
   <ItemGroup>
-    <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.3.2">
+    <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -109,6 +106,7 @@
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="BeforeBuild" Condition="'$(NCRUNCH)' != '1'">
     <Error Text="The BeatSaberModdingTools.Tasks nuget package doesn't seem to be installed." Condition="'$(BSMTTaskAssembly)' == ''" />
+    
     <GetCommitInfo ProjectDir="$(ProjectDir)">
       <Output TaskParameter="CommitHash" PropertyName="CommitHash" />
       <Output TaskParameter="Branch" PropertyName="GitBranch" />

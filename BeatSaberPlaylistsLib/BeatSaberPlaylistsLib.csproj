@@ -1,5 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>BeatSaberPlaylistsLib</PackageId>
+    <Product>BeatSaberPlaylistsLib</Product>
+    <Title>BeatSaberPlaylistsLib</Title>
     <TargetFrameworks>netstandard2.0;net48;net5.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <Nullable>Enable</Nullable>
@@ -10,14 +13,9 @@
     <CommitHash>local</CommitHash>
     <GitBranch></GitBranch>
     <GitModified></GitModified>
-    <PackageId>BeatSaberPlaylistsLib</PackageId>
-    <Product>BeatSaberPlaylistsLib</Product>
-    <Title>BeatSaberPlaylistsLib</Title>
+    
     <Description>A library to interact with Beat Saber playlists. Use the BeatSaberPlaylistsLib.BeatSaber package if this library is being used inside a mod.</Description>
-    <Copyright>Copyright © Zingabopp 2021</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</RepositoryUrl>
+    
     <RepositoryType>git</RepositoryType>
     <PackageTags>Beat Saber</PackageTags>
     <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
@@ -32,6 +30,7 @@
     <Company>Zingabopp</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
@@ -45,7 +44,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\LICENSE">
+    <None Include="..\..\BeatSaberModdingTools.Tasks\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -58,7 +57,7 @@
   </ItemGroup>
   <!-- End Item Links -->
   <ItemGroup>
-    <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.3.2">
+    <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

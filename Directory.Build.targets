@@ -23,14 +23,8 @@
     <Message Text="DisableZipRelease: '$(DisableZipRelease)'" Importance="high" />
     <Message Text="DisableCopyToPlugins: '$(DisableCopyToPlugins)'" Importance="high" />
     <Message Text="ContinuousIntegrationBuild: '$(ContinuousIntegrationBuild)'" Importance="high" />
-    <GetManifestInfo FailOnError="True" ManifestPath="..\BeatSaberPlaylistsLib.manifest" >
-      <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
-      <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
-    </GetManifestInfo>
-    <Message Text="Comparing versions: '$(PluginVersion)' | '$(Version)'" Importance="high" />
-    <CompareVersions PluginVersion="$(PluginVersion)" AssemblyVersion="$(Version)" ErrorOnMismatch="$(ErrorOnMismatchedVersions)" />
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
-      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
+      <ReleaseName>$(AssemblyName)-$(Version)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
     </PropertyGroup>
     <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
@@ -38,6 +32,11 @@
     <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)"
              Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
     <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
+    <GenerateManifest Id="$(AssemblyName)" Name="$(Product)" Version="$(Version)" GameVersion="$(GameVersion)"
+                      Author="$(Authors)" Description="$(Description)"
+                      DependsOn="@(Dependency)" Files="@(RequiredFile)" ProjectHome="$(PackageProjectUrl)"
+                      ProjectSource="$(RepositoryUrl)" Donate="$(DonationUrl)" RequiresBsipa="False"
+                      TargetPath="$(OutputPath)$(AssemblyName).manifest" />
   </Target>
   <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Copying Beat Saber artifacts to '$(ArtifactDestination)'" Importance="high"/>
@@ -71,7 +70,7 @@
           Condition="'$(DisableZipRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True' AND '$(BSMTTaskAssembly)' != ''">
     <!--Set 'ReleaseName' if it failed before.-->
     <PropertyGroup Condition="'$(ReleaseName)' == '' AND '$(BeatSaberRelease)' == 'True'">
-      <ReleaseName>$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
+      <ReleaseName>$(AssemblyName)-$(Version)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
     </PropertyGroup>
     <PropertyGroup  Condition="'$(ReleaseName)' == '' AND '$(BeatSaberRelease)' != 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
@@ -82,7 +81,7 @@
     <ItemGroup>
       <OldZips Include="$(DestinationDirectory)$(AssemblyName)*.zip"/>
     </ItemGroup>
-    <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
+    <Message Text="PluginVersion: $(Version), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
     <Delete Files="@(OldZips)" TreatErrorsAsWarnings="true" ContinueOnError="true" />
     <ZipDir SourceDirectory="$(ArtifactDestination)" DestinationFile="$(DestinationDirectory)$(ReleaseName).zip" />
     <Message Condition="'$(ContinuousIntegrationBuild)' == 'True'"

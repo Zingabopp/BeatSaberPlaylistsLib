@@ -1652,6 +1652,11 @@
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.Sprite">
             <inheritdoc/>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
+            <summary>
+            Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
+            </summary>
+        </member>
         <member name="E:BeatSaberPlaylistsLib.Types.Playlist.PlaylistChanged">
             <inheritdoc/>
         </member>
@@ -1762,7 +1767,12 @@
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IBeatmapLevelCollection#beatmapLevels">
             <summary>
-            Returns a new array of the songs in this playlist.
+            Returns a new array of IPreviewBeatmapLevels in this playlist.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.BeatmapLevels">
+            <summary>
+            Returns a new array of PlaylistSongs (cast as IPreviewBeatmapLevels) in this playlist.
             </summary>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(IPreviewBeatmapLevel)">

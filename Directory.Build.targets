@@ -25,7 +25,7 @@
     <Message Text="ContinuousIntegrationBuild: '$(ContinuousIntegrationBuild)'" Importance="high" />
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
-      <ManifestPath>$(OutputPath)$(AssemblyName).manifest</ManifestPath>
+      <ManifestPath>$(ProjectDir)$(OutputPath)$(AssemblyName).manifest</ManifestPath>
     </PropertyGroup>
     <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>

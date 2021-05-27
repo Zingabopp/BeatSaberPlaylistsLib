@@ -25,18 +25,20 @@
     <Message Text="ContinuousIntegrationBuild: '$(ContinuousIntegrationBuild)'" Importance="high" />
     <PropertyGroup Condition="'$(BeatSaberRelease)' == 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-bs$(GameVersion)-$(CommitHash)</ReleaseName>
+      <ManifestPath>$(OutputPath)$(AssemblyName).manifest</ManifestPath>
     </PropertyGroup>
     <PropertyGroup  Condition="'$(BeatSaberRelease)' != 'True'">
       <ReleaseName>$(AssemblyName)-$(Version)-$(CommitHash)</ReleaseName>
     </PropertyGroup>
     <Message Text="Beat Saber Release: PluginVersion: $(PluginVersion), AssemblyVersion: $(Version), GameVersion: $(GameVersion)"
-             Importance="high"  Condition="'$(BeatSaberRelease)' == 'True'"/>
+             Importance="high" Condition="'$(BeatSaberRelease)' == 'True'"/>
     <Message Text="Lib Release: $(Version)" Importance="high"  Condition="'$(BeatSaberRelease)' != 'True'"/>
     <GenerateManifest Id="$(AssemblyName)" Name="$(AssemblyName)" Version="$(Version)" GameVersion="$(GameVersion)"
                       Author="$(Authors)" Description="$(Description)"
                       DependsOn="@(Dependency)" Files="@(RequiredFile)" ProjectHome="$(PackageProjectUrl)"
                       ProjectSource="$(RepositoryUrl)" Donate="$(DonationUrl)" RequiresBsipa="False"
-                      TargetPath="$(OutputPath)$(AssemblyName).manifest" />
+                      TargetPath="$(ManifestPath)" Condition="'$(BeatSaberRelease)' == 'True'" />
+    <Message Text="Manifest generated to '$(ManifestPath)'" Importance="high"/>
   </Target>
   <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">
     <Message Text="Copying Beat Saber artifacts to '$(ArtifactDestination)'" Importance="high"/>

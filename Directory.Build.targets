@@ -44,7 +44,7 @@
     <Message Text="Copying Beat Saber artifacts to '$(ArtifactDestination)'" Importance="high"/>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).dll" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ArtifactDestination)\Libs\$(AssemblyName).xml" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).manifest" DestinationFiles="$(ArtifactDestination)\Plugins\$(AssemblyName).manifest" />
+    <Copy SourceFiles="$(ManifestPath)" DestinationFiles="$(ArtifactDestination)\Plugins\$(AssemblyName).manifest" />
     <Message Text="Finished Copying artifacts to '$(ArtifactDestination)'" Importance="high"/>
   </Target>
   <Target Name="CopyArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' != 'True' AND '$(DisableCopyArtifacts)' != 'True'">

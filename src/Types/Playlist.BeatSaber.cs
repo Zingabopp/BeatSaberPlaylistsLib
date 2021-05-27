@@ -200,7 +200,7 @@ namespace BeatSaberPlaylistsLib.Types
                         playlistSong.RefreshFromSongCore();
                     }
                 });
-                return Songs.Where(s => s.PreviewBeatmapLevel != null).Select(s => s).ToArray();
+                return Songs.Where(s => s.PreviewBeatmapLevel != null).ToArray();
             }
         }
 
@@ -227,7 +227,7 @@ namespace BeatSaberPlaylistsLib.Types
                 return null;
 
             Difficulty difficulty = new Difficulty();
-            difficulty.Name = Difficulty.DifficultyValueToString((int)beatmap.difficulty);
+            difficulty.BeatmapDifficulty = beatmap.difficulty;
             difficulty.Characteristic = beatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
             IPlaylistSong? song = Add(new T()
             {

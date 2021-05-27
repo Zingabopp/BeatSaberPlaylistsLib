@@ -193,8 +193,12 @@ namespace BeatSaberPlaylistsLib
         {
             using Stream? stream = GetDefaultImageStream();
             //Console.WriteLine($"Drawing string {playlist.Title}");
-            string firstLetterOnly = string.Join("", (from word in playlist.Title.Split() select word[0]));
-            Image img = ImageUtilities.DrawString(firstLetterOnly, Image.FromStream(stream), defaultDrawSettings);
+            string title = playlist.Title;
+            if (title.Length > 110)
+            {
+                title = string.Join("", (from word in playlist.Title.Split() select word[0]));
+            }
+            Image img = ImageUtilities.DrawString(title, Image.FromStream(stream), defaultDrawSettings);
             MemoryStream ms = new MemoryStream();
             img.Save(ms, ImageFormat.Png);
             return ms;

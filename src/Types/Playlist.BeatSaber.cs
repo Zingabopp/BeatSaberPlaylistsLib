@@ -98,7 +98,7 @@ namespace BeatSaberPlaylistsLib.Types
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
-        #region IDeferredSpriteLoad
+#region IDeferredSpriteLoad
 
         /// <inheritdoc/>
         public event EventHandler? SpriteLoaded;
@@ -120,6 +120,18 @@ namespace BeatSaberPlaylistsLib.Types
                     QueueLoadSprite(this);
                 }
                 return _sprite;
+            }
+        }
+
+        /// <summary>
+        /// Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
+        /// </summary>
+        public void RaiseCoverImageChangedForDefaultCover()
+        {
+            if (!HasCover)
+            {
+                RaiseCoverImageChanged();
+                _ = Sprite;
             }
         }
 
@@ -160,7 +172,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         BeatSaber.IBeatmapLevelCollection BeatSaber.IAnnotatedBeatmapLevelCollection.beatmapLevelCollection => this;
         /// <summary>
-        /// Returns a new array of the songs in this playlist.
+        /// Returns a new array of IPreviewBeatmapLevels in this playlist.
         /// </summary>
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels {
@@ -172,7 +184,23 @@ namespace BeatSaberPlaylistsLib.Types
                         playlistSong.RefreshFromSongCore();
                     }
                 });
-                return Songs.Where(s => s.PreviewBeatmapLevel != null).Select(s => s).ToArray();
+                return Songs.Where(s => s.PreviewBeatmapLevel != null).Select(s => s.PreviewBeatmapLevel).ToArray();
+            }
+        }
+        /// <summary>
+        /// Returns a new array of PlaylistSongs (cast as IPreviewBeatmapLevels) in this playlist.
+        /// </summary>
+        public BeatSaber.IPreviewBeatmapLevel[] BeatmapLevels
+        {
+            get
+            {
+                Songs.ForEach(delegate (T s) {
+                    if (s is PlaylistSong playlistSong)
+                    {
+                        playlistSong.RefreshFromSongCore();
+                    }
+                });
+                return Songs.Where(s => s.PreviewBeatmapLevel != null).ToArray();
             }
         }
 
@@ -199,7 +227,7 @@ namespace BeatSaberPlaylistsLib.Types
                 return null;
 
             Difficulty difficulty = new Difficulty();
-            difficulty.Name = Difficulty.DifficultyValueToString((int)beatmap.difficulty);
+            difficulty.BeatmapDifficulty = beatmap.difficulty;
             difficulty.Characteristic = beatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
             IPlaylistSong? song = Add(new T()
             {

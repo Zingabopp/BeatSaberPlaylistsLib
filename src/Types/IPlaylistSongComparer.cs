@@ -51,7 +51,7 @@ namespace BeatSaberPlaylistsLib.Types
 
     ///<inheritdoc/>
     public class IPlaylistSongComparer<T> : IPlaylistSongComparer, IEqualityComparer<T>
-        where T : class, IPlaylistSong, new()
+        where T : class, IPlaylistSong
     {
         /// <summary>
         /// Default instance of <see cref="IPlaylistSongComparer"/>.

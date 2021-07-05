@@ -89,13 +89,14 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         protected void RaiseCoverImageChanged()
         {
-#if BeatSaber
-            _previousSprite = _sprite;
-            _sprite = null;
-
-#endif
+            ResetSprite();
             CoverImageChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>
+        /// Used in the Beat Saber mod version.
+        /// </summary>
+        partial void ResetSprite();
 
         /// <summary>
         /// Dictionary for the CustomData key in the playlist file.

@@ -135,6 +135,16 @@ namespace BeatSaberPlaylistsLib.Types
             }
         }
 
+        /// <summary>
+        /// Resets the sprite for...reasons.
+        /// </summary>
+        partial void ResetSprite()
+        {
+
+            _previousSprite = _sprite;
+            _sprite = null;
+        }
+
         #endregion
 
     }

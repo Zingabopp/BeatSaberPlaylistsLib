@@ -1,17 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.74
+VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLib", "BeatSaberPlaylistsLib\BeatSaberPlaylistsLib.csproj", "{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{7B1FABD5-F155-40CD-8111-42F8A6B1BDC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLibTests", "BeatSyncPlaylistLibTests\BeatSaberPlaylistsLibTests.csproj", "{4841AEA7-04C3-412E-A607-3C4D14F16F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLib", "BeatSaberPlaylistsLib\BeatSaberPlaylistsLib.csproj", "{AB6B0503-3BBD-4286-B80A-97E301EF3A76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageExperiments", "ImageExperiments\ImageExperiments.csproj", "{B5AD9C40-1498-46F2-8B4B-46270ED502A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLib.BeatSaber", "BeatSaberPlaylistsLib.BeatSaber\BeatSaberPlaylistsLib.BeatSaber.csproj", "{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLib.BeatSaber", "BeatSaberPlaylistsLib.BeatSaber\BeatSaberPlaylistsLib.BeatSaber.csproj", "{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{7035BBEF-9026-410F-95A9-380D50E9F130}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{F3FB5B6E-8876-4D47-B3C0-E360552442E5}"
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
 		Directory.Build.props = Directory.Build.props
@@ -19,7 +17,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeatSaberPlaylistsLibTests", "BeatSyncPlaylistLibTests\BeatSaberPlaylistsLibTests.csproj", "{8F589099-F4C2-425C-AF19-84BDDC61FEA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageExperiments", "ImageExperiments\ImageExperiments.csproj", "{B5AD9C40-1498-46F2-8B4B-46270ED502A0}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{7b1fabd5-f155-40cd-8111-42f8a6b1bdc2}*SharedItemsImports = 13
+		Shared\Shared.projitems*{9a29145e-66b9-4c79-bc22-6cbb4ab894c0}*SharedItemsImports = 5
+		Shared\Shared.projitems*{ab6b0503-3bbd-4286-b80a-97e301ef3a76}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug-BeatSaber|Any CPU = Debug-BeatSaber|Any CPU
@@ -27,34 +34,34 @@ Global
 		Release-BeatSaber|Any CPU = Release-BeatSaber|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug|Any CPU
-		{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45DD2EF9-2453-4A1E-945D-AE7F9D2E0188}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
-		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug|Any CPU
-		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4841AEA7-04C3-412E-A607-3C4D14F16F6D}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6B0503-3BBD-4286-B80A-97E301EF3A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6B0503-3BBD-4286-B80A-97E301EF3A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6B0503-3BBD-4286-B80A-97E301EF3A76}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6B0503-3BBD-4286-B80A-97E301EF3A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6B0503-3BBD-4286-B80A-97E301EF3A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6B0503-3BBD-4286-B80A-97E301EF3A76}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
+		{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}.Debug|Any CPU.ActiveCfg = Debug-BeatSaber|Any CPU
+		{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug-BeatSaber|Any CPU
+		{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}.Debug-BeatSaber|Any CPU.Build.0 = Debug-BeatSaber|Any CPU
+		{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}.Release|Any CPU.ActiveCfg = Release-BeatSaber|Any CPU
+		{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}.Release-BeatSaber|Any CPU.ActiveCfg = Release-BeatSaber|Any CPU
+		{9A29145E-66B9-4C79-BC22-6CBB4AB894C0}.Release-BeatSaber|Any CPU.Build.0 = Release-BeatSaber|Any CPU
+		{8F589099-F4C2-425C-AF19-84BDDC61FEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F589099-F4C2-425C-AF19-84BDDC61FEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F589099-F4C2-425C-AF19-84BDDC61FEA6}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F589099-F4C2-425C-AF19-84BDDC61FEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F589099-F4C2-425C-AF19-84BDDC61FEA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F589099-F4C2-425C-AF19-84BDDC61FEA6}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
 		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5AD9C40-1498-46F2-8B4B-46270ED502A0}.Release-BeatSaber|Any CPU.ActiveCfg = Release|Any CPU
-		{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}.Debug|Any CPU.ActiveCfg = Debug-BeatSaber|Any CPU
-		{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}.Debug-BeatSaber|Any CPU.ActiveCfg = Debug-BeatSaber|Any CPU
-		{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}.Debug-BeatSaber|Any CPU.Build.0 = Debug-BeatSaber|Any CPU
-		{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}.Release|Any CPU.ActiveCfg = Release-BeatSaber|Any CPU
-		{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}.Release-BeatSaber|Any CPU.ActiveCfg = Release-BeatSaber|Any CPU
-		{409FEE3E-A288-4F1F-AB17-EA39C83C3E4B}.Release-BeatSaber|Any CPU.Build.0 = Release-BeatSaber|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {06798226-0441-4DFD-8D5B-1F08D94B8211}
+		SolutionGuid = {32ED3BD3-A0A2-4F80-9C0A-30C12853ACBF}
 	EndGlobalSection
 EndGlobal

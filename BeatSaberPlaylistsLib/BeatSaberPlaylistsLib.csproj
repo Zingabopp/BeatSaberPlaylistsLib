@@ -44,12 +44,6 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   
-  <!-- Item Links -->
-  <ItemGroup>
-    <Compile Include="..\src\**\*.cs" LinkBase="" />
-    <EmbeddedResource Include="..\src\Icons\*" LinkBase="Icons" />
-  </ItemGroup>
-  <!-- End Item Links -->
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -79,4 +73,7 @@
       <VersionType>Official</VersionType>
     </PropertyGroup>
   </Target>
+
+  
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 </Project>

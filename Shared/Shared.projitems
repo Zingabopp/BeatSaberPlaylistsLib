@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>7b1fabd5-f155-40cd-8111-42f8a6b1bdc2</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Blist\BlistPlaylist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blist\BlistPlaylistHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blist\BlistPlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blist\Converters\PlaylistTypeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Legacy\LegacyPlaylist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Legacy\LegacyPlaylistHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Legacy\LegacyPlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlaylistExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlaylistLibExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlaylistManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlaylistSerializationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\Difficulty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\INotifyCoverChanged.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\IPlaylist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\IPlaylistHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\IPlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\IPlaylistSongComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\ISong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\JSONPlaylist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\JSONPlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\Playlist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\PlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Icons\FolderIcon.png" />
+  </ItemGroup>
+</Project>

@@ -130,7 +130,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract partial class Playlist<T> : Playlist, IPlaylist<T>
-        where T : class, IPlaylistSong, new()
+        where T : class, IPlaylistSong
     {
         /// <summary>
         /// Internal collection of songs in the playlist.
@@ -159,6 +159,16 @@ namespace BeatSaberPlaylistsLib.Types
         /// <returns></returns>
         protected abstract T CreateFrom(ISong song);
 
+        /// <summary>
+        /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+        /// </summary>
+        /// <param name="songHash"></param>
+        /// <param name="songName"></param>
+        /// <param name="songKey"></param>
+        /// <param name="mapper"></param>
+        /// <returns></returns>
+        protected abstract T CreateFrom(string songHash, string? songName, string? songKey, string? mapper);
+
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(ISong song)
         {
@@ -173,13 +183,7 @@ namespace BeatSaberPlaylistsLib.Types
 
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(string songHash, string? songName, string? songKey, string? mapper) =>
-            Add(new T()
-            {
-                Hash = songHash,
-                Name = songName,
-                Key = songKey,
-                LevelAuthorName = mapper
-            });
+            Add(CreateFrom(songHash, songName, songKey, mapper));
 
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(IPlaylistSong item) => Add((ISong)item);

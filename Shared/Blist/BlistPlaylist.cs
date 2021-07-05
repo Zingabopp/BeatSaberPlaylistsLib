@@ -96,6 +96,18 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         ///<inheritdoc/>
+        protected override BlistPlaylistSong CreateFrom(string songHash, string? songName, string? songKey, string? mapper)
+        {
+            return new BlistPlaylistSong()
+            {
+                Hash = songHash,
+                Name = songName,
+                Key = songKey,
+                LevelAuthorName = mapper
+            };
+        }
+
+        ///<inheritdoc/>
         public override Stream GetCoverStream()
         {
             return new MemoryStream(CoverData ?? Array.Empty<byte>());

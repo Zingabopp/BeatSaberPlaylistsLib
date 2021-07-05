@@ -136,7 +136,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IPlaylist<T> : IPlaylist
-        where T : IPlaylistSong, new()
+        where T : IPlaylistSong
     {
         /// <summary>
         /// Removes all songs matched by the predicate.

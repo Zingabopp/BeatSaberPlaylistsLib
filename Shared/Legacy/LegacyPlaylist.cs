@@ -72,6 +72,18 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
+        protected override LegacyPlaylistSong CreateFrom(string songHash, string? songName, string? songKey, string? mapper)
+        {
+            return new LegacyPlaylistSong()
+            {
+                Hash = songHash,
+                Name = songName,
+                Key = songKey,
+                LevelAuthorName = mapper
+            };
+        }
+
+        ///<inheritdoc/>
         [DataMember]
         [JsonProperty("playlistTitle", Order = -10)]
         public override string Title { get; set; } = string.Empty;

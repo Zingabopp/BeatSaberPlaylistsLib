@@ -6,7 +6,7 @@ on:
     paths:
       - 'BeatSaberPlaylistsLib/**'
       - 'BeatSaberPlaylistsLib.BeatSaber/**'
-      - 'src/**'
+      - 'Shared/**'
       - '.github/workflows/BuildMaster.yml'
       - 'Refs/**'
       - 'Directory.Build.*'

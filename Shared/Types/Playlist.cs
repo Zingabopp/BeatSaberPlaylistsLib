@@ -167,7 +167,17 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="songKey"></param>
         /// <param name="mapper"></param>
         /// <returns></returns>
-        protected abstract T CreateFrom(string songHash, string? songName, string? songKey, string? mapper);
+        protected abstract T CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper);
+
+        /// <summary>
+        /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="songName"></param>
+        /// <param name="songKey"></param>
+        /// <param name="mapper"></param>
+        /// <returns></returns>
+        protected abstract T CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper);
 
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(ISong song)
@@ -183,7 +193,7 @@ namespace BeatSaberPlaylistsLib.Types
 
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(string songHash, string? songName, string? songKey, string? mapper) =>
-            Add(CreateFrom(songHash, songName, songKey, mapper));
+            Add(CreateFromByHash(songHash, songName, songKey, mapper));
 
         /// <inheritdoc/>
         public virtual IPlaylistSong? Add(IPlaylistSong item) => Add((ISong)item);

@@ -58,11 +58,23 @@ namespace BeatSaberPlaylistsLibTests.Mock
         }
 
         ///<inheritdoc/>
-        protected override MockPlaylistSong CreateFrom(string songHash, string? songName, string? songKey, string? mapper)
+        protected override MockPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
         {
             return new MockPlaylistSong()
             {
                 Hash = songHash,
+                Name = songName,
+                Key = songKey,
+                LevelAuthorName = mapper
+            };
+        }
+
+        ///<inheritdoc/>
+        protected override MockPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+        {
+            return new MockPlaylistSong()
+            {
+                LevelId = levelId,
                 Name = songName,
                 Key = songKey,
                 LevelAuthorName = mapper

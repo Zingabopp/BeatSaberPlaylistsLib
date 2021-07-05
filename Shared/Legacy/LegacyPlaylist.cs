@@ -72,11 +72,23 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        protected override LegacyPlaylistSong CreateFrom(string songHash, string? songName, string? songKey, string? mapper)
+        protected override LegacyPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
         {
             return new LegacyPlaylistSong()
             {
                 Hash = songHash,
+                Name = songName,
+                Key = songKey,
+                LevelAuthorName = mapper
+            };
+        }
+
+        ///<inheritdoc/>
+        protected override LegacyPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+        {
+            return new LegacyPlaylistSong()
+            {
+                LevelId = levelId,
                 Name = songName,
                 Key = songKey,
                 LevelAuthorName = mapper

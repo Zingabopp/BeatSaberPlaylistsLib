@@ -96,11 +96,23 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         ///<inheritdoc/>
-        protected override BlistPlaylistSong CreateFrom(string songHash, string? songName, string? songKey, string? mapper)
+        protected override BlistPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
         {
             return new BlistPlaylistSong()
             {
                 Hash = songHash,
+                Name = songName,
+                Key = songKey,
+                LevelAuthorName = mapper
+            };
+        }
+
+        ///<inheritdoc/>
+        protected override BlistPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+        {
+            return new BlistPlaylistSong()
+            {
+                LevelId = levelId,
                 Name = songName,
                 Key = songKey,
                 LevelAuthorName = mapper

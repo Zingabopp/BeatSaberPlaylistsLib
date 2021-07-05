@@ -535,6 +535,26 @@
             <param name="song"></param>
             <returns></returns>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFromByHash(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+            </summary>
+            <param name="songHash"></param>
+            <param name="songName"></param>
+            <param name="songKey"></param>
+            <param name="mapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+            </summary>
+            <param name="levelId"></param>
+            <param name="songName"></param>
+            <param name="songKey"></param>
+            <param name="mapper"></param>
+            <returns></returns>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.ISong)">
             <inheritdoc/>
         </member>
@@ -1081,6 +1101,12 @@
         <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
             <inheritdoc/>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateFromByHash(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.GetCoverStream">
             <inheritdoc/>
         </member>
@@ -1390,6 +1416,12 @@
             <param name="coverImage"></param>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFromByHash(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Title">

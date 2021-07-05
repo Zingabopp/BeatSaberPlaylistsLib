@@ -98,7 +98,7 @@ namespace BeatSaberPlaylistsLib.Types
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
-#region IDeferredSpriteLoad
+        #region IDeferredSpriteLoad
 
         /// <inheritdoc/>
         public event EventHandler? SpriteLoaded;
@@ -185,10 +185,12 @@ namespace BeatSaberPlaylistsLib.Types
         /// Returns a new array of IPreviewBeatmapLevels in this playlist.
         /// </summary>
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels {
+        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels
+        {
             get
             {
-                Songs.ForEach(delegate(T s) {
+                Songs.ForEach(delegate (T s)
+                {
                     if (s is PlaylistSong playlistSong)
                     {
                         playlistSong.RefreshFromSongCore();
@@ -204,7 +206,8 @@ namespace BeatSaberPlaylistsLib.Types
         {
             get
             {
-                Songs.ForEach(delegate (T s) {
+                Songs.ForEach(delegate (T s)
+                {
                     if (s is PlaylistSong playlistSong)
                     {
                         playlistSong.RefreshFromSongCore();
@@ -220,12 +223,7 @@ namespace BeatSaberPlaylistsLib.Types
         {
             if (beatmap == null)
                 return null;
-            IPlaylistSong? song = Add(new T()
-            {
-                LevelId = beatmap.levelID,
-                Name = beatmap.songName,
-                LevelAuthorName = beatmap.levelAuthorName,
-            });
+            IPlaylistSong? song = Add(CreateFromByLevelId(beatmap.levelID, beatmap.songName, null, beatmap.levelAuthorName));
             song?.SetPreviewBeatmap(beatmap);
             return song;
         }
@@ -239,13 +237,10 @@ namespace BeatSaberPlaylistsLib.Types
             Difficulty difficulty = new Difficulty();
             difficulty.BeatmapDifficulty = beatmap.difficulty;
             difficulty.Characteristic = beatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
-            IPlaylistSong? song = Add(new T()
-            {
-                LevelId = beatmap.level.levelID,
-                Name = beatmap.level.songName,
-                LevelAuthorName = beatmap.level.levelAuthorName,
-                Difficulties = new List<Difficulty>{ difficulty },
-            });
+            IPlaylistSong? song = Add(CreateFromByLevelId(beatmap.level.levelID, beatmap.level.songName, null, beatmap.level.levelAuthorName));
+            if (song != null)
+                song.Difficulties = new List<Difficulty> { difficulty };
+
             song?.SetPreviewBeatmap(beatmap.level);
             return song;
         }

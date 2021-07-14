@@ -35,6 +35,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Icons\FolderIcon.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Icons\FolderIcon.png" />
   </ItemGroup>
 </Project>

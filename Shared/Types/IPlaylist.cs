@@ -59,6 +59,10 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         bool AllowDuplicates { get; set; }
         /// <summary>
+        /// Disable editing of playlist.
+        /// </summary>
+        bool ReadOnly { get; set; }
+        /// <summary>
         /// Adds the <see cref="ISong"/> to the playlist. 
         /// Does nothing if <see cref="AllowDuplicates"/> is false and the song is already in the playlist. 
         /// Converts the <see cref="ISong"/> if needed.

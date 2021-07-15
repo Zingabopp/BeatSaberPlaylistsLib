@@ -809,18 +809,7 @@ namespace BeatSaberPlaylistsLib
             if (string.IsNullOrEmpty(fileName))
             {
                 // Generate Name
-                fileName = string.Join("_", playlist.Title
-                    .Replace("/", "")
-                    .Replace("\\", "")
-                    .Replace(".", "")
-                    .Replace(":", "")
-                    .Replace("*", "")
-                    .Replace("?", "")
-                    .Replace("\"", "")
-                    .Replace("<", "")
-                    .Replace(">", "")
-                    .Replace("|", "")
-                    .Split());
+                fileName = string.Join("_", string.Join("", playlist.Title.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries)).Split());
                 if (string.IsNullOrEmpty(fileName))
                 {
                     fileName = "playlist";

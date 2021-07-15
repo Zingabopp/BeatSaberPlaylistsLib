@@ -162,7 +162,7 @@ namespace BeatSaberPlaylistsLib.Types
         public int Count => Songs.Count;
 
         /// <inheritdoc/>
-        public virtual bool IsReadOnly => false;
+        public virtual bool IsReadOnly => ReadOnly;
 
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.

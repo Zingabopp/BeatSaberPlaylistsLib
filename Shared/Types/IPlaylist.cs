@@ -59,7 +59,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         bool AllowDuplicates { get; set; }
         /// <summary>
-        /// Disable editing of playlist.
+        /// Disable editing of playlist. This has to be handled by the UI itself, the lib does not handle it.
         /// </summary>
         bool ReadOnly { get; set; }
         /// <summary>

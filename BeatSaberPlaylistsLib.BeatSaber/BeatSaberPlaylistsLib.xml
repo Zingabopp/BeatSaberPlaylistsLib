@@ -196,7 +196,7 @@
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.ReadOnly">
             <summary>
-            Disable editing of playlist.
+            Disable editing of playlist. This has to be handled by the UI itself, the lib does not handle it.
             </summary>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.Add(BeatSaberPlaylistsLib.Types.ISong)">

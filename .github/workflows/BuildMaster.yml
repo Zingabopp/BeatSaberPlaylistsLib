@@ -53,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v2
       if: matrix.configuration == 'Release-BeatSaber'
       with:
-        name: ${{ steps.Build.outputs.filename }}
+        name: 'BeatSaberPlaylistsLib_BS'
         path: ${{ steps.Build.outputs.artifactpath }}
     - name: Upload ${{ matrix.configuration }} Nuget
       uses: actions/upload-artifact@v2

@@ -169,9 +169,6 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        public override bool IsReadOnly => false;
-
-        ///<inheritdoc/>
         public override bool HasCover => CoverData != null && CoverData.Length > 0;
 
         ///<inheritdoc/>

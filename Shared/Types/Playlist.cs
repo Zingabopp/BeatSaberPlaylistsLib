@@ -44,7 +44,16 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         /// <inheritdoc/>
-        public virtual bool IsReadOnly => false;
+        public bool ReadOnly
+        {
+            get
+            {
+                if (TryGetCustomData("ReadOnly", out object? returnVal) && returnVal is bool boolVal)
+                    return boolVal;
+                return false;
+            }
+            set => SetCustomData("ReadOnly", value);
+        }
 
         /// <inheritdoc/>
         public abstract bool HasCover { get; }
@@ -151,6 +160,9 @@ namespace BeatSaberPlaylistsLib.Types
 
         /// <inheritdoc/>
         public int Count => Songs.Count;
+
+        /// <inheritdoc/>
+        public virtual bool IsReadOnly => ReadOnly;
 
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.

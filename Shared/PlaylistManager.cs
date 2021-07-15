@@ -805,8 +805,33 @@ namespace BeatSaberPlaylistsLib
             if (playlist.SuggestedExtension != null && playlistHandler.GetSupportedExtensions().Contains(playlist.SuggestedExtension))
                 extension = playlist.SuggestedExtension;
             string fileName = playlist.Filename;
+
             if (string.IsNullOrEmpty(fileName))
-                throw new ArgumentException(nameof(playlist), "Playlist's filename is null or empty.");
+            {
+                // Generate Name
+                fileName = string.Join("_", string.Join("", playlist.Title.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries)).Split());
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = "playlist";
+                }
+
+                string path = Path.Combine(PlaylistPath, fileName + "." + extension);
+                string originalPath = Path.Combine(PlaylistPath, fileName);
+                int dupNum = 0;
+                while (File.Exists(path))
+                {
+                    dupNum++;
+                    path = originalPath + $"({dupNum}).{extension}";
+                }
+
+                if (dupNum != 0)
+                {
+                    fileName += $"({dupNum})";
+                }
+
+                playlist.Filename = fileName;
+            }
+
             playlistHandler.SerializeToFile(playlist, Path.Combine(PlaylistPath, fileName + "." + extension));
             RegisterPlaylist(playlist, false);
             if (removeFromChanged)

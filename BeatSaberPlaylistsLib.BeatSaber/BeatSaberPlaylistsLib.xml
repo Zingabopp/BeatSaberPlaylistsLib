@@ -194,6 +194,11 @@
             Allow duplicate songs in the playlist.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.ReadOnly">
+            <summary>
+            Disable editing of playlist. This has to be handled by the UI itself, the lib does not handle it.
+            </summary>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.Add(BeatSaberPlaylistsLib.Types.ISong)">
             <summary>
             Adds the <see cref="T:BeatSaberPlaylistsLib.Types.ISong"/> to the playlist. 
@@ -417,7 +422,7 @@
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.AllowDuplicates">
             <inheritdoc/>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IsReadOnly">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.ReadOnly">
             <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.HasCover">
@@ -526,6 +531,9 @@
             <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IsReadOnly">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
@@ -1448,9 +1456,6 @@
             <summary>
             Raw data for the cover image.
             </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.IsReadOnly">
-            <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.HasCover">
             <inheritdoc/>

@@ -213,7 +213,7 @@ namespace BeatSaberPlaylistsLib.Types
                         playlistSong.RefreshFromSongCore();
                     }
                 });
-                return Songs.Where(s => s.PreviewBeatmapLevel != null).ToArray();
+                return Songs.Where(s => s.PreviewBeatmapLevel != null).Cast<BeatSaber.IPreviewBeatmapLevel>().ToArray();
             }
         }
 

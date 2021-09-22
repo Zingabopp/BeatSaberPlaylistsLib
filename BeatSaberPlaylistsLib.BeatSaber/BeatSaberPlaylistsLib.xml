@@ -486,6 +486,11 @@
             Cover image sprite.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IAnnotatedBeatmapLevelCollection#smallCoverImage">
+            <summary>
+            Cover image sprite.
+            </summary>
+        </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.packID">
             <summary>
             BeatmapLevelPack ID.

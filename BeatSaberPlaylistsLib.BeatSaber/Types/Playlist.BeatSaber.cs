@@ -163,6 +163,11 @@ namespace BeatSaberPlaylistsLib.Types
         Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.coverImage => Sprite;
 
         /// <summary>
+        /// Cover image sprite.
+        /// </summary>
+        Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.smallCoverImage => Sprite;
+
+        /// <summary>
         /// BeatmapLevelPack ID.
         /// </summary>
         public string packID => BeatSaber.CustomLevelLoader.kCustomLevelPackPrefixId + playlistID;

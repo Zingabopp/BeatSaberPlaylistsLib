@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Drawing.Text;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -169,11 +170,11 @@ namespace BeatSaberPlaylistsLib
 
         #region Image
 
-        private static DrawSettings defaultDrawSettings = new DrawSettings
+        private static readonly DrawSettings defaultDrawSettings = new DrawSettings
         {
             Color = Color.White,
             DrawStyle = DrawStyle.Normal,
-            Font = new Font("arial", 60, FontStyle.Regular),
+            Font = FindFont("Microsoft Sans Serif", 60, FontStyle.Regular),
             StringFormat = new StringFormat()
             {
                 Alignment = StringAlignment.Center,
@@ -183,6 +184,26 @@ namespace BeatSaberPlaylistsLib
             MaxTextSize = 60,
             WrapWidth = 10
         };
+
+        /// <summary>
+        /// Returns a found system font or default font for a given family name.
+        /// </summary>
+        /// <param name="font"></param>
+        /// <param name="emSize"></param>
+        /// <param name="fontStyle"></param>
+        /// <returns></returns>
+        public static Font FindFont(string font, float emSize, FontStyle fontStyle)
+        {
+            InstalledFontCollection installedFontCollection = new InstalledFontCollection();
+            foreach(FontFamily fontFamily in installedFontCollection.Families)
+            {
+                if (fontFamily.Name == font)
+                {
+                    return new Font(fontFamily, emSize, fontStyle);
+                }
+            }
+            return new Font(installedFontCollection.Families.FirstOrDefault(), emSize, fontStyle);
+        }
 
         /// <summary>
         /// Generates a cover for a playlist.

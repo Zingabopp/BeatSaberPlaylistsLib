@@ -486,6 +486,11 @@
             Cover image sprite.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IAnnotatedBeatmapLevelCollection#smallCoverImage">
+            <summary>
+            Cover image sprite.
+            </summary>
+        </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.packID">
             <summary>
             BeatmapLevelPack ID.
@@ -1032,6 +1037,15 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.FindFont(System.String,System.Single,System.Drawing.FontStyle)">
+            <summary>
+            Returns a found system font or default font for a given family name.
+            </summary>
+            <param name="font"></param>
+            <param name="emSize"></param>
+            <param name="fontStyle"></param>
+            <returns></returns>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Utilities.GenerateCoverForPlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)">
             <summary>

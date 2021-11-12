@@ -37,7 +37,6 @@ namespace BeatSaberPlaylistsLib
             Font font = GetAdjustedFont(graphicsImage, str, drawSettings.Font, (int)(bitmap.Width * .9f), drawSettings.MaxTextSize, drawSettings.MinTextSize, true);
             graphicsImage.DrawString(str, font, new SolidBrush(StringColor), point,
                 drawSettings.StringFormat);
-            bitmap.Save("testOutput.png");
             return bitmap;
         }
 

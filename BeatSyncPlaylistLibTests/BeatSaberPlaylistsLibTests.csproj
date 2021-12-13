@@ -41,6 +41,9 @@
     <None Update="ReadOnlyData\DrawingTests\BeatSaverMapper.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ReadOnlyData\DrawingTests\bigCover.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ReadOnlyData\DrawingTests\testCover.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

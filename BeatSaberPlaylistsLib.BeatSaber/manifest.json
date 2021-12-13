@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "",
+  "name": "",
+  "author": "",
+  "version": "",
+  "description": "",
+  "gameVersion": "1.19.0",
+  "dependsOn": {
+    "SongCore": "^3.4.0"
+  }
+}

@@ -37,7 +37,7 @@
                       Author="$(Authors)" Description="$(Description)"
                       DependsOn="@(Dependency)" Files="@(RequiredFile)" ProjectHome="$(PackageProjectUrl)"
                       ProjectSource="$(RepositoryUrl)" Donate="$(DonationUrl)" RequiresBsipa="False"
-                      TargetPath="$(ManifestPath)" Condition="'$(BeatSaberRelease)' == 'True'" />
+                      TargetPath="$(ManifestPath)" BaseManifestPath="$(ProjectDir)manifest.json" Condition="'$(BeatSaberRelease)' == 'True'" />
     <Message Text="Manifest generated to '$(ManifestPath)'" Importance="high"/>
   </Target>
   <Target Name="CopyBeatSaberArtifacts" AfterTargets="Build" Condition="'$(BeatSaberRelease)' == 'True' AND '$(DisableCopyArtifacts)' != 'True'">

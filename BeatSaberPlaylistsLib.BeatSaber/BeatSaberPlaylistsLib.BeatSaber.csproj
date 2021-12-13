@@ -112,4 +112,8 @@
     </PropertyGroup>
   </Target>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
+
+	<Target Name="OutputGameVersion">
+		<Message Text="::set-output name=GameVersion::$(GameVersion)" Importance="high" />
+	</Target>
 </Project>

@@ -95,10 +95,6 @@ namespace BeatSaberPlaylistsLib.Types
         BeatSaber.PreviewDifficultyBeatmapSet[]? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
 
-
-        Task<BeatSaber.UnityEngine.AudioClip>? BeatSaber.IPreviewBeatmapLevel.GetPreviewAudioClipAsync(CancellationToken cancellationToken)
-         => PreviewBeatmapLevel?.GetPreviewAudioClipAsync(cancellationToken);
-
         Task<BeatSaber.UnityEngine.Sprite>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageAsync(CancellationToken cancellationToken)
             => PreviewBeatmapLevel?.GetCoverImageAsync(cancellationToken);
 #endregion

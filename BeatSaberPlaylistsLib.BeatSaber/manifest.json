@@ -7,6 +7,6 @@
   "description": "",
   "gameVersion": "1.19.0",
   "dependsOn": {
-    "SongCore": "^3.4.0"
+    "SongCore": "^3.9.0"
   }
 }

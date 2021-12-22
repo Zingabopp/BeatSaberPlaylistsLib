@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -155,7 +156,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Name of the collection, uses <see cref="Playlist.Title"/>.
         /// </summary>
-        string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Title;
+        string BeatSaber.IAnnotatedBeatmapLevelCollection.collectionName => Regex.Replace(Title, @"\t|\n|\r", " ");
 
         /// <summary>
         /// Cover image sprite.
@@ -175,12 +176,12 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// BeatmapLevelPack Name, same as name of the collection.
         /// </summary>
-        public string packName => Title;
+        public string packName => Regex.Replace(Title, @"\t|\n|\r", " ");
 
         /// <summary>
         /// BeatmapLevelPack Short Name, same as name of the collection.
         /// </summary>
-        public string shortPackName => Title;
+        public string shortPackName => Regex.Replace(Title, @"\t|\n|\r", " ");
 
         /// <summary>
         /// Returns itself.

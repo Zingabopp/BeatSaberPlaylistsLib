@@ -3,9 +3,14 @@ extern alias BeatSaber;
 using BeatSaber::UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Graphics = System.Drawing.Graphics;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -14,6 +19,11 @@ namespace BeatSaberPlaylistsLib.Types
     /// </summary>
     public abstract partial class Playlist : IDeferredSpriteLoad
     {
+        /// <summary>
+        /// Maximum width and height of cover image
+        /// </summary>
+        public const int kImageSize = 256;
+
         /// <summary>
         /// Queue of <see cref="Action"/>s to load playlist sprites.
         /// </summary>
@@ -43,38 +53,87 @@ namespace BeatSaberPlaylistsLib.Types
         private static bool CoroutineRunning = false;
 
         /// <summary>
+        /// Downscales <param name="original"/> to <see cref="kImageSize"/>
+        /// </summary>
+        protected static Stream DownscaleImage(Stream original)
+        {
+            try
+            {
+                Image originalImage = Image.FromStream(original);
+
+                if (originalImage.Width <= kImageSize && originalImage.Height <= kImageSize)
+                {
+                    return original;
+                }
+
+                var resizedRect = new Rectangle(0, 0, kImageSize, kImageSize);
+                var resizedImage = new Bitmap(kImageSize, kImageSize);
+
+                resizedImage.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(resizedImage))
+                {
+                    using var wrapMode = new ImageAttributes();
+                    wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
+                    graphics.DrawImage(originalImage, resizedRect, 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+
+                MemoryStream ms = new MemoryStream();
+                resizedImage.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+            catch (Exception)
+            {
+                return original;
+            }
+        }
+
+        /// <summary>
         /// Adds a playlist to the sprite load queue.
         /// </summary>
         /// <param name="playlist"></param>
-        protected static void QueueLoadSprite(Playlist playlist)
+        protected static async void QueueLoadSprite(Playlist playlist)
         {
-            SpriteQueue.Enqueue(() =>
+            if (playlist.HasCover)
             {
-                //Console.WriteLine($"Loading sprite for playlist '{playlist.Title}'");
-                if (!playlist.HasCover)
-                {
+                Stream stream = await Task.Run(() => DownscaleImage(playlist.GetCoverStream()));
 
-                    playlist._sprite = GetDefaultCoverSprite(playlist);
-                }
-                else
+                SpriteQueue.Enqueue(() =>
                 {
-                    using Stream stream = playlist.GetCoverStream();
                     Sprite? sprite = Utilities.GetSpriteFromStream(stream);
                     playlist._sprite = sprite ?? GetDefaultCoverSprite(playlist);
-                }
-                playlist.SpriteWasLoaded = true;
-                playlist.SpriteLoaded?.Invoke(playlist, null);
-                playlist._previousSprite = null;
-                playlist.SpriteLoadQueued = false;
-            });
+                    OnSpriteLoaded(playlist);
+                });
+            }
+            else
+            {
+                SpriteQueue.Enqueue(() =>
+                {
+                    //Console.WriteLine($"Loading sprite for playlist '{playlist.Title}'");
+                    if (!playlist.HasCover)
+                    {
+                        playlist._sprite = GetDefaultCoverSprite(playlist);
+                    }
+                    OnSpriteLoaded(playlist);
+                });
+            }
 
             if (!CoroutineRunning)
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
+
+        private static void OnSpriteLoaded(Playlist playlist)
+        {
+            playlist.SpriteWasLoaded = true;
+            playlist.SpriteLoaded?.Invoke(playlist, null);
+            playlist._previousSprite = null;
+            playlist.SpriteLoadQueued = false;
+        }
+
         /// <summary>
         /// Wait <see cref="YieldInstruction"/> between sprite loads.
         /// </summary>
-        public static YieldInstruction LoadWait = new WaitForEndOfFrame();
+        public static YieldInstruction LoadWait = new WaitForSeconds(0.05f);
 
         /// <summary>
         /// Coroutine to load sprites in the queue.

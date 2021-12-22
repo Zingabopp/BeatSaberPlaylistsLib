@@ -1,9 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
-  "id": "",
-  "name": "",
+  "id": "BeatSaberPlaylistsLib",
+  "name": "BeatSaberPlaylistsLib",
   "author": "",
-  "version": "",
+  "version": "0.0.0",
   "description": "",
   "gameVersion": "1.19.0",
   "dependsOn": {

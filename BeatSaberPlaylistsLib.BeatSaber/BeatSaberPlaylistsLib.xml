@@ -337,6 +337,11 @@
             Base class for a Playlist.
             </summary>
         </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.kImageSize">
+            <summary>
+            Maximum width and height of cover image
+            </summary>
+        </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SpriteQueue">
             <summary>
             Queue of <see cref="T:System.Action"/>s to load playlist sprites.
@@ -360,6 +365,11 @@
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SpriteLoadQueued">
             <summary>
             Returns true if the sprite for the playlist is already queued.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.DownscaleImage(System.IO.Stream)">
+            <summary>
+            Downscales <param name="original"/> to <see cref="F:BeatSaberPlaylistsLib.Types.Playlist.kImageSize"/>
             </summary>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.QueueLoadSprite(BeatSaberPlaylistsLib.Types.Playlist)">

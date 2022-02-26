@@ -6,6 +6,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a PlaylistSong.
     /// </summary>
+    [Serializable]
     public abstract partial class PlaylistSong : IPlaylistSong
     {
         /// <summary>

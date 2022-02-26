@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// An abstract class for a playlist song in a JSON playlist file.
     /// </summary>
+    [Serializable]
     public abstract class JSONPlaylistSong : PlaylistSong
     {
         /// <summary>

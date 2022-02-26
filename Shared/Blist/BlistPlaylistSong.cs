@@ -11,6 +11,7 @@ namespace BeatSaberPlaylistsLib.Blist
     /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="BlistPlaylist"/>.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [Serializable]
     public class BlistPlaylistSong : JSONPlaylistSong
     {
         /// <summary>

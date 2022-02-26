@@ -9,6 +9,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// A beatmap difficulty
     /// </summary>
+    [Serializable]
     public partial struct Difficulty
     {
         private const int kEasyValue = 0;

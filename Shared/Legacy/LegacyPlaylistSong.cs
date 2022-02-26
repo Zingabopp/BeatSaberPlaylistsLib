@@ -9,6 +9,7 @@ namespace BeatSaberPlaylistsLib.Legacy
     /// An <see cref="IPlaylistSong"/> that can be serialized in a <see cref="LegacyPlaylist"/>.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [Serializable]
     public class LegacyPlaylistSong : JSONPlaylistSong, IEquatable<IPlaylistSong>
     {
         /// <summary>

@@ -57,9 +57,10 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         protected static Stream DownscaleImage(Stream original)
         {
+            var ms = new MemoryStream();
             try
             {
-                Image originalImage = Image.FromStream(original);
+                var originalImage = Image.FromStream(original);
 
                 if (originalImage.Width <= kImageSize && originalImage.Height <= kImageSize)
                 {
@@ -78,7 +79,6 @@ namespace BeatSaberPlaylistsLib.Types
                     graphics.DrawImage(originalImage, resizedRect, 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, wrapMode);
                 }
 
-                MemoryStream ms = new MemoryStream();
                 resizedImage.Save(ms, ImageFormat.Png);
                 return ms;
             }
@@ -96,12 +96,16 @@ namespace BeatSaberPlaylistsLib.Types
         {
             if (playlist.HasCover)
             {
-                Stream stream = await Task.Run(() => DownscaleImage(playlist.GetCoverStream()));
-
+                var stream = await Task.Run(() => DownscaleImage(playlist.GetCoverStream()));
                 SpriteQueue.Enqueue(() =>
                 {
-                    Sprite? sprite = Utilities.GetSpriteFromStream(stream);
-                    playlist._sprite = sprite ?? GetDefaultCoverSprite(playlist);
+                    if (stream != null)
+                    {
+                        var sprite = Utilities.GetSpriteFromStream(stream);
+                        playlist._sprite = sprite ? sprite : GetDefaultCoverSprite(playlist);
+                        stream?.Dispose();
+                    }
+
                     OnSpriteLoaded(playlist);
                 });
             }
@@ -173,7 +177,7 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (_sprite != null)
                     return _sprite;
-                _sprite = _previousSprite ?? Utilities.DefaultSprite;
+                _sprite = _previousSprite ? _previousSprite : Utilities.DefaultSprite;
                 if (!SpriteLoadQueued)
                 {
                     SpriteLoadQueued = true;

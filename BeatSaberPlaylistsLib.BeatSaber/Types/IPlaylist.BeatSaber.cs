@@ -9,7 +9,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Interface for a playlist.
     /// </summary>
-    public partial interface IPlaylist : BeatSaber.IPlaylist, BeatSaber.IAnnotatedBeatmapLevelCollection, BeatSaber.IBeatmapLevelPack
+    public partial interface IPlaylist : BeatSaber.IBeatmapLevelPack
     {
         /// <summary>
         /// Adds the <see cref="BeatSaber.IPreviewBeatmapLevel"/> to the playlist. 

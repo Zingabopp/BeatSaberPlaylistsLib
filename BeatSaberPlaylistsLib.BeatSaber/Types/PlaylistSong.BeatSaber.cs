@@ -85,14 +85,14 @@ namespace BeatSaberPlaylistsLib.Types
             => PreviewBeatmapLevel?.songDuration ?? 0;
 
         [IgnoreDataMember]
-        BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.environmentInfo => throw new NotImplementedException();
+        BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.environmentInfo => PreviewBeatmapLevel?.environmentInfo;
 
         [IgnoreDataMember]
         BeatSaber.EnvironmentInfoSO? BeatSaber.IPreviewBeatmapLevel.allDirectionsEnvironmentInfo
             => PreviewBeatmapLevel?.allDirectionsEnvironmentInfo;
 
         [IgnoreDataMember]
-        BeatSaber.PreviewDifficultyBeatmapSet[]? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets
+        IReadOnlyList<BeatSaber.PreviewDifficultyBeatmapSet>? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
 
         Task<BeatSaber.UnityEngine.Sprite>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageAsync(CancellationToken cancellationToken)

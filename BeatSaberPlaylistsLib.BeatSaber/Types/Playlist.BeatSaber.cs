@@ -210,7 +210,7 @@ namespace BeatSaberPlaylistsLib.Types
     }
 
 
-    public abstract partial class Playlist<T> : BeatSaber.IPlaylist, BeatSaber.IBeatmapLevelCollection
+    public abstract partial class Playlist<T> : BeatSaber.IBeatmapLevelCollection
     {
         /// <summary>
         /// Name of the collection, uses <see cref="Playlist.Title"/>.
@@ -250,7 +250,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// Returns a new array of IPreviewBeatmapLevels in this playlist.
         /// </summary>
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        BeatSaber.IPreviewBeatmapLevel[] BeatSaber.IBeatmapLevelCollection.beatmapLevels
+        IReadOnlyList<BeatSaber.IPreviewBeatmapLevel> BeatSaber.IBeatmapLevelCollection.beatmapLevels
         {
             get
             {

@@ -393,6 +393,11 @@
             Returns true if the sprite for the playlist is already queued.
             </summary>
         </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SmallSpriteLoadQueued">
+            <summary>
+            Returns true if the small sprite for the playlist is already queued.
+            </summary>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.DownscaleImage(System.IO.Stream)">
             <summary>
             Downscales <param name="original"/> to <see cref="F:BeatSaberPlaylistsLib.Types.Playlist.kSmallImageSize"/>

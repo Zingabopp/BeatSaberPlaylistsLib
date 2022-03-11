@@ -52,6 +52,12 @@ namespace BeatSaberPlaylistsLib.Types
         /// Returns true if the sprite for the playlist is already queued.
         /// </summary>
         protected bool SpriteLoadQueued;
+        
+        /// <summary>
+        /// Returns true if the small sprite for the playlist is already queued.
+        /// </summary>
+        protected bool SmallSpriteLoadQueued;
+        
         private static readonly object _loaderLock = new object();
         private static bool CoroutineRunning = false;
 
@@ -139,17 +145,7 @@ namespace BeatSaberPlaylistsLib.Types
             playlist.SmallSpriteWasLoaded = true;
             playlist.SpriteLoaded?.Invoke(playlist, null);
             playlist._previousSmallSprite = null;
-            playlist.SpriteLoadQueued = false;
-        }
-
-        private static void OnDefaultCoverSpriteLoaded(Playlist playlist)
-        {
-            playlist.SpriteWasLoaded = true;
-            playlist.SmallSpriteWasLoaded = true;
-            playlist.SpriteLoaded?.Invoke(playlist, null);
-            playlist._previousSprite = null;
-            playlist._previousSmallSprite = null;
-            playlist.SpriteLoadQueued = false;
+            playlist.SmallSpriteLoadQueued = false;
         }
 
         /// <summary>
@@ -216,9 +212,9 @@ namespace BeatSaberPlaylistsLib.Types
                 if (_smallSprite != null)
                     return _smallSprite;
                 _smallSprite = _previousSmallSprite ? _previousSmallSprite : Utilities.DefaultSprite;
-                if (!SpriteLoadQueued)
+                if (!SmallSpriteLoadQueued)
                 {
-                    SpriteLoadQueued = true;
+                    SmallSpriteLoadQueued = true;
                     QueueLoadSprite(this, true);
                 }
                 return _smallSprite;

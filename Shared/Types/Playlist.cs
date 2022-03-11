@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
@@ -170,7 +169,6 @@ namespace BeatSaberPlaylistsLib.Types
                 _defaultCoverData = null;
 #if BeatSaber
                 _ = Sprite;
-                _ = SmallSprite;
 #endif
             }
         }

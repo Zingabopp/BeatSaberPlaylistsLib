@@ -107,24 +107,25 @@ namespace BeatSaberPlaylistsLib.Types
             var stream = playlist.HasCover ? playlist.GetCoverStream() : await playlist.GetDefaultCoverStream() ?? Utilities.GetDefaultImageStream();
             if (downscaleImage)
             {
-                var downscaleStream = await Task.Run(() => DownscaleImage(stream));
-                stream.Dispose();
+                var downscaleStream = stream != null && stream != Stream.Null ? await Task.Run(() => DownscaleImage(stream)) : stream;
                 SpriteQueue.Enqueue(() =>
                 {
-                    var sprite = Utilities.GetSpriteFromStream(downscaleStream);
+                    var sprite = Utilities.GetSpriteFromStream(downscaleStream ?? Stream.Null);
                     playlist._smallSprite = sprite;
                     OnSmallSpriteLoaded(playlist);
-                    downscaleStream.Dispose();
+                    downscaleStream?.Dispose();
+                    stream?.Dispose();
                 });
             }
             else
             {
                 SpriteQueue.Enqueue(() =>
                 {
-                    var sprite = Utilities.GetSpriteFromStream(stream);
+                    var sprite = Utilities.GetSpriteFromStream(stream ?? Stream.Null);
                     playlist._sprite = sprite;
+                    playlist._smallSprite = sprite;
                     OnSpriteLoaded(playlist);
-                    stream.Dispose();
+                    stream?.Dispose();
                 });   
             }
 
@@ -134,10 +135,13 @@ namespace BeatSaberPlaylistsLib.Types
 
         private static void OnSpriteLoaded(Playlist playlist)
         {
+            playlist.SmallSpriteWasLoaded = true;
             playlist.SpriteWasLoaded = true;
             playlist.SpriteLoaded?.Invoke(playlist, null);
             playlist._previousSprite = null;
+            playlist._previousSmallSprite = null;
             playlist.SpriteLoadQueued = false;
+            playlist.SmallSpriteLoadQueued = false;
         }
 
         private static void OnSmallSpriteLoaded(Playlist playlist)

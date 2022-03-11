@@ -222,19 +222,6 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         /// <summary>
-        /// Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
-        /// </summary>
-        public void RaiseCoverImageChangedForDefaultCover()
-        {
-            if (!HasCover)
-            {
-                RaiseCoverImageChanged();
-                _ = Sprite;
-                _ = SmallSprite;
-            }
-        }
-
-        /// <summary>
         /// Resets the sprite for...reasons.
         /// </summary>
         partial void ResetSprite()
@@ -341,11 +328,10 @@ namespace BeatSaberPlaylistsLib.Types
             Difficulty difficulty = new Difficulty();
             difficulty.BeatmapDifficulty = beatmap.difficulty;
             difficulty.Characteristic = beatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
-            IPlaylistSong? song = Add(CreateFromByLevelId(beatmap.level.levelID, beatmap.level.songName, null, beatmap.level.levelAuthorName));
+            IPlaylistSong? song = Add(beatmap.level);
             if (song != null)
                 song.Difficulties = new List<Difficulty> { difficulty };
-
-            song?.SetPreviewBeatmap(beatmap.level);
+            
             return song;
         }
 

@@ -436,11 +436,6 @@
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.SmallSprite">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
-            <summary>
-            Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
-            </summary>
-        </member>
         <member name="E:BeatSaberPlaylistsLib.Types.Playlist.PlaylistChanged">
             <inheritdoc/>
         </member>
@@ -523,6 +518,11 @@
             Get Stream for Default Cover if Cover is not set
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
+            <summary>
+            Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
+            </summary>
         </member>
         <member name="T:BeatSaberPlaylistsLib.Types.Playlist`1">
             <summary>

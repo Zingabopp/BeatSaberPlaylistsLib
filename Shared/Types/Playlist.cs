@@ -158,6 +158,22 @@ namespace BeatSaberPlaylistsLib.Types
             _defaultCoverData = ms.ToArray();
         }
 #endif
+        
+        /// <summary>
+        /// Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
+        /// </summary>
+        public void RaiseCoverImageChangedForDefaultCover()
+        {
+            if (!HasCover)
+            {
+                RaiseCoverImageChanged();
+                _defaultCoverData = null;
+#if BeatSaber
+                _ = Sprite;
+                _ = SmallSprite;
+#endif
+            }
+        }
 
         #endregion
     }
@@ -227,6 +243,12 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 T playlistSong = CreateFrom(song);
                 Songs.Add(playlistSong);
+                
+                if (Count <= 4)
+                {
+                    RaiseCoverImageChangedForDefaultCover();
+                }
+                
                 return playlistSong;
             }
             return null;
@@ -243,12 +265,14 @@ namespace BeatSaberPlaylistsLib.Types
         public virtual void Clear()
         {
             Songs.Clear();
+            RaiseCoverImageChangedForDefaultCover();
         }
 
         /// <inheritdoc/>
         public virtual void Sort()
         {
             Songs = Songs.OrderByDescending(s => s.DateAdded).ToList();
+            RaiseCoverImageChangedForDefaultCover();
         }
 
         /// <inheritdoc/>
@@ -290,6 +314,10 @@ namespace BeatSaberPlaylistsLib.Types
         public void Insert(int index, IPlaylistSong item)
         {
             Songs.Insert(index, CreateFrom(item));
+            if (index < 4)
+            {
+                RaiseCoverImageChangedForDefaultCover();
+            }
         }
 
         /// <inheritdoc/>
@@ -304,6 +332,12 @@ namespace BeatSaberPlaylistsLib.Types
                 if (song != null)
                     songRemoved = Songs.Remove(song);
             }
+
+            if (songRemoved && Count <= 4)
+            {
+                RaiseCoverImageChangedForDefaultCover();
+            }
+            
             return songRemoved;
         }
 
@@ -311,6 +345,10 @@ namespace BeatSaberPlaylistsLib.Types
         public void RemoveAt(int index)
         {
             Songs.RemoveAt(index);
+            if (index < 3)
+            {
+                RaiseCoverImageChangedForDefaultCover();
+            }
         }
 
         /// <inheritdoc/>
@@ -323,6 +361,7 @@ namespace BeatSaberPlaylistsLib.Types
                 if (Songs.Remove(song))
                     songsRemoved++;
             }
+            RaiseCoverImageChangedForDefaultCover();
             return songsRemoved;
         }
 
@@ -332,6 +371,7 @@ namespace BeatSaberPlaylistsLib.Types
             int removedSongs = 0;
             if (match != null)
                 removedSongs = Songs.RemoveAll(s => match(s));
+            RaiseCoverImageChangedForDefaultCover();
             return removedSongs;
         }
 
@@ -341,7 +381,10 @@ namespace BeatSaberPlaylistsLib.Types
             int previousCount = Songs.Count;
             Songs = Songs.Distinct(IPlaylistSongComparer<T>.Default).ToList();
             if (Songs.Count != previousCount)
+            {
                 RaisePlaylistChanged();
+                RaiseCoverImageChangedForDefaultCover();
+            }
         }
 
 

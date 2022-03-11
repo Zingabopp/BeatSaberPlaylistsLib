@@ -82,7 +82,14 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="sprite"></param>
         /// <returns></returns>
-        public static Stream? GetStreamFromSprite(Sprite sprite) => new MemoryStream(sprite.texture.EncodeToPNG());
+        public static Stream? GetStreamFromSprite(Sprite sprite)
+        {
+            if (sprite.texture.isReadable)
+            {
+                return new MemoryStream(sprite.texture.EncodeToPNG());
+            }
+            return GetDefaultImageStream();
+        }
     }
 }
 #endif

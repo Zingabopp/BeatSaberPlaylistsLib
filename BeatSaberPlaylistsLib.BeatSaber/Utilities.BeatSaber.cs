@@ -77,6 +77,12 @@ namespace BeatSaberPlaylistsLib
 
         }
 
+        /// <summary>
+        /// Gets a <see cref="Stream"/> from a <see cref="Sprite"/>
+        /// </summary>
+        /// <param name="sprite"></param>
+        /// <returns></returns>
+        public static Stream? GetStreamFromSprite(Sprite sprite) => new MemoryStream(sprite.texture.EncodeToPNG());
     }
 }
 #endif

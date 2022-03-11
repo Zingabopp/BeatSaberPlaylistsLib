@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -131,6 +132,34 @@ namespace BeatSaberPlaylistsLib.Types
             }
             CustomData[key] = value;
         }
+
+        #region Default Cover
+
+        protected byte[]? _defaultCoverData;
+        
+        /// <summary>
+        /// Get Stream for Default Cover if Cover is not set
+        /// </summary>
+        /// <returns></returns>
+        public virtual Task<Stream?> GetDefaultCoverStream() => 
+            _defaultCoverData != null ? Task.FromResult<Stream?>(new MemoryStream(_defaultCoverData)) : Task.FromResult<Stream?>(null);
+
+#if BeatSaber
+#else
+
+        /// <summary>
+        /// Set the Default Cover data after generating it
+        /// </summary>
+        /// <param name="coverStream"></param>
+        public async Task SetDefaultCover(Stream coverStream)
+        {
+            using MemoryStream ms = new MemoryStream();
+            await coverStream.CopyToAsync(ms);
+            _defaultCoverData = ms.ToArray();
+        }
+#endif
+
+        #endregion
     }
 
 

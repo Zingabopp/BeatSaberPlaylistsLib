@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Graphics = System.Drawing.Graphics;
 
@@ -28,14 +29,6 @@ namespace BeatSaberPlaylistsLib.Types
         /// Queue of <see cref="Action"/>s to load playlist sprites.
         /// </summary>
         protected static readonly Queue<Action> SpriteQueue = new Queue<Action>();
-        /// <summary>
-        /// Default cover image to use if a playlist has no cover image.
-        /// </summary>
-        public static Sprite? GetDefaultCoverSprite(Playlist playlist)
-        {
-            // TODO: Generate playlist cover with title.
-            return Utilities.GetSpriteFromStream(Utilities.GenerateCoverForPlaylist((IPlaylist)playlist));
-        }
 
         /// <summary>
         /// Instance of the playlist cover sprite.
@@ -105,42 +98,28 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="downscaleImage"></param>
         protected async static void QueueLoadSprite(Playlist playlist, bool downscaleImage)
         {
-            if (playlist.HasCover)
+            var stream = playlist.HasCover ? playlist.GetCoverStream() : await playlist.GetDefaultCoverStream() ?? Utilities.GetDefaultImageStream();
+            if (downscaleImage)
             {
-                if (downscaleImage)
+                var downscaleStream = await Task.Run(() => DownscaleImage(stream));
+                stream.Dispose();
+                SpriteQueue.Enqueue(() =>
                 {
-                    var stream = await Task.Run(() => DownscaleImage(playlist.GetCoverStream()));
-                    SpriteQueue.Enqueue(() =>
-                    {
-                        var sprite = Utilities.GetSpriteFromStream(stream);
-                        playlist._smallSprite = sprite ? sprite : GetDefaultCoverSprite(playlist);
-                        OnSmallSpriteLoaded(playlist);
-                        stream.Dispose();
-                    });
-                }
-                else
-                {
-                    SpriteQueue.Enqueue(() =>
-                    {
-                        using var stream = playlist.GetCoverStream();
-                        var sprite = Utilities.GetSpriteFromStream(stream);
-                        playlist._sprite = sprite ? sprite : GetDefaultCoverSprite(playlist);
-                        OnSpriteLoaded(playlist);
-                    });   
-                }
+                    var sprite = Utilities.GetSpriteFromStream(downscaleStream);
+                    playlist._smallSprite = sprite;
+                    OnSmallSpriteLoaded(playlist);
+                    downscaleStream.Dispose();
+                });
             }
             else
             {
                 SpriteQueue.Enqueue(() =>
                 {
-                    //Console.WriteLine($"Loading sprite for playlist '{playlist.Title}'");
-                    if (!playlist.HasCover)
-                    {
-                        playlist._sprite = GetDefaultCoverSprite(playlist);
-                        playlist._smallSprite = GetDefaultCoverSprite(playlist);
-                    }
-                    OnDefaultCoverSpriteLoaded(playlist);
-                });
+                    var sprite = Utilities.GetSpriteFromStream(stream);
+                    playlist._sprite = sprite;
+                    OnSpriteLoaded(playlist);
+                    stream.Dispose();
+                });   
             }
 
             if (!CoroutineRunning)
@@ -373,6 +352,59 @@ namespace BeatSaberPlaylistsLib.Types
             song?.SetPreviewBeatmap(beatmap.level);
             return song;
         }
+
+        #region Default Cover
+
+        /// <inheritdoc cref="IPlaylist.GetDefaultCoverStream" />
+        public override async Task<Stream?> GetDefaultCoverStream()
+        {
+            if (_defaultCoverData != null)
+            {
+                return new MemoryStream(_defaultCoverData);
+            }
+            
+            using MemoryStream ms = new MemoryStream();
+            
+            if (BeatmapLevels.Length == 0)
+            {
+                using var coverStream = Utilities.GetDefaultImageStream();
+                if (coverStream != null) await coverStream.CopyToAsync(ms);
+            }
+            else if (BeatmapLevels.Length == 1)
+            {
+                using var coverStream = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
+                if (coverStream != null) await coverStream.CopyToAsync(ms);
+            }
+            else if (BeatmapLevels.Length == 2)
+            {
+                using var imageStream1 = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream2 = Utilities.GetStreamFromSprite(await BeatmapLevels[1].GetCoverImageAsync(CancellationToken.None));
+                using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null);
+                await coverStream.CopyToAsync(ms);
+            }
+            else if (BeatmapLevels.Length == 3)
+            {
+                using var imageStream1 = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream2 = Utilities.GetStreamFromSprite(await BeatmapLevels[1].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream3 = Utilities.GetStreamFromSprite(await BeatmapLevels[2].GetCoverImageAsync(CancellationToken.None));
+                using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null);
+                await coverStream.CopyToAsync(ms);
+            }
+            else
+            {
+                using var imageStream1 = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream2 = Utilities.GetStreamFromSprite(await BeatmapLevels[1].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream3 = Utilities.GetStreamFromSprite(await BeatmapLevels[2].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream4 = Utilities.GetStreamFromSprite(await BeatmapLevels[3].GetCoverImageAsync(CancellationToken.None));
+                using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null, imageStream4 ?? Stream.Null);
+                await coverStream.CopyToAsync(ms);
+            }
+
+            _defaultCoverData = ms.ToArray();
+            return ms;
+        }
+
+        #endregion
     }
 }
 #endif

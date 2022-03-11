@@ -1874,6 +1874,10 @@
             <exception cref="T:System.InvalidOperationException"></exception>
             <exception cref="T:System.IO.IOException"></exception>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
+            <inheritdoc cref="M:BeatSaberPlaylistsLib.PlaylistManager.DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)" />
+            <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.CreateChildManager(System.String)">
             <summary>
             Creates a new child <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
@@ -1889,6 +1893,10 @@
             <param name="managerToDelete"></param>
             <returns></returns>
             <exception cref="T:System.IO.IOException"></exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager,System.Boolean)">
+            <inheritdoc cref="M:BeatSaberPlaylistsLib.PlaylistManager.DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager)" />
+            <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RenameManager(System.String)">
             <summary>

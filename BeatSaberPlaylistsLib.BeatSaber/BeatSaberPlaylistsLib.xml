@@ -521,7 +521,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
             <summary>
-            Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
+            Raises cover image changed if we are using default image. Called when the level collection changes.
             </summary>
         </member>
         <member name="T:BeatSaberPlaylistsLib.Types.Playlist`1">

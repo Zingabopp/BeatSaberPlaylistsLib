@@ -160,7 +160,7 @@ namespace BeatSaberPlaylistsLib.Types
 #endif
         
         /// <summary>
-        /// Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
+        /// Raises cover image changed if we are using default image. Called when the level collection changes.
         /// </summary>
         public void RaiseCoverImageChangedForDefaultCover()
         {
@@ -323,22 +323,27 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public bool Remove(IPlaylistSong item)
         {
-            bool songRemoved = false;
+            int index = -1;
             if (item is T matchedType)
-                songRemoved = Songs.Remove(matchedType);
+            {
+                index = Songs.IndexOf(matchedType);
+            }
             else
             {
-                T? song = Songs.FirstOrDefault(s => s.Equals(item));
-                if (song != null)
-                    songRemoved = Songs.Remove(song);
+                index = Songs.FindIndex(s => s.Equals(item));
             }
 
-            if (songRemoved && Count <= 4)
+            if (index != -1)
             {
-                RaiseCoverImageChangedForDefaultCover();
+                Songs.RemoveAt(index);
+                if (index < 4)
+                {
+                    RaiseCoverImageChangedForDefaultCover();
+                }
+                return true;
             }
-            
-            return songRemoved;
+
+            return false;
         }
 
         /// <inheritdoc/>

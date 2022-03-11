@@ -13,7 +13,7 @@ namespace BeatSaberPlaylistsLib
     public static partial class Utilities
     {
         internal static Stream? GetDefaultImageStream() =>
-            Assembly.GetExecutingAssembly().GetManifestResourceStream("BeatSaberPlaylistsLib.Icons.FolderIcon.png");
+            Assembly.GetExecutingAssembly().GetManifestResourceStream("BeatSaberPlaylistsLib.Icons.DefaultIcon.png");
 
 
         /// <summary>

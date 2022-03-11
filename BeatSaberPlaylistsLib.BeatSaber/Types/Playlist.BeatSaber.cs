@@ -104,7 +104,16 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="downscaleImage"></param>
         protected async static void QueueLoadSprite(Playlist playlist, bool downscaleImage)
         {
-            var stream = playlist.HasCover ? playlist.GetCoverStream() : await playlist.GetDefaultCoverStream() ?? Utilities.GetDefaultImageStream();
+            var stream = playlist.HasCover ? playlist.GetCoverStream() : await playlist.GetDefaultCoverStream();
+
+            if (stream == null)
+            {
+                var sprite = Utilities.DefaultSprite;
+                playlist._sprite = sprite;
+                playlist._smallSprite = sprite;
+                OnSpriteLoaded(playlist);
+            }
+            
             if (downscaleImage)
             {
                 var downscaleStream = stream != null && stream != Stream.Null ? await Task.Run(() => DownscaleImage(stream)) : stream;
@@ -353,8 +362,8 @@ namespace BeatSaberPlaylistsLib.Types
             
             if (BeatmapLevels.Length == 0)
             {
-                using var coverStream = Utilities.GetDefaultImageStream();
-                if (coverStream != null) await coverStream.CopyToAsync(ms);
+                ms.Dispose();
+                return null;
             }
             else if (BeatmapLevels.Length == 1)
             {

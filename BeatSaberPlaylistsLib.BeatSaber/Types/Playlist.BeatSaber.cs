@@ -17,12 +17,12 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
-    public abstract partial class Playlist : IDeferredSpriteLoad
+    public abstract partial class Playlist : IStagedSpriteLoad
     {
         /// <summary>
-        /// Maximum width and height of cover image
+        /// Maximum width and height of the small cover image
         /// </summary>
-        public const int kImageSize = 256;
+        public const int kSmallImageSize = 128;
 
         /// <summary>
         /// Queue of <see cref="Action"/>s to load playlist sprites.
@@ -45,6 +45,16 @@ namespace BeatSaberPlaylistsLib.Types
         /// Instance of the previous cover sprite.
         /// </summary>
         protected Sprite? _previousSprite;
+        
+        /// <summary>
+        /// Instance of the downscaled playlist cover sprite.
+        /// </summary>
+        protected Sprite? _smallSprite;
+        /// <summary>
+        /// Instance of the previous downscaled cover sprite.
+        /// </summary>
+        protected Sprite? _previousSmallSprite;
+        
         /// <summary>
         /// Returns true if the sprite for the playlist is already queued.
         /// </summary>
@@ -53,7 +63,7 @@ namespace BeatSaberPlaylistsLib.Types
         private static bool CoroutineRunning = false;
 
         /// <summary>
-        /// Downscales <param name="original"/> to <see cref="kImageSize"/>
+        /// Downscales <param name="original"/> to <see cref="kSmallImageSize"/>
         /// </summary>
         protected static Stream DownscaleImage(Stream original)
         {
@@ -62,13 +72,13 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 var originalImage = Image.FromStream(original);
 
-                if (originalImage.Width <= kImageSize && originalImage.Height <= kImageSize)
+                if (originalImage.Width <= kSmallImageSize && originalImage.Height <= kSmallImageSize)
                 {
                     return original;
                 }
 
-                var resizedRect = new Rectangle(0, 0, kImageSize, kImageSize);
-                var resizedImage = new Bitmap(kImageSize, kImageSize);
+                var resizedRect = new Rectangle(0, 0, kSmallImageSize, kSmallImageSize);
+                var resizedImage = new Bitmap(kSmallImageSize, kSmallImageSize);
 
                 resizedImage.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
 
@@ -92,22 +102,32 @@ namespace BeatSaberPlaylistsLib.Types
         /// Adds a playlist to the sprite load queue.
         /// </summary>
         /// <param name="playlist"></param>
-        protected static async void QueueLoadSprite(Playlist playlist)
+        /// <param name="downscaleImage"></param>
+        protected async static void QueueLoadSprite(Playlist playlist, bool downscaleImage)
         {
             if (playlist.HasCover)
             {
-                var stream = await Task.Run(() => DownscaleImage(playlist.GetCoverStream()));
-                SpriteQueue.Enqueue(() =>
+                if (downscaleImage)
                 {
-                    if (stream != null)
+                    var stream = await Task.Run(() => DownscaleImage(playlist.GetCoverStream()));
+                    SpriteQueue.Enqueue(() =>
                     {
                         var sprite = Utilities.GetSpriteFromStream(stream);
+                        playlist._smallSprite = sprite ? sprite : GetDefaultCoverSprite(playlist);
+                        OnSmallSpriteLoaded(playlist);
+                        stream.Dispose();
+                    });
+                }
+                else
+                {
+                    SpriteQueue.Enqueue(() =>
+                    {
+                        using var stream = playlist.GetCoverStream();
+                        var sprite = Utilities.GetSpriteFromStream(stream);
                         playlist._sprite = sprite ? sprite : GetDefaultCoverSprite(playlist);
-                        stream?.Dispose();
-                    }
-
-                    OnSpriteLoaded(playlist);
-                });
+                        OnSpriteLoaded(playlist);
+                    });   
+                }
             }
             else
             {
@@ -117,8 +137,9 @@ namespace BeatSaberPlaylistsLib.Types
                     if (!playlist.HasCover)
                     {
                         playlist._sprite = GetDefaultCoverSprite(playlist);
+                        playlist._smallSprite = GetDefaultCoverSprite(playlist);
                     }
-                    OnSpriteLoaded(playlist);
+                    OnDefaultCoverSpriteLoaded(playlist);
                 });
             }
 
@@ -134,10 +155,28 @@ namespace BeatSaberPlaylistsLib.Types
             playlist.SpriteLoadQueued = false;
         }
 
+        private static void OnSmallSpriteLoaded(Playlist playlist)
+        {
+            playlist.SmallSpriteWasLoaded = true;
+            playlist.SpriteLoaded?.Invoke(playlist, null);
+            playlist._previousSmallSprite = null;
+            playlist.SpriteLoadQueued = false;
+        }
+
+        private static void OnDefaultCoverSpriteLoaded(Playlist playlist)
+        {
+            playlist.SpriteWasLoaded = true;
+            playlist.SmallSpriteWasLoaded = true;
+            playlist.SpriteLoaded?.Invoke(playlist, null);
+            playlist._previousSprite = null;
+            playlist._previousSmallSprite = null;
+            playlist.SpriteLoadQueued = false;
+        }
+
         /// <summary>
         /// Wait <see cref="YieldInstruction"/> between sprite loads.
         /// </summary>
-        public static YieldInstruction LoadWait = new WaitForSeconds(0.05f);
+        public static YieldInstruction LoadWait = new WaitForEndOfFrame();
 
         /// <summary>
         /// Coroutine to load sprites in the queue.
@@ -162,7 +201,7 @@ namespace BeatSaberPlaylistsLib.Types
                 BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
-        #region IDeferredSpriteLoad
+        #region IStagedSpriteLoad
 
         /// <inheritdoc/>
         public event EventHandler? SpriteLoaded;
@@ -181,9 +220,29 @@ namespace BeatSaberPlaylistsLib.Types
                 if (!SpriteLoadQueued)
                 {
                     SpriteLoadQueued = true;
-                    QueueLoadSprite(this);
+                    QueueLoadSprite(this, false);
                 }
                 return _sprite;
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool SmallSpriteWasLoaded { get; protected set; }
+
+        /// <inheritdoc/>
+        public Sprite? SmallSprite
+        {
+            get
+            {
+                if (_smallSprite != null)
+                    return _smallSprite;
+                _smallSprite = _previousSmallSprite ? _previousSmallSprite : Utilities.DefaultSprite;
+                if (!SpriteLoadQueued)
+                {
+                    SpriteLoadQueued = true;
+                    QueueLoadSprite(this, true);
+                }
+                return _smallSprite;
             }
         }
 
@@ -196,6 +255,7 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 RaiseCoverImageChanged();
                 _ = Sprite;
+                _ = SmallSprite;
             }
         }
 
@@ -204,13 +264,13 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         partial void ResetSprite()
         {
-
             _previousSprite = _sprite;
+            _previousSmallSprite = _smallSprite;
             _sprite = null;
+            _smallSprite = null;
         }
 
         #endregion
-
     }
 
 
@@ -229,7 +289,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Cover image sprite.
         /// </summary>
-        Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.smallCoverImage => Sprite;
+        Sprite? BeatSaber.IAnnotatedBeatmapLevelCollection.smallCoverImage => SmallSprite;
 
         /// <summary>
         /// BeatmapLevelPack ID.

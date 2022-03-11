@@ -329,6 +329,21 @@
             Flags enum identifying which properties can be used to uniquely identify the song.
             </summary>
         </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IStagedSpriteLoad">
+            <summary>
+            An interface that supports deferred sprite loading in 2 stages (low res and high res)
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IStagedSpriteLoad.SmallSpriteWasLoaded">
+            <summary>
+            Returns true if the Small Sprite is loaded.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IStagedSpriteLoad.SmallSprite">
+            <summary>
+            Downscaled sprite
+            </summary>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Types.Playlist">
             <summary>
             Base class for a Playlist.
@@ -337,9 +352,9 @@
             Base class for a Playlist.
             </summary>
         </member>
-        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.kImageSize">
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.kSmallImageSize">
             <summary>
-            Maximum width and height of cover image
+            Maximum width and height of the small cover image
             </summary>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SpriteQueue">
@@ -362,6 +377,16 @@
             Instance of the previous cover sprite.
             </summary>
         </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist._smallSprite">
+            <summary>
+            Instance of the downscaled playlist cover sprite.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist._previousSmallSprite">
+            <summary>
+            Instance of the previous downscaled cover sprite.
+            </summary>
+        </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SpriteLoadQueued">
             <summary>
             Returns true if the sprite for the playlist is already queued.
@@ -369,14 +394,15 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.DownscaleImage(System.IO.Stream)">
             <summary>
-            Downscales <param name="original"/> to <see cref="F:BeatSaberPlaylistsLib.Types.Playlist.kImageSize"/>
+            Downscales <param name="original"/> to <see cref="F:BeatSaberPlaylistsLib.Types.Playlist.kSmallImageSize"/>
             </summary>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.QueueLoadSprite(BeatSaberPlaylistsLib.Types.Playlist)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.QueueLoadSprite(BeatSaberPlaylistsLib.Types.Playlist,System.Boolean)">
             <summary>
             Adds a playlist to the sprite load queue.
             </summary>
             <param name="playlist"></param>
+            <param name="downscaleImage"></param>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.LoadWait">
             <summary>
@@ -396,6 +422,12 @@
             <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.Sprite">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.SmallSpriteWasLoaded">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.SmallSprite">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">

@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <Authors>Zingabopp</Authors>
-    <Version>1.5.2</Version>    
+    <Version>1.6.0</Version>    
     <Copyright>Copyright © Zingabopp 2021</Copyright>
     <PackageProjectUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Zingabopp/BeatSaberPlaylistsLib</RepositoryUrl>

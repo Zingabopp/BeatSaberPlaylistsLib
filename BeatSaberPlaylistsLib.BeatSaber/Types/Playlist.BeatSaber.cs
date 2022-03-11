@@ -358,14 +358,14 @@ namespace BeatSaberPlaylistsLib.Types
                 return new MemoryStream(_defaultCoverData);
             }
             
-            using MemoryStream ms = new MemoryStream();
-            
-            if (BeatmapLevels.Length == 0)
+            if (!Utilities.ImageSharpLoaded() || BeatmapLevels.Length == 0)
             {
-                ms.Dispose();
                 return null;
             }
-            else if (BeatmapLevels.Length == 1)
+            
+            using MemoryStream ms = new MemoryStream();
+            
+            if (BeatmapLevels.Length == 1)
             {
                 using var coverStream = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
                 if (coverStream != null) await coverStream.CopyToAsync(ms);

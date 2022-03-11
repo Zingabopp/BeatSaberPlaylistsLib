@@ -4,6 +4,7 @@ using BeatSaber::UnityEngine;
 using System;
 using System.IO;
 using System.Reflection;
+using IPA.Loader;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -89,6 +90,12 @@ namespace BeatSaberPlaylistsLib
                 return new MemoryStream(sprite.texture.EncodeToPNG());
             }
             return GetDefaultImageStream();
+        }
+        
+        internal static bool ImageSharpLoaded()
+        {
+            var imageSharp = PluginManager.GetPluginFromId("SixLabors.ImageSharp");
+            return imageSharp != null;
         }
     }
 }

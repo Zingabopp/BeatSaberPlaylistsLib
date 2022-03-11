@@ -145,7 +145,6 @@ namespace BeatSaberPlaylistsLib.Types
 
 #if BeatSaber
 #else
-
         /// <summary>
         /// Set the Default Cover data after generating it
         /// </summary>
@@ -163,6 +162,12 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         public void RaiseCoverImageChangedForDefaultCover()
         {
+#if BeatSaber
+            if (!Utilities.ImageSharpLoaded())
+            {
+                return;
+            }
+#endif
             if (!HasCover)
             {
                 RaiseCoverImageChanged();

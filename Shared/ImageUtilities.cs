@@ -87,7 +87,7 @@ namespace BeatSaberPlaylistsLib
 
                     image3.Mutate(i3 =>
                     {
-                        i3.Resize(256, 256);
+                        i3.Resize(kImageSize / 2, kImageSize / 2);
                     });
                     i.DrawImage(image3, new Point(kImageSize / 2, kImageSize / 2), 1.0f);
                 });

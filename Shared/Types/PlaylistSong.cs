@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -137,35 +139,39 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="extensionData"></param>
         protected virtual void OnExtensionData(IEnumerable<KeyValuePair<string, object>> extensionData)
         {
-            if (CustomData == null)
-                CustomData = new Dictionary<string, object>();
+            if (CustomDataInternal == null)
+                CustomDataInternal = new Dictionary<string, object>();
             foreach (var item in extensionData)
             {
                 string key = item.Key;
-                if (!CustomData.ContainsKey(key))
-                    CustomData[key] = item.Value;
+                if (!CustomDataInternal.ContainsKey(key))
+                    CustomDataInternal[key] = item.Value;
             }
         }
 
         /// <summary>
         /// Dictionary for the CustomData key for this playlist song.
         /// </summary>
-        protected Dictionary<string, object>? CustomData { get; set; }
+        protected Dictionary<string, object>? CustomDataInternal { get; set; }
 
         /// <inheritdoc/>
         public bool TryGetCustomData(string key, out object? value)
         {
             value = null!;
-            return CustomData?.TryGetValue(key, out value) ?? false;
+            return CustomDataInternal?.TryGetValue(key, out value) ?? false;
         }
 
         /// <inheritdoc/>
         public void SetCustomData(string key, object value)
         {
-            if (CustomData == null)
-                CustomData = new Dictionary<string, object>();
-            CustomData[key] = value;
+            if (CustomDataInternal == null)
+                CustomDataInternal = new Dictionary<string, object>();
+            CustomDataInternal[key] = value;
         }
+
+        /// <inheritdoc/>
+        public IReadOnlyDictionary<string, object>? CustomData => CustomDataInternal != null ?
+            new ReadOnlyDictionary<string, object>(CustomDataInternal) : null;
 
         /// <summary>
         /// Adds the given flag to the <see cref="Identifiers"/> property.

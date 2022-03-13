@@ -283,6 +283,11 @@
             Sets value for the given key in custom data.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.CustomData">
+            <summary>
+            The whole CustomData dictionary
+            </summary>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Types.ISong">
             <summary>
             Interface for the basic data of a song.
@@ -502,7 +507,7 @@
             Resets the sprite for...reasons.
             </summary>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomData">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomDataDictionary">
             <summary>
             Dictionary for the CustomData key in the playlist file.
             </summary>
@@ -511,6 +516,9 @@
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.SetCustomData(System.String,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomData">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.GetDefaultCoverStream">
@@ -730,7 +738,7 @@
             </summary>
             <param name="extensionData"></param>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomData">
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomDataDictionary">
             <summary>
             Dictionary for the CustomData key for this playlist song.
             </summary>
@@ -739,6 +747,9 @@
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.SetCustomData(System.String,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomData">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.AddIdentifierFlag(BeatSaberPlaylistsLib.Types.Identifier)">
@@ -932,6 +943,11 @@
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylistSong.SetCustomData(System.String,System.Object)">
             <summary>
             Sets value for the given key in custom data.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistSong.CustomData">
+            <summary>
+            The whole CustomData dictionary
             </summary>
         </member>
         <member name="T:BeatSaberPlaylistsLib.Types.IPlaylistSongComparer">

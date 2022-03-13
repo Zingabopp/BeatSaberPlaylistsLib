@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,23 +15,30 @@ namespace BeatSaberPlaylistsLib.Types
     {
         /// <inheritdoc/>
         public event EventHandler? PlaylistChanged;
+
         /// <inheritdoc/>
         public event EventHandler? CoverImageChanged;
 
         /// <inheritdoc/>
         public abstract string Title { get; set; }
+
         /// <inheritdoc/>
         public abstract string? Author { get; set; }
+
         /// <inheritdoc/>
         public abstract string? Description { get; set; }
+
         /// <inheritdoc/>
         public virtual string Filename { get; set; } = "";
+
         /// <inheritdoc/>
         public string? SuggestedExtension { get; set; }
+
         /// <summary>
         /// Unique identifier for the playlist, used for distinguishing between duplicates.
         /// </summary>
         public Guid playlistID { get; } = Guid.NewGuid();
+
         /// <inheritdoc/>
         public bool AllowDuplicates
         {
@@ -38,7 +46,7 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (TryGetCustomData("AllowDuplicates", out object? returnVal) && returnVal is bool boolVal)
                     return boolVal;
-                return  true;
+                return true;
             }
             set => SetCustomData("AllowDuplicates", value);
         }
@@ -76,13 +84,13 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="extensionData"></param>
         protected virtual void OnExtensionData(IEnumerable<KeyValuePair<string, object>> extensionData)
         {
-            if (CustomData == null)
-                CustomData = new Dictionary<string, object>();
+            if (CustomDataInternal == null)
+                CustomDataInternal = new Dictionary<string, object>();
             foreach (var item in extensionData)
             {
                 string key = item.Key;
-                if (!CustomData.ContainsKey(key))
-                    CustomData[key] = item.Value;
+                if (!CustomDataInternal.ContainsKey(key))
+                    CustomDataInternal[key] = item.Value;
             }
         }
 
@@ -110,27 +118,32 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Dictionary for the CustomData key in the playlist file.
         /// </summary>
-        protected Dictionary<string, object>? CustomData { get; set; }
+        protected Dictionary<string, object>? CustomDataInternal { get; set; }
 
         /// <inheritdoc/>
         public bool TryGetCustomData(string key, out object? value)
         {
             value = null!;
-            return CustomData?.TryGetValue(key, out value) ?? false;
+            return CustomDataInternal?.TryGetValue(key, out value) ?? false;
         }
 
         /// <inheritdoc/>
         public void SetCustomData(string key, object value)
         {
-            if (CustomData == null)
-                CustomData = new Dictionary<string, object>();
+            if (CustomDataInternal == null)
+                CustomDataInternal = new Dictionary<string, object>();
             if (key.Equals("AllowDuplicates", StringComparison.OrdinalIgnoreCase))
             {
                 if (!(value is bool))
                     throw new ArgumentException("'AllowDuplicates' must have a boolean value.", nameof(value));
             }
-            CustomData[key] = value;
+
+            CustomDataInternal[key] = value;
         }
+
+        /// <inheritdoc/>
+        public IReadOnlyDictionary<string, object>? CustomData => CustomDataInternal != null ?
+            new ReadOnlyDictionary<string, object>(CustomDataInternal) : null;
 
         #region Default Cover
 

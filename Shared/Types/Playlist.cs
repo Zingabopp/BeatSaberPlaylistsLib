@@ -181,10 +181,12 @@ namespace BeatSaberPlaylistsLib.Types
                 return;
             }
 #endif
+            
+            _defaultCoverData = null;
+
             if (!HasCover)
             {
                 RaiseCoverImageChanged();
-                _defaultCoverData = null;
 #if BeatSaber
                 _ = Sprite;
 #endif

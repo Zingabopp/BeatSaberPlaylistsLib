@@ -323,7 +323,7 @@ namespace BeatSaberPlaylistsLib.Types
                 return null;
             }
             
-            using MemoryStream ms = new MemoryStream();
+            var ms = new MemoryStream();
             
             if (BeatmapLevels.Length == 1)
             {

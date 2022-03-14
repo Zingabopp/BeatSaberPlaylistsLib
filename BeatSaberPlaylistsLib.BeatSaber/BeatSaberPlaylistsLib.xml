@@ -403,11 +403,6 @@
             Returns true if the small sprite for the playlist is already queued.
             </summary>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.DownscaleImage(System.IO.Stream)">
-            <summary>
-            Downscales <param name="original"/> to <see cref="F:BeatSaberPlaylistsLib.Types.Playlist.kSmallImageSize"/>
-            </summary>
-        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.QueueLoadSprite(BeatSaberPlaylistsLib.Types.Playlist,System.Boolean)">
             <summary>
             Adds a playlist to the sprite load queue.
@@ -507,7 +502,7 @@
             Resets the sprite for...reasons.
             </summary>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomDataDictionary">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomDataInternal">
             <summary>
             Dictionary for the CustomData key in the playlist file.
             </summary>
@@ -738,7 +733,7 @@
             </summary>
             <param name="extensionData"></param>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomDataDictionary">
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomDataInternal">
             <summary>
             Dictionary for the CustomData key for this playlist song.
             </summary>
@@ -1059,6 +1054,11 @@
             </summary>
             <param name="sprite"></param>
             <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.DownscaleImage(System.IO.Stream,System.Int32)">
+            <summary>
+            Downscales <param name="original"/> to <see cref="!:imageSize"/>
+            </summary>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Utilities.Base64Prefix">
             <summary>

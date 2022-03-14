@@ -63,6 +63,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IPA.Loader">

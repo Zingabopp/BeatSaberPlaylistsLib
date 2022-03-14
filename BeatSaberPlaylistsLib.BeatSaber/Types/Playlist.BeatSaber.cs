@@ -3,15 +3,11 @@ extern alias BeatSaber;
 using BeatSaber::UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Graphics = System.Drawing.Graphics;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -62,42 +58,6 @@ namespace BeatSaberPlaylistsLib.Types
         private static bool CoroutineRunning = false;
 
         /// <summary>
-        /// Downscales <param name="original"/> to <see cref="kSmallImageSize"/>
-        /// </summary>
-        protected static Stream DownscaleImage(Stream original)
-        {
-            var ms = new MemoryStream();
-            try
-            {
-                var originalImage = Image.FromStream(original);
-
-                if (originalImage.Width <= kSmallImageSize && originalImage.Height <= kSmallImageSize)
-                {
-                    return original;
-                }
-
-                var resizedRect = new Rectangle(0, 0, kSmallImageSize, kSmallImageSize);
-                var resizedImage = new Bitmap(kSmallImageSize, kSmallImageSize);
-
-                resizedImage.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
-
-                using (var graphics = Graphics.FromImage(resizedImage))
-                {
-                    using var wrapMode = new ImageAttributes();
-                    wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
-                    graphics.DrawImage(originalImage, resizedRect, 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-
-                resizedImage.Save(ms, ImageFormat.Png);
-                return ms;
-            }
-            catch (Exception)
-            {
-                return original;
-            }
-        }
-
-        /// <summary>
         /// Adds a playlist to the sprite load queue.
         /// </summary>
         /// <param name="playlist"></param>
@@ -116,7 +76,7 @@ namespace BeatSaberPlaylistsLib.Types
             
             if (downscaleImage)
             {
-                var downscaleStream = stream != null && stream != Stream.Null ? await Task.Run(() => DownscaleImage(stream)) : stream;
+                var downscaleStream = stream != null && stream != Stream.Null ? await Task.Run(() => Utilities.DownscaleImage(stream, kSmallImageSize)) : stream;
                 SpriteQueue.Enqueue(() =>
                 {
                     var sprite = Utilities.GetSpriteFromStream(downscaleStream ?? Stream.Null);

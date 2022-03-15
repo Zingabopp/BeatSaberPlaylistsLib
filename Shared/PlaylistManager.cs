@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -252,6 +253,13 @@ namespace BeatSaberPlaylistsLib
         /// <exception cref="IOException"></exception>
         public void DeletePlaylist(IPlaylist playlist)
         {
+            DeletePlaylist(playlist, false);
+        }
+
+        /// <inheritdoc cref="DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)" />
+        /// <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+        public void DeletePlaylist(IPlaylist playlist, bool recycle)
+        {
             if (playlist == null)
                 throw new ArgumentNullException(nameof(playlist));
             IPlaylistHandler handler = DefaultHandler ?? PlaylistHandlers.Values.FirstOrDefault() ?? throw new InvalidOperationException("PlaylistManager has no registered IPlaylistHandlers.");
@@ -261,7 +269,24 @@ namespace BeatSaberPlaylistsLib
             string path = Path.Combine(PlaylistPath, playlist.Filename + '.' + extension);
             if (File.Exists(path))
             {
-                File.Delete(path);
+                if (recycle)
+                {
+                    _ = Task.Run(() => 
+                    {
+                        try
+                        {
+                            NativeUtilities.DeleteFileOrFolder(path);
+                        }
+                        catch
+                        {
+                            File.Delete(path);
+                        }
+                    });
+                }
+                else
+                {
+                    File.Delete(path);
+                }
                 var playlistToDelete = LoadedPlaylists.First(p => p.Value.Equals(playlist));
                 LoadedPlaylists.TryRemove(playlistToDelete.Key, out _);
                 return;
@@ -297,9 +322,33 @@ namespace BeatSaberPlaylistsLib
         /// <exception cref="IOException"></exception>
         public void DeleteChildManager(PlaylistManager managerToDelete)
         {
+            DeleteChildManager(managerToDelete, false);
+        }
+        
+        /// <inheritdoc cref="DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager)" />
+        /// <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+        public void DeleteChildManager(PlaylistManager managerToDelete, bool recycle)
+        {
             if (ChildManagers.Contains(managerToDelete))
             {
-                Directory.Delete(managerToDelete.PlaylistPath, true);
+                if (recycle)
+                {
+                    _ = Task.Run(() => 
+                    {
+                        try
+                        {
+                            NativeUtilities.DeleteFileOrFolder(managerToDelete.PlaylistPath);
+                        }
+                        catch
+                        {
+                            Directory.Delete(managerToDelete.PlaylistPath, true);
+                        }
+                    });
+                }
+                else
+                {
+                    Directory.Delete(managerToDelete.PlaylistPath, true);
+                }
                 ChildManagers.Remove(managerToDelete);
             }
             else

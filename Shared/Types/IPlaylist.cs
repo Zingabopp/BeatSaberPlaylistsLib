@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -39,6 +40,11 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         /// <returns></returns>
         Stream? GetCoverStream();
+        /// <summary>
+        /// Get a <see cref="Stream"/> for Default Cover if Cover is not set
+        /// </summary>
+        /// <returns></returns>
+        Task<Stream?> GetDefaultCoverStream();
         /// <summary>
         /// Sets the cover image from a byte array.
         /// </summary>
@@ -133,6 +139,11 @@ namespace BeatSaberPlaylistsLib.Types
         /// Sets value for the given key in custom data.
         /// </summary>
         public void SetCustomData(string key, object value);
+        
+        /// <summary>
+        /// The whole CustomData dictionary
+        /// </summary>
+        public IReadOnlyDictionary<string, object>? CustomData { get; }
     }
 
     /// <summary>

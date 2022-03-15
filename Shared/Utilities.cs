@@ -2,10 +2,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Drawing.Text;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -14,8 +10,8 @@ namespace BeatSaberPlaylistsLib
     /// </summary>
     public static partial class Utilities
     {
-        private static Stream? GetDefaultImageStream() =>
-            Assembly.GetExecutingAssembly().GetManifestResourceStream("BeatSaberPlaylistsLib.Icons.FolderIcon.png");
+        internal static Stream? GetDefaultImageStream() =>
+            Assembly.GetExecutingAssembly().GetManifestResourceStream("BeatSaberPlaylistsLib.Icons.DefaultIcon.png");
 
 
         /// <summary>
@@ -169,62 +165,6 @@ namespace BeatSaberPlaylistsLib
         }
 
         #region Image
-
-        private static readonly DrawSettings defaultDrawSettings = new DrawSettings
-        {
-            Color = Color.White,
-            DrawStyle = DrawStyle.Normal,
-            Font = FindFont("Microsoft Sans Serif", 60, FontStyle.Regular),
-            StringFormat = new StringFormat()
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center
-            },
-            MinTextSize = 30,
-            MaxTextSize = 60,
-            WrapWidth = 10
-        };
-
-        /// <summary>
-        /// Returns a found system font or default font for a given family name.
-        /// </summary>
-        /// <param name="font"></param>
-        /// <param name="emSize"></param>
-        /// <param name="fontStyle"></param>
-        /// <returns></returns>
-        public static Font FindFont(string font, float emSize, FontStyle fontStyle)
-        {
-            InstalledFontCollection installedFontCollection = new InstalledFontCollection();
-            foreach(FontFamily fontFamily in installedFontCollection.Families)
-            {
-                if (fontFamily.Name == font)
-                {
-                    return new Font(fontFamily, emSize, fontStyle);
-                }
-            }
-            return new Font(installedFontCollection.Families.FirstOrDefault(), emSize, fontStyle);
-        }
-
-        /// <summary>
-        /// Generates a cover for a playlist.
-        /// </summary>
-        /// <param name="playlist"></param>
-        /// <returns></returns>
-        public static Stream GenerateCoverForPlaylist(IPlaylist playlist)
-        {
-            using Stream? stream = GetDefaultImageStream();
-            //Console.WriteLine($"Drawing string {playlist.Title}");
-            string title = playlist.Title;
-            if (title.Length > 110)
-            {
-                title = string.Join("", (from word in playlist.Title.Split() select word[0]));
-            }
-            Image img = ImageUtilities.DrawString(title, Image.FromStream(stream), defaultDrawSettings);
-            MemoryStream ms = new MemoryStream();
-            img.Save(ms, ImageFormat.Png);
-            return ms;
-        }
-
         /// <summary>
         /// Converts an image at the given resource path to a base64 string.
         /// </summary>

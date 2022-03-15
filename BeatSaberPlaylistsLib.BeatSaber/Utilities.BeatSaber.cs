@@ -2,8 +2,11 @@
 extern alias BeatSaber;
 using BeatSaber::UnityEngine;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
-using System.Reflection;
+using IPA.Loader;
+using Graphics = System.Drawing.Graphics;
 
 namespace BeatSaberPlaylistsLib
 {
@@ -77,6 +80,61 @@ namespace BeatSaberPlaylistsLib
 
         }
 
+        /// <summary>
+        /// Gets a <see cref="Stream"/> from a <see cref="Sprite"/>
+        /// </summary>
+        /// <param name="sprite"></param>
+        /// <returns></returns>
+        public static Stream? GetStreamFromSprite(Sprite sprite)
+        {
+            if (sprite.texture.isReadable)
+            {
+                return new MemoryStream(sprite.texture.EncodeToPNG());
+            }
+            return GetDefaultImageStream();
+        }
+        
+        /// <summary>
+        /// Downscales <param name="original"/> to <see cref="imageSize"/>
+        /// </summary>
+        public static Stream DownscaleImage(Stream original, int imageSize)
+        {
+            var ms = new MemoryStream();
+            try
+            {
+                var originalImage = Image.FromStream(original);
+
+                if (originalImage.Width <= imageSize && originalImage.Height <= imageSize)
+                {
+                    return original;
+                }
+
+                var resizedRect = new Rectangle(0, 0, imageSize, imageSize);
+                var resizedImage = new Bitmap(imageSize, imageSize);
+
+                resizedImage.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(resizedImage))
+                {
+                    using var wrapMode = new ImageAttributes();
+                    wrapMode.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY);
+                    graphics.DrawImage(originalImage, resizedRect, 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+
+                resizedImage.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+            catch (Exception)
+            {
+                return original;
+            }
+        }
+        
+        internal static bool ImageSharpLoaded()
+        {
+            var imageSharp = PluginManager.GetPluginFromId("SixLabors.ImageSharp");
+            return imageSharp != null;
+        }
     }
 }
 #endif

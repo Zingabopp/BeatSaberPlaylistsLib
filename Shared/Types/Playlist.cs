@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -14,23 +15,30 @@ namespace BeatSaberPlaylistsLib.Types
     {
         /// <inheritdoc/>
         public event EventHandler? PlaylistChanged;
+
         /// <inheritdoc/>
         public event EventHandler? CoverImageChanged;
 
         /// <inheritdoc/>
         public abstract string Title { get; set; }
+
         /// <inheritdoc/>
         public abstract string? Author { get; set; }
+
         /// <inheritdoc/>
         public abstract string? Description { get; set; }
+
         /// <inheritdoc/>
         public virtual string Filename { get; set; } = "";
+
         /// <inheritdoc/>
         public string? SuggestedExtension { get; set; }
+
         /// <summary>
         /// Unique identifier for the playlist, used for distinguishing between duplicates.
         /// </summary>
         public Guid playlistID { get; } = Guid.NewGuid();
+
         /// <inheritdoc/>
         public bool AllowDuplicates
         {
@@ -38,7 +46,7 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 if (TryGetCustomData("AllowDuplicates", out object? returnVal) && returnVal is bool boolVal)
                     return boolVal;
-                return  true;
+                return true;
             }
             set => SetCustomData("AllowDuplicates", value);
         }
@@ -76,13 +84,13 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="extensionData"></param>
         protected virtual void OnExtensionData(IEnumerable<KeyValuePair<string, object>> extensionData)
         {
-            if (CustomData == null)
-                CustomData = new Dictionary<string, object>();
+            if (CustomDataInternal == null)
+                CustomDataInternal = new Dictionary<string, object>();
             foreach (var item in extensionData)
             {
                 string key = item.Key;
-                if (!CustomData.ContainsKey(key))
-                    CustomData[key] = item.Value;
+                if (!CustomDataInternal.ContainsKey(key))
+                    CustomDataInternal[key] = item.Value;
             }
         }
 
@@ -110,27 +118,82 @@ namespace BeatSaberPlaylistsLib.Types
         /// <summary>
         /// Dictionary for the CustomData key in the playlist file.
         /// </summary>
-        protected Dictionary<string, object>? CustomData { get; set; }
+        protected Dictionary<string, object>? CustomDataInternal { get; set; }
 
         /// <inheritdoc/>
         public bool TryGetCustomData(string key, out object? value)
         {
             value = null!;
-            return CustomData?.TryGetValue(key, out value) ?? false;
+            return CustomDataInternal?.TryGetValue(key, out value) ?? false;
         }
 
         /// <inheritdoc/>
         public void SetCustomData(string key, object value)
         {
-            if (CustomData == null)
-                CustomData = new Dictionary<string, object>();
+            if (CustomDataInternal == null)
+                CustomDataInternal = new Dictionary<string, object>();
             if (key.Equals("AllowDuplicates", StringComparison.OrdinalIgnoreCase))
             {
                 if (!(value is bool))
                     throw new ArgumentException("'AllowDuplicates' must have a boolean value.", nameof(value));
             }
-            CustomData[key] = value;
+
+            CustomDataInternal[key] = value;
         }
+
+        /// <inheritdoc/>
+        public IReadOnlyDictionary<string, object>? CustomData => CustomDataInternal != null ?
+            new ReadOnlyDictionary<string, object>(CustomDataInternal) : null;
+
+        #region Default Cover
+
+        protected byte[]? _defaultCoverData;
+        
+        /// <summary>
+        /// Get Stream for Default Cover if Cover is not set
+        /// </summary>
+        /// <returns></returns>
+        public virtual Task<Stream?> GetDefaultCoverStream() => 
+            _defaultCoverData != null ? Task.FromResult<Stream?>(new MemoryStream(_defaultCoverData)) : Task.FromResult<Stream?>(null);
+
+#if BeatSaber
+#else
+        /// <summary>
+        /// Set the Default Cover data after generating it
+        /// </summary>
+        /// <param name="coverStream"></param>
+        public async Task SetDefaultCover(Stream coverStream)
+        {
+            using MemoryStream ms = new MemoryStream();
+            await coverStream.CopyToAsync(ms);
+            _defaultCoverData = ms.ToArray();
+        }
+#endif
+        
+        /// <summary>
+        /// Raises cover image changed if we are using default image. Called when the level collection changes.
+        /// </summary>
+        public void RaiseCoverImageChangedForDefaultCover()
+        {
+#if BeatSaber
+            if (!Utilities.ImageSharpLoaded())
+            {
+                return;
+            }
+#endif
+            
+            _defaultCoverData = null;
+
+            if (!HasCover)
+            {
+                RaiseCoverImageChanged();
+#if BeatSaber
+                _ = Sprite;
+#endif
+            }
+        }
+
+        #endregion
     }
 
 
@@ -198,6 +261,12 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 T playlistSong = CreateFrom(song);
                 Songs.Add(playlistSong);
+                
+                if (Count <= 4)
+                {
+                    RaiseCoverImageChangedForDefaultCover();
+                }
+                
                 return playlistSong;
             }
             return null;
@@ -214,12 +283,14 @@ namespace BeatSaberPlaylistsLib.Types
         public virtual void Clear()
         {
             Songs.Clear();
+            RaiseCoverImageChangedForDefaultCover();
         }
 
         /// <inheritdoc/>
         public virtual void Sort()
         {
             Songs = Songs.OrderByDescending(s => s.DateAdded).ToList();
+            RaiseCoverImageChangedForDefaultCover();
         }
 
         /// <inheritdoc/>
@@ -261,27 +332,46 @@ namespace BeatSaberPlaylistsLib.Types
         public void Insert(int index, IPlaylistSong item)
         {
             Songs.Insert(index, CreateFrom(item));
+            if (index < 4)
+            {
+                RaiseCoverImageChangedForDefaultCover();
+            }
         }
 
         /// <inheritdoc/>
         public bool Remove(IPlaylistSong item)
         {
-            bool songRemoved = false;
+            int index = -1;
             if (item is T matchedType)
-                songRemoved = Songs.Remove(matchedType);
+            {
+                index = Songs.IndexOf(matchedType);
+            }
             else
             {
-                T? song = Songs.FirstOrDefault(s => s.Equals(item));
-                if (song != null)
-                    songRemoved = Songs.Remove(song);
+                index = Songs.FindIndex(s => s.Equals(item));
             }
-            return songRemoved;
+
+            if (index != -1)
+            {
+                Songs.RemoveAt(index);
+                if (index < 4)
+                {
+                    RaiseCoverImageChangedForDefaultCover();
+                }
+                return true;
+            }
+
+            return false;
         }
 
         /// <inheritdoc/>
         public void RemoveAt(int index)
         {
             Songs.RemoveAt(index);
+            if (index < 3)
+            {
+                RaiseCoverImageChangedForDefaultCover();
+            }
         }
 
         /// <inheritdoc/>
@@ -294,6 +384,7 @@ namespace BeatSaberPlaylistsLib.Types
                 if (Songs.Remove(song))
                     songsRemoved++;
             }
+            RaiseCoverImageChangedForDefaultCover();
             return songsRemoved;
         }
 
@@ -303,6 +394,7 @@ namespace BeatSaberPlaylistsLib.Types
             int removedSongs = 0;
             if (match != null)
                 removedSongs = Songs.RemoveAll(s => match(s));
+            RaiseCoverImageChangedForDefaultCover();
             return removedSongs;
         }
 
@@ -312,7 +404,10 @@ namespace BeatSaberPlaylistsLib.Types
             int previousCount = Songs.Count;
             Songs = Songs.Distinct(IPlaylistSongComparer<T>.Default).ToList();
             if (Songs.Count != previousCount)
+            {
                 RaisePlaylistChanged();
+                RaiseCoverImageChangedForDefaultCover();
+            }
         }
 
 

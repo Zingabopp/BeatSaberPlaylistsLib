@@ -28,5 +28,9 @@ namespace BeatSaberPlaylistsLib.Types
         /// Sets value for the given key in custom data.
         /// </summary>
         public void SetCustomData(string key, object value);
+        /// <summary>
+        /// The whole CustomData dictionary
+        /// </summary>
+        public IReadOnlyDictionary<string, object>? CustomData { get; }
     }
 }

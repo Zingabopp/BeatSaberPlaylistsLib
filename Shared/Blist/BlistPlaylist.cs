@@ -67,8 +67,8 @@ namespace BeatSaberPlaylistsLib.Blist
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore, Order = 5)]
         private Dictionary<string, object>? _serializedCustomData
         {
-            get => CustomData;
-            set => CustomData = value;
+            get => CustomDataInternal;
+            set => CustomDataInternal = value;
         }
 
         /// <summary>

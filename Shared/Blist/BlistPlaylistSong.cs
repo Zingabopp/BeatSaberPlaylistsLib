@@ -36,8 +36,8 @@ namespace BeatSaberPlaylistsLib.Blist
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
         private Dictionary<string, object>? _serializedCustomData
         {
-            get => CustomData;
-            set => CustomData = value;
+            get => CustomDataInternal;
+            set => CustomDataInternal = value;
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace BeatSaberPlaylistsLib.Blist
         {
             get
             {
-                if (CustomData == null) return null;
-                if (CustomData.TryGetValue(SongNameKey, out object? value) && value != null)
+                if (CustomDataInternal == null) return null;
+                if (CustomDataInternal.TryGetValue(SongNameKey, out object? value) && value != null)
                 {
                     return value.ToString();
                 }
@@ -127,9 +127,9 @@ namespace BeatSaberPlaylistsLib.Blist
             {
                 if (value == null || value.Length == 0)
                 {
-                    if (CustomData == null) return;
-                    if (!CustomData.ContainsKey(SongNameKey)) return;
-                    CustomData.Remove(SongNameKey);
+                    if (CustomDataInternal == null) return;
+                    if (!CustomDataInternal.ContainsKey(SongNameKey)) return;
+                    CustomDataInternal.Remove(SongNameKey);
                     return;
                 }
                 SetCustomData(SongNameKey, value);
@@ -141,8 +141,8 @@ namespace BeatSaberPlaylistsLib.Blist
         {
             get
             {
-                if (CustomData == null) return null;
-                if (CustomData.TryGetValue(LevelAuthorNameKey, out object? value) && value != null)
+                if (CustomDataInternal == null) return null;
+                if (CustomDataInternal.TryGetValue(LevelAuthorNameKey, out object? value) && value != null)
                 {
                     return value.ToString();
                 }
@@ -152,9 +152,9 @@ namespace BeatSaberPlaylistsLib.Blist
             {
                 if (value == null || value.Length == 0)
                 {
-                    if (CustomData == null) return;
-                    if (!CustomData.ContainsKey(LevelAuthorNameKey)) return;
-                    CustomData.Remove(LevelAuthorNameKey);
+                    if (CustomDataInternal == null) return;
+                    if (!CustomDataInternal.ContainsKey(LevelAuthorNameKey)) return;
+                    CustomDataInternal.Remove(LevelAuthorNameKey);
                     return;
                 }
                 SetCustomData(LevelAuthorNameKey, value);

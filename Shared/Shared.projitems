@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Legacy\LegacyPlaylist.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Legacy\LegacyPlaylistHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Legacy\LegacyPlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NativeUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaylistExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaylistLibExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaylistManager.cs" />
@@ -35,6 +36,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Icons\FolderIcon.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Icons\DefaultIcon.png" />
   </ItemGroup>
 </Project>

@@ -171,6 +171,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.GetDefaultCoverStream">
+            <summary>
+            Get a <see cref="T:System.IO.Stream"/> for Default Cover if Cover is not set
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetCover(System.Byte[])">
             <summary>
             Sets the cover image from a byte array.
@@ -277,6 +283,11 @@
             Sets value for the given key in custom data.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylist.CustomData">
+            <summary>
+            The whole CustomData dictionary
+            </summary>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Types.ISong">
             <summary>
             Interface for the basic data of a song.
@@ -329,6 +340,21 @@
             Flags enum identifying which properties can be used to uniquely identify the song.
             </summary>
         </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.IStagedSpriteLoad">
+            <summary>
+            An interface that supports deferred sprite loading in 2 stages (low res and high res)
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IStagedSpriteLoad.SmallSpriteWasLoaded">
+            <summary>
+            Returns true if the Small Sprite is loaded.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IStagedSpriteLoad.SmallSprite">
+            <summary>
+            Downscaled sprite
+            </summary>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Types.Playlist">
             <summary>
             Base class for a Playlist.
@@ -337,19 +363,14 @@
             Base class for a Playlist.
             </summary>
         </member>
-        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.kImageSize">
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.kSmallImageSize">
             <summary>
-            Maximum width and height of cover image
+            Maximum width and height of the small cover image
             </summary>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SpriteQueue">
             <summary>
             Queue of <see cref="T:System.Action"/>s to load playlist sprites.
-            </summary>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.GetDefaultCoverSprite(BeatSaberPlaylistsLib.Types.Playlist)">
-            <summary>
-            Default cover image to use if a playlist has no cover image.
             </summary>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist._sprite">
@@ -362,21 +383,32 @@
             Instance of the previous cover sprite.
             </summary>
         </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist._smallSprite">
+            <summary>
+            Instance of the downscaled playlist cover sprite.
+            </summary>
+        </member>
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist._previousSmallSprite">
+            <summary>
+            Instance of the previous downscaled cover sprite.
+            </summary>
+        </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SpriteLoadQueued">
             <summary>
             Returns true if the sprite for the playlist is already queued.
             </summary>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.DownscaleImage(System.IO.Stream)">
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist.SmallSpriteLoadQueued">
             <summary>
-            Downscales <param name="original"/> to <see cref="F:BeatSaberPlaylistsLib.Types.Playlist.kImageSize"/>
+            Returns true if the small sprite for the playlist is already queued.
             </summary>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.QueueLoadSprite(BeatSaberPlaylistsLib.Types.Playlist)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.QueueLoadSprite(BeatSaberPlaylistsLib.Types.Playlist,System.Boolean)">
             <summary>
             Adds a playlist to the sprite load queue.
             </summary>
             <param name="playlist"></param>
+            <param name="downscaleImage"></param>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Types.Playlist.LoadWait">
             <summary>
@@ -398,10 +430,11 @@
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.Sprite">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
-            <summary>
-            Raises cover image changed if we are using default image. Called when we change the title in a Playlist UI.
-            </summary>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.SmallSpriteWasLoaded">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.SmallSprite">
+            <inheritdoc/>
         </member>
         <member name="E:BeatSaberPlaylistsLib.Types.Playlist.PlaylistChanged">
             <inheritdoc/>
@@ -469,7 +502,7 @@
             Resets the sprite for...reasons.
             </summary>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomData">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomDataInternal">
             <summary>
             Dictionary for the CustomData key in the playlist file.
             </summary>
@@ -479,6 +512,20 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.SetCustomData(System.String,System.Object)">
             <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomData">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.GetDefaultCoverStream">
+            <summary>
+            Get Stream for Default Cover if Cover is not set
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
+            <summary>
+            Raises cover image changed if we are using default image. Called when the level collection changes.
+            </summary>
         </member>
         <member name="T:BeatSaberPlaylistsLib.Types.Playlist`1">
             <summary>
@@ -536,6 +583,9 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(IDifficultyBeatmap)">
             <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.GetDefaultCoverStream">
+            <inheritdoc cref="M:BeatSaberPlaylistsLib.Types.IPlaylist.GetDefaultCoverStream" />
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Songs">
             <summary>
@@ -683,7 +733,7 @@
             </summary>
             <param name="extensionData"></param>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomData">
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomDataInternal">
             <summary>
             Dictionary for the CustomData key for this playlist song.
             </summary>
@@ -692,6 +742,9 @@
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.SetCustomData(System.String,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.PlaylistSong.CustomData">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.PlaylistSong.AddIdentifierFlag(BeatSaberPlaylistsLib.Types.Identifier)">
@@ -887,6 +940,11 @@
             Sets value for the given key in custom data.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.IPlaylistSong.CustomData">
+            <summary>
+            The whole CustomData dictionary
+            </summary>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Types.IPlaylistSongComparer">
             <summary>
             Compares two <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> using their <see cref="P:BeatSaberPlaylistsLib.Types.ISong.LevelId"/>.
@@ -990,6 +1048,18 @@
             <param name="returnDefaultOnFail"></param>
             <returns></returns>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.GetStreamFromSprite(UnityEngine.Sprite)">
+            <summary>
+            Gets a <see cref="T:System.IO.Stream"/> from a <see cref="T:UnityEngine.Sprite"/>
+            </summary>
+            <param name="sprite"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Utilities.DownscaleImage(System.IO.Stream,System.Int32)">
+            <summary>
+            Downscales <param name="original"/> to <see cref="!:imageSize"/>
+            </summary>
+        </member>
         <member name="F:BeatSaberPlaylistsLib.Utilities.Base64Prefix">
             <summary>
             Prefix in some base64 image strings.
@@ -1047,22 +1117,6 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Utilities.FindFont(System.String,System.Single,System.Drawing.FontStyle)">
-            <summary>
-            Returns a found system font or default font for a given family name.
-            </summary>
-            <param name="font"></param>
-            <param name="emSize"></param>
-            <param name="fontStyle"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Utilities.GenerateCoverForPlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)">
-            <summary>
-            Generates a cover for a playlist.
-            </summary>
-            <param name="playlist"></param>
-            <returns></returns>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Utilities.ImageToBase64(System.String)">
             <summary>
@@ -1319,97 +1373,32 @@
             Utilities for modifying images.
             </summary>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.DrawString(System.String,System.Drawing.Image,BeatSaberPlaylistsLib.DrawSettings)">
+        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.GenerateCollage(System.IO.Stream,System.IO.Stream)">
             <summary>
-            Draw a string on the given <see cref="T:System.Drawing.Image"/>.
+            Generate a collage of 2 images
             </summary>
-            <param name="str"></param>
-            <param name="bitmap"></param>
-            <param name="drawSettings"></param>
+            <param name="imageStream1"></param>
+            <param name="imageStream2"></param>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.DrawBorderedString(System.String,System.Drawing.Image,BeatSaberPlaylistsLib.DrawSettings)">
+        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.GenerateCollage(System.IO.Stream,System.IO.Stream,System.IO.Stream)">
             <summary>
-            Draws a bordered string on a bitmap.
+            Generate a collage of 3 images
             </summary>
-            <param name="str"></param>
-            <param name="bitmap"></param>
-            <param name="drawSettings"></param>
+            <param name="imageStream1"></param>
+            <param name="imageStream2"></param>
+            <param name="imageStream3"></param>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.WordWrap(System.String,System.Int32)">
+        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.GenerateCollage(System.IO.Stream,System.IO.Stream,System.IO.Stream,System.IO.Stream)">
             <summary>
-            Word wraps the given text to fit within the specified width.
+            Generate a collage of 4 images
             </summary>
-            <param name="text">Text to be word wrapped</param>
-            <param name="width">Width, in characters, to which the text
-            should be word wrapped</param>
-            <returns>The modified text</returns>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.ImageUtilities.BreakLine(System.String,System.Int32,System.Int32)">
-            <summary>
-            Locates position to break the given line so as to avoid
-            breaking words.
-            </summary>
-            <param name="text">String that contains line of text</param>
-            <param name="pos">Index where line of text starts</param>
-            <param name="max">Maximum line length</param>
-            <returns>The modified line length</returns>
-        </member>
-        <member name="T:BeatSaberPlaylistsLib.DrawSettings">
-            <summary>
-            Settings for drawing text.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.StringFormat">
-            <summary>
-            <see cref="F:BeatSaberPlaylistsLib.DrawSettings.StringFormat"/> settings.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.Color">
-            <summary>
-            Color of the text.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.Font">
-            <summary>
-            Font of the text.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.WrapWidth">
-            <summary>
-            Width, in characters, to wrap text.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.MinTextSize">
-            <summary>
-            Minimum text size.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.MaxTextSize">
-            <summary>
-            Maximum text size.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawSettings.DrawStyle">
-            <summary>
-            Style of text to draw.
-            </summary>
-        </member>
-        <member name="T:BeatSaberPlaylistsLib.DrawStyle">
-            <summary>
-            Draw style.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawStyle.Normal">
-            <summary>
-            Basic text drawing.
-            </summary>
-        </member>
-        <member name="F:BeatSaberPlaylistsLib.DrawStyle.Bordered">
-            <summary>
-            Text with a border.
-            </summary>
+            <param name="imageStream1"></param>
+            <param name="imageStream2"></param>
+            <param name="imageStream3"></param>
+            <param name="imageStream4"></param>
+            <returns></returns>
         </member>
         <member name="T:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist">
             <summary>
@@ -1842,6 +1831,10 @@
             <exception cref="T:System.InvalidOperationException"></exception>
             <exception cref="T:System.IO.IOException"></exception>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
+            <inheritdoc cref="M:BeatSaberPlaylistsLib.PlaylistManager.DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)" />
+            <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.CreateChildManager(System.String)">
             <summary>
             Creates a new child <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
@@ -1857,6 +1850,10 @@
             <param name="managerToDelete"></param>
             <returns></returns>
             <exception cref="T:System.IO.IOException"></exception>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager,System.Boolean)">
+            <inheritdoc cref="M:BeatSaberPlaylistsLib.PlaylistManager.DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager)" />
+            <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RenameManager(System.String)">
             <summary>

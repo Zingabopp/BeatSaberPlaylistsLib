@@ -81,8 +81,8 @@ namespace BeatSaberPlaylistsLib.Legacy
         [JsonProperty("customData", NullValueHandling = NullValueHandling.Ignore)]
         private Dictionary<string, object>? _serializedCustomData
         {
-            get => CustomData;
-            set => CustomData = value;
+            get => CustomDataInternal;
+            set => CustomDataInternal = value;
         }
 
         ///<inheritdoc/>

@@ -3,13 +3,14 @@ extern alias BeatSaber;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistsLib.Types
 {
     /// <summary>
     /// Interface for a playlist.
     /// </summary>
-    public partial interface IPlaylist : BeatSaber.IBeatmapLevelPack
+    public partial interface IPlaylist : BeatSaber.IBeatmapLevelPack, BeatSaber.IBeatmapLevelCollection
     {
         /// <summary>
         /// Adds the <see cref="BeatSaber.IPreviewBeatmapLevel"/> to the playlist. 

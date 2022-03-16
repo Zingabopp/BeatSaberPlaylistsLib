@@ -127,7 +127,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             };
             foreach (var song in songs)
             {
-                playlist.Add(song);
+                playlist.AddSong(song);
             }
             playlist.SetCover(File.OpenRead(coverFile));
             playlist.Cover = Path.GetFileName(coverFile);
@@ -150,7 +150,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             Assert.AreEqual(0, readPlaylist.Count);
             foreach (var item in newSongList)
             {
-                readPlaylist.Add(item);
+                readPlaylist.AddSong(item);
             }
             readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });
             readPlaylist.RaisePlaylistChanged();
@@ -181,7 +181,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             };
             foreach (var song in songs)
             {
-                playlist.Add(song);
+                playlist.AddSong(song);
             }
             playlist.SetCover(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             playlist.RaisePlaylistChanged();
@@ -204,7 +204,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             foreach (var item in newSongList)
             {
                 item.AddDifficulty(new Difficulty() { Characteristic = "Standard", Name = "Hard" });
-                readPlaylist.Add(item);
+                readPlaylist.AddSong(item);
             }
             readPlaylist.SetCover(new byte[] { 11, 12, 13, 14, 15, 16, 17 });
             readPlaylist.RaisePlaylistChanged();
@@ -235,7 +235,7 @@ namespace BeatSaberPlaylistsLibTests.PlaylistHandler_Tests
             var song = playlist.First();
             playlist.Clear();
             Assert.IsTrue(playlist.Count == 0);
-            playlist.Add(song);
+            playlist.AddSong(song);
             playlist.RaisePlaylistChanged();
             Assert.AreEqual(1, playlist.Count);
             manager.StoreAllPlaylists();

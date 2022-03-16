@@ -25,7 +25,7 @@ namespace BeatSaberPlaylistsLib.Types
             get => Songs[index];
             set
             {
-                Songs[index] = CreateFrom(value);
+                Songs[index] = CreateWith(value);
             }
         }
 
@@ -36,12 +36,21 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public override bool IsReadOnly => ReadOnly;
 
+        /// <inheritdoc/>
+        protected override IPlaylistSong CreateFrom(ISong song) => this.CreateFrom(song);
+        /// <inheritdoc/>
+        protected override IPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
+            => CreateWithHash(songHash, songName, songKey, mapper);
+        /// <inheritdoc/>
+        protected override IPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+            => CreateWithLevelId(levelId, songName, songKey, mapper);
+
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.
         /// </summary>
         /// <param name="song"></param>
         /// <returns></returns>
-        protected abstract T CreateFrom(ISong song);
+        protected abstract T CreateWith(ISong song);
 
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
@@ -51,7 +60,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="songKey"></param>
         /// <param name="mapper"></param>
         /// <returns></returns>
-        protected abstract T CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper);
+        protected abstract T CreateWithHash(string songHash, string? songName, string? songKey, string? mapper);
 
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
@@ -61,14 +70,14 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="songKey"></param>
         /// <param name="mapper"></param>
         /// <returns></returns>
-        protected abstract T CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper);
+        protected abstract T CreateWithLevelId(string levelId, string? songName, string? songKey, string? mapper);
 
         /// <inheritdoc/>
         public override IPlaylistSong? Add(ISong song)
         {
             if (AllowDuplicates || !Songs.Any(s => s.Hash == song.Hash || (song.Key != null && s.Key == song.Key)))
             {
-                T playlistSong = CreateFrom(song);
+                T playlistSong = CreateWith(song);
                 Songs.Add(playlistSong);
 
                 if (Count <= 4)
@@ -83,7 +92,8 @@ namespace BeatSaberPlaylistsLib.Types
 
         /// <inheritdoc/>
         public override IPlaylistSong? Add(string songHash, string? songName, string? songKey, string? mapper) =>
-            AddSong(CreateFromByHash(songHash, songName, songKey, mapper));
+            AddSong(CreateWithHash(songHash, songName, songKey, mapper));
+        /// <inheritdoc/>
         public override void Add(IPlaylistSong item)
         {
             AddSong(item);
@@ -128,15 +138,6 @@ namespace BeatSaberPlaylistsLib.Types
             return Songs.GetEnumerator();
         }
 
-        /// <summary>
-        /// Returns an <see cref="IEnumerator{T}"/> that iterates through the playlist's songs.
-        /// </summary>
-        /// <returns></returns>
-        //IEnumerator<T> IList<T>.GetEnumerator()
-        //{
-        //    return Songs.GetEnumerator();
-        //}
-
         /// <inheritdoc/>
         public override int IndexOf(IPlaylistSong item)
         {
@@ -149,7 +150,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public override void Insert(int index, IPlaylistSong item)
         {
-            Songs.Insert(index, CreateFrom(item));
+            Songs.Insert(index, CreateWith(item));
             if (index < 4)
             {
                 RaiseCoverImageChangedForDefaultCover();

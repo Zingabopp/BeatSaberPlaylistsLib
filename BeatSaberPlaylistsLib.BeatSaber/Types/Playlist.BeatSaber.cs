@@ -300,7 +300,6 @@ namespace BeatSaberPlaylistsLib.Types
 
             return song;
         }
-        protected abstract IPlaylistSong CreateFromByLevelId(string levelId, string songName, null, string levelAuthorName);
 
 
         #region Default Cover
@@ -352,7 +351,6 @@ namespace BeatSaberPlaylistsLib.Types
             _defaultCoverData = ms.ToArray();
             return ms;
         }
-
         #endregion
     }
 

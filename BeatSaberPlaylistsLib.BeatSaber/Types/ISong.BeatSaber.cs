@@ -19,7 +19,9 @@ namespace BeatSaberPlaylistsLib.Types
         /// </summary>
         /// <param name="beatmap"></param>
         internal void SetPreviewBeatmap(BeatSaber.IPreviewBeatmapLevel beatmap);
-
+        /// <summary>
+        /// Refreshes the associated <see cref="PreviewBeatmapLevel"/> from SongCore.
+        /// </summary>
         public void RefreshFromSongCore();
 
     }

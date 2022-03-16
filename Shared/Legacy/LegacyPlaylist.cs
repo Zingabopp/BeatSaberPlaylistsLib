@@ -64,7 +64,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        protected override LegacyPlaylistSong CreateFrom(ISong song)
+        protected override LegacyPlaylistSong CreateWith(ISong song)
         {
             if (song is LegacyPlaylistSong legacySong)
                 return legacySong;
@@ -72,7 +72,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        protected override LegacyPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
+        protected override LegacyPlaylistSong CreateWithHash(string songHash, string? songName, string? songKey, string? mapper)
         {
             return new LegacyPlaylistSong()
             {
@@ -84,7 +84,7 @@ namespace BeatSaberPlaylistsLib.Legacy
         }
 
         ///<inheritdoc/>
-        protected override LegacyPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+        protected override LegacyPlaylistSong CreateWithLevelId(string levelId, string? songName, string? songKey, string? mapper)
         {
             return new LegacyPlaylistSong()
             {

@@ -46,6 +46,11 @@ namespace BeatSaberPlaylistsLib.Types
         /// <returns></returns>
         Task<Stream?> GetDefaultCoverStream();
         /// <summary>
+        /// Set the Default Cover data after generating it
+        /// </summary>
+        /// <param name="coverStream"></param>
+        Task SetDefaultCover(Stream coverStream);
+        /// <summary>
         /// Sets the cover image from a byte array.
         /// </summary>
         /// <param name="coverImage"></param>
@@ -76,7 +81,6 @@ namespace BeatSaberPlaylistsLib.Types
         /// <param name="song"></param>
         /// <returns>The added IPlaylistSong, null if nothing was added.</returns>
         IPlaylistSong? Add(ISong song);
-
         /// <summary>
         /// Creates a new <see cref="IPlaylistSong"/> and adds it to the playlist.
         /// Does nothing if <see cref="AllowDuplicates"/> is false and the song is already in the playlist. 
@@ -144,6 +148,11 @@ namespace BeatSaberPlaylistsLib.Types
         /// The whole CustomData dictionary
         /// </summary>
         public IReadOnlyDictionary<string, object>? CustomData { get; }
+
+        /// <summary>
+        /// Raises cover image changed if we are using default image. Called when the level collection changes.
+        /// </summary>
+        void RaiseCoverImageChangedForDefaultCover();
     }
 
     /// <summary>

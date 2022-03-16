@@ -153,34 +153,55 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public abstract IPlaylistSong this[int index] { get; set; }
 
-        #region Default Cover
 
+        /// <summary>
+        /// Creates a new <see cref="IPlaylistSong"/> from the given <paramref name="song"/>.
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        protected abstract IPlaylistSong CreateFrom(ISong song);
+
+        /// <summary>
+        /// Creates a new <see cref="IPlaylistSong"/> from the given values.
+        /// </summary>
+        /// <param name="songHash"></param>
+        /// <param name="songName"></param>
+        /// <param name="songKey"></param>
+        /// <param name="mapper"></param>
+        /// <returns></returns>
+        protected abstract IPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper);
+
+        /// <summary>
+        /// Creates a new <see cref="IPlaylistSong"/> from the given values.
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="songName"></param>
+        /// <param name="songKey"></param>
+        /// <param name="mapper"></param>
+        /// <returns></returns>
+        protected abstract IPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper);
+
+        #region Default Cover
+        /// <summary>
+        /// Cached data for the default cover.
+        /// </summary>
         protected byte[]? _defaultCoverData;
 #if !BeatSaber
-        /// <summary>
-        /// Get Stream for Default Cover if Cover is not set
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public virtual Task<Stream?> GetDefaultCoverStream() => 
             _defaultCoverData != null ? Task.FromResult<Stream?>(new MemoryStream(_defaultCoverData)) : Task.FromResult<Stream?>(null);
+
 #endif
-#if BeatSaber
-#else
-        /// <summary>
-        /// Set the Default Cover data after generating it
-        /// </summary>
-        /// <param name="coverStream"></param>
+
+        /// <inheritdoc/>
         public async Task SetDefaultCover(Stream coverStream)
         {
             using MemoryStream ms = new MemoryStream();
             await coverStream.CopyToAsync(ms);
             _defaultCoverData = ms.ToArray();
         }
-#endif
-        
-        /// <summary>
-        /// Raises cover image changed if we are using default image. Called when the level collection changes.
-        /// </summary>
+
+        /// <inheritdoc/>
         public void RaiseCoverImageChangedForDefaultCover()
         {
 #if BeatSaber
@@ -201,22 +222,39 @@ namespace BeatSaberPlaylistsLib.Types
             }
         }
 
+        /// <inheritdoc/>
         public abstract IPlaylistSong? Add(ISong song);
+        /// <inheritdoc/>
         public abstract IPlaylistSong? Add(string songHash, string? songName, string? songKey, string? mapper);
+        /// <inheritdoc/>
         public abstract bool TryRemoveByHash(string songHash);
+        /// <inheritdoc/>
         public abstract bool TryRemoveByKey(string songKey);
+        /// <inheritdoc/>
         public abstract bool TryRemove(IPlaylistSong song);
+        /// <inheritdoc/>
         public abstract void RemoveDuplicates();
+        /// <inheritdoc/>
         public abstract void Sort();
+        /// <inheritdoc/>
         public abstract int RemoveAll(Func<IPlaylistSong, bool> match);
+        /// <inheritdoc/>
         public abstract int IndexOf(IPlaylistSong item);
+        /// <inheritdoc/>
         public abstract void Insert(int index, IPlaylistSong item);
+        /// <inheritdoc/>
         public abstract void RemoveAt(int index);
+        /// <inheritdoc/>
         public abstract void Add(IPlaylistSong item);
+        /// <inheritdoc/>
         public abstract void Clear();
+        /// <inheritdoc/>
         public abstract bool Contains(IPlaylistSong item);
+        /// <inheritdoc/>
         public abstract void CopyTo(IPlaylistSong[] array, int arrayIndex);
+        /// <inheritdoc/>
         public abstract bool Remove(IPlaylistSong item);
+        /// <inheritdoc/>
         public abstract IEnumerator<IPlaylistSong> GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()

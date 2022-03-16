@@ -177,6 +177,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetDefaultCover(System.IO.Stream)">
+            <summary>
+            Set the Default Cover data after generating it
+            </summary>
+            <param name="coverStream"></param>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetCover(System.Byte[])">
             <summary>
             Sets the cover image from a byte array.
@@ -288,6 +294,11 @@
             The whole CustomData dictionary
             </summary>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.RaiseCoverImageChangedForDefaultCover">
+            <summary>
+            Raises cover image changed if we are using default image. Called when the level collection changes.
+            </summary>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Types.ISong">
             <summary>
             Interface for the basic data of a song.
@@ -307,6 +318,11 @@
             Sets the game's associated <see cref="T:IPreviewBeatmapLevel"/>.
             </summary>
             <param name="beatmap"></param>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.ISong.RefreshFromSongCore">
+            <summary>
+            Refreshes the associated <see cref="P:BeatSaberPlaylistsLib.Types.ISong.PreviewBeatmapLevel"/> from SongCore.
+            </summary>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Types.ISong.Hash">
             <summary>
@@ -436,6 +452,60 @@
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.SmallSprite">
             <inheritdoc/>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IAnnotatedBeatmapLevelCollection#collectionName">
+            <summary>
+            Name of the collection, uses <see cref="P:BeatSaberPlaylistsLib.Types.Playlist.Title"/>.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IAnnotatedBeatmapLevelCollection#coverImage">
+            <summary>
+            Cover image sprite.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IAnnotatedBeatmapLevelCollection#smallCoverImage">
+            <summary>
+            Cover image sprite.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.packID">
+            <summary>
+            BeatmapLevelPack ID.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.packName">
+            <summary>
+            BeatmapLevelPack Name, same as name of the collection.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.shortPackName">
+            <summary>
+            BeatmapLevelPack Short Name, same as name of the collection.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IAnnotatedBeatmapLevelCollection#beatmapLevelCollection">
+            <summary>
+            Returns itself.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IBeatmapLevelCollection#beatmapLevels">
+            <summary>
+            Returns a new array of IPreviewBeatmapLevels in this playlist.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.BeatmapLevels">
+            <summary>
+            Returns a new array of PlaylistSongs (cast as IPreviewBeatmapLevels) in this playlist.
+            </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Add(IPreviewBeatmapLevel)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Add(IDifficultyBeatmap)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.GetDefaultCoverStream">
+            <inheritdoc cref="M:BeatSaberPlaylistsLib.Types.IPlaylist.GetDefaultCoverStream" />
+        </member>
         <member name="E:BeatSaberPlaylistsLib.Types.Playlist.PlaylistChanged">
             <inheritdoc/>
         </member>
@@ -516,101 +586,25 @@
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.CustomData">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.GetDefaultCoverStream">
-            <summary>
-            Get Stream for Default Cover if Cover is not set
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
-            <summary>
-            Raises cover image changed if we are using default image. Called when the level collection changes.
-            </summary>
-        </member>
-        <member name="T:BeatSaberPlaylistsLib.Types.Playlist`1">
-            <summary>
-            Base class for a Playlist.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IAnnotatedBeatmapLevelCollection#collectionName">
-            <summary>
-            Name of the collection, uses <see cref="P:BeatSaberPlaylistsLib.Types.Playlist.Title"/>.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IAnnotatedBeatmapLevelCollection#coverImage">
-            <summary>
-            Cover image sprite.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IAnnotatedBeatmapLevelCollection#smallCoverImage">
-            <summary>
-            Cover image sprite.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.packID">
-            <summary>
-            BeatmapLevelPack ID.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.packName">
-            <summary>
-            BeatmapLevelPack Name, same as name of the collection.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.shortPackName">
-            <summary>
-            BeatmapLevelPack Short Name, same as name of the collection.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IAnnotatedBeatmapLevelCollection#beatmapLevelCollection">
-            <summary>
-            Returns itself.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IBeatmapLevelCollection#beatmapLevels">
-            <summary>
-            Returns a new array of IPreviewBeatmapLevels in this playlist.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.BeatmapLevels">
-            <summary>
-            Returns a new array of PlaylistSongs (cast as IPreviewBeatmapLevels) in this playlist.
-            </summary>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(IPreviewBeatmapLevel)">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.Count">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(IDifficultyBeatmap)">
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IsReadOnly">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.GetDefaultCoverStream">
-            <inheritdoc cref="M:BeatSaberPlaylistsLib.Types.IPlaylist.GetDefaultCoverStream" />
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.Item(System.Int32)">
+            <inheritdoc/>
         </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Songs">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
             <summary>
-            Internal collection of songs in the playlist.
-            </summary>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Item(System.Int32)">
-            <inheritdoc/>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Count">
-            <inheritdoc/>
-        </member>
-        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IsReadOnly">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
-            <summary>
-            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> from the given <paramref name="song"/>.
             </summary>
             <param name="song"></param>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFromByHash(System.String,System.String,System.String,System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.CreateFromByHash(System.String,System.String,System.String,System.String)">
             <summary>
-            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> from the given values.
             </summary>
             <param name="songHash"></param>
             <param name="songName"></param>
@@ -618,9 +612,9 @@
             <param name="mapper"></param>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
             <summary>
-            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> from the given values.
             </summary>
             <param name="levelId"></param>
             <param name="songName"></param>
@@ -628,70 +622,66 @@
             <param name="mapper"></param>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.ISong)">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(System.String,System.String,System.String,System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Clear">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Sort">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Contains(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CopyTo(BeatSaberPlaylistsLib.Types.IPlaylistSong[],System.Int32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.GetEnumerator">
+        <member name="F:BeatSaberPlaylistsLib.Types.Playlist._defaultCoverData">
             <summary>
-            Returns an <see cref="T:System.Collections.Generic.IEnumerator`1"/> that iterates through the playlist's songs.
+            Cached data for the default cover.
             </summary>
-            <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.IndexOf(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.SetDefaultCover(System.IO.Stream)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Insert(System.Int32,BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Remove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Add(BeatSaberPlaylistsLib.Types.ISong)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAt(System.Int32)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Add(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAll(System.Func{BeatSaberPlaylistsLib.Types.IPlaylistSong,System.Boolean})">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.TryRemoveByHash(System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAll(System.Func{`0,System.Boolean})">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.TryRemoveByKey(System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveDuplicates">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.TryRemove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemoveByHash(System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RemoveDuplicates">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemoveByKey(System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Sort">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RemoveAll(System.Func{BeatSaberPlaylistsLib.Types.IPlaylistSong,System.Boolean})">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#IEnumerable#GetEnumerator">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.IndexOf(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#Generic#IEnumerable{BeatSaberPlaylistsLib#Types#IPlaylistSong}#GetEnumerator">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Insert(System.Int32,BeatSaberPlaylistsLib.Types.IPlaylistSong)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#Generic#ICollection{BeatSaberPlaylistsLib#Types#IPlaylistSong}#Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RemoveAt(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Contains(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.CopyTo(BeatSaberPlaylistsLib.Types.IPlaylistSong[],System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.Remove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.GetEnumerator">
             <inheritdoc/>
         </member>
         <member name="T:BeatSaberPlaylistsLib.Types.PlaylistSong">
@@ -1024,6 +1014,128 @@
             Additional data not deserialized into the object.
             </summary>
         </member>
+        <member name="T:BeatSaberPlaylistsLib.Types.Playlist`1">
+            <summary>
+            Base class for a Playlist.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Songs">
+            <summary>
+            Internal collection of songs in the playlist.
+            </summary>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Item(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist`1.IsReadOnly">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFromByHash(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateWith(BeatSaberPlaylistsLib.Types.ISong)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given <paramref name="song"/>.
+            </summary>
+            <param name="song"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateWithHash(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+            </summary>
+            <param name="songHash"></param>
+            <param name="songName"></param>
+            <param name="songKey"></param>
+            <param name="mapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CreateWithLevelId(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistSong"/> of type <typeparamref name="T"/> from the given values.
+            </summary>
+            <param name="levelId"></param>
+            <param name="songName"></param>
+            <param name="songKey"></param>
+            <param name="mapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.ISong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(System.String,System.String,System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.AddSong(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Sort">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Contains(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.CopyTo(BeatSaberPlaylistsLib.Types.IPlaylistSong[],System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.IndexOf(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Insert(System.Int32,BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Remove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAt(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAll(System.Func{BeatSaberPlaylistsLib.Types.IPlaylistSong,System.Boolean})">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveAll(System.Func{`0,System.Boolean})">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.RemoveDuplicates">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemoveByHash(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemoveByKey(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.TryRemove(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#Generic#IEnumerable{BeatSaberPlaylistsLib#Types#IPlaylistSong}#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.System#Collections#Generic#ICollection{BeatSaberPlaylistsLib#Types#IPlaylistSong}#Add(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
+            <inheritdoc/>
+        </member>
         <member name="T:BeatSaberPlaylistsLib.Utilities">
             <summary>
             Utilities
@@ -1057,8 +1169,11 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.Utilities.DownscaleImage(System.IO.Stream,System.Int32)">
             <summary>
-            Downscales <param name="original"/> to <see cref="!:imageSize"/>
+            Downscales <paramref name="original"/> to <paramref name="imageSize"/>
             </summary>
+            <param name="original"></param>
+            <param name="imageSize"></param>
+            <returns></returns>
         </member>
         <member name="F:BeatSaberPlaylistsLib.Utilities.Base64Prefix">
             <summary>
@@ -1184,13 +1299,13 @@
             The filename of the optional playlist cover image
             </summary>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
+        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateWith(BeatSaberPlaylistsLib.Types.ISong)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateFromByHash(System.String,System.String,System.String,System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateWithHash(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.CreateWithLevelId(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Blist.BlistPlaylist.GetCoverStream">
@@ -1373,6 +1488,11 @@
             Utilities for modifying images.
             </summary>
         </member>
+        <member name="F:BeatSaberPlaylistsLib.ImageUtilities.kImageSize">
+            <summary>
+            Image dimension used for resizing.
+            </summary>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.ImageUtilities.GenerateCollage(System.IO.Stream,System.IO.Stream)">
             <summary>
             Generate a collage of 2 images
@@ -1436,13 +1556,13 @@
             <param name="author"></param>
             <param name="coverImage"></param>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFrom(BeatSaberPlaylistsLib.Types.ISong)">
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateWith(BeatSaberPlaylistsLib.Types.ISong)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFromByHash(System.String,System.String,System.String,System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateWithHash(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateFromByLevelId(System.String,System.String,System.String,System.String)">
+        <member name="M:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.CreateWithLevelId(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>
         <member name="P:BeatSaberPlaylistsLib.Legacy.LegacyPlaylist.Title">
@@ -1832,8 +1952,14 @@
             <exception cref="T:System.IO.IOException"></exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
+            <summary>
             <inheritdoc cref="M:BeatSaberPlaylistsLib.PlaylistManager.DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)" />
+            </summary>
+            <param name="playlist"></param>
             <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.InvalidOperationException"></exception>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.CreateChildManager(System.String)">
             <summary>
@@ -1852,8 +1978,12 @@
             <exception cref="T:System.IO.IOException"></exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager,System.Boolean)">
+            <summary>
             <inheritdoc cref="M:BeatSaberPlaylistsLib.PlaylistManager.DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager)" />
+            </summary>
+            <param name="managerToDelete"></param>
             <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+            <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RenameManager(System.String)">
             <summary>

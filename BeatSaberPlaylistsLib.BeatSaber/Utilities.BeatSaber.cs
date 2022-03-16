@@ -93,10 +93,13 @@ namespace BeatSaberPlaylistsLib
             }
             return GetDefaultImageStream();
         }
-        
+
         /// <summary>
-        /// Downscales <param name="original"/> to <see cref="imageSize"/>
+        /// Downscales <paramref name="original"/> to <paramref name="imageSize"/>
         /// </summary>
+        /// <param name="original"></param>
+        /// <param name="imageSize"></param>
+        /// <returns></returns>
         public static Stream DownscaleImage(Stream original, int imageSize)
         {
             var ms = new MemoryStream();

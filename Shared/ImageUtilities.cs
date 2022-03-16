@@ -11,6 +11,9 @@ namespace BeatSaberPlaylistsLib
     /// </summary>
     public static class ImageUtilities
     {
+        /// <summary>
+        /// Image dimension used for resizing.
+        /// </summary>
         public const int kImageSize = 256;
         
         /// <summary>

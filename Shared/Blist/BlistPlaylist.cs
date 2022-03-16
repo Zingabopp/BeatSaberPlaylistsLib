@@ -88,7 +88,7 @@ namespace BeatSaberPlaylistsLib.Blist
         public string? Cover { get; set; }
 
         ///<inheritdoc/>
-        protected override BlistPlaylistSong CreateFrom(ISong song)
+        protected override BlistPlaylistSong CreateWith(ISong song)
         {
             if (song is BlistPlaylistSong legacySong)
                 return legacySong;
@@ -96,7 +96,7 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         ///<inheritdoc/>
-        protected override BlistPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
+        protected override BlistPlaylistSong CreateWithHash(string songHash, string? songName, string? songKey, string? mapper)
         {
             return new BlistPlaylistSong()
             {
@@ -108,7 +108,7 @@ namespace BeatSaberPlaylistsLib.Blist
         }
 
         ///<inheritdoc/>
-        protected override BlistPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+        protected override BlistPlaylistSong CreateWithLevelId(string levelId, string? songName, string? songKey, string? mapper)
         {
             return new BlistPlaylistSong()
             {

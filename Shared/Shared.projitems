@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Types\JSONPlaylistSong.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Types\Playlist.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Types\PlaylistSong.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\Playlist_T.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

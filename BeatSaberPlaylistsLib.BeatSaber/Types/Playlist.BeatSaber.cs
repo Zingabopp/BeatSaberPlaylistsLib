@@ -3,18 +3,20 @@ extern alias BeatSaber;
 using BeatSaber::UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static BeatSaber::SliderController.Pool;
 
 namespace BeatSaberPlaylistsLib.Types
 {
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
-    public abstract partial class Playlist : IStagedSpriteLoad
+    public abstract partial class Playlist : IStagedSpriteLoad, IPlaylist
     {
         /// <summary>
         /// Maximum width and height of the small cover image
@@ -34,7 +36,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// Instance of the previous cover sprite.
         /// </summary>
         protected Sprite? _previousSprite;
-        
+
         /// <summary>
         /// Instance of the downscaled playlist cover sprite.
         /// </summary>
@@ -43,17 +45,17 @@ namespace BeatSaberPlaylistsLib.Types
         /// Instance of the previous downscaled cover sprite.
         /// </summary>
         protected Sprite? _previousSmallSprite;
-        
+
         /// <summary>
         /// Returns true if the sprite for the playlist is already queued.
         /// </summary>
         protected bool SpriteLoadQueued;
-        
+
         /// <summary>
         /// Returns true if the small sprite for the playlist is already queued.
         /// </summary>
         protected bool SmallSpriteLoadQueued;
-        
+
         private static readonly object _loaderLock = new object();
         private static bool CoroutineRunning = false;
 
@@ -73,7 +75,7 @@ namespace BeatSaberPlaylistsLib.Types
                 playlist._smallSprite = sprite;
                 OnSpriteLoaded(playlist);
             }
-            
+
             if (downscaleImage)
             {
                 var downscaleStream = stream != null && stream != Stream.Null ? await Task.Run(() => Utilities.DownscaleImage(stream, kSmallImageSize)) : stream;
@@ -95,7 +97,7 @@ namespace BeatSaberPlaylistsLib.Types
                     playlist._smallSprite = sprite;
                     OnSpriteLoaded(playlist);
                     stream?.Dispose();
-                });   
+                });
             }
 
             if (!CoroutineRunning)
@@ -206,11 +208,7 @@ namespace BeatSaberPlaylistsLib.Types
         }
 
         #endregion
-    }
 
-
-    public abstract partial class Playlist<T> : BeatSaber.IBeatmapLevelCollection
-    {
         /// <summary>
         /// Name of the collection, uses <see cref="Playlist.Title"/>.
         /// </summary>
@@ -253,14 +251,12 @@ namespace BeatSaberPlaylistsLib.Types
         {
             get
             {
-                Songs.ForEach(delegate (T s)
+                foreach (var song in this)
                 {
-                    if (s is PlaylistSong playlistSong)
-                    {
-                        playlistSong.RefreshFromSongCore();
-                    }
-                });
-                return Songs.Where(s => s.PreviewBeatmapLevel != null).Select(s => s.PreviewBeatmapLevel).ToArray();
+                    song.RefreshFromSongCore();
+
+                }
+                return this.Where(s => s.PreviewBeatmapLevel != null).Select(s => s.PreviewBeatmapLevel).ToArray();
             }
         }
         /// <summary>
@@ -270,14 +266,11 @@ namespace BeatSaberPlaylistsLib.Types
         {
             get
             {
-                Songs.ForEach(delegate (T s)
+                foreach (var song in this)
                 {
-                    if (s is PlaylistSong playlistSong)
-                    {
-                        playlistSong.RefreshFromSongCore();
-                    }
-                });
-                return Songs.Where(s => s.PreviewBeatmapLevel != null).Cast<BeatSaber.IPreviewBeatmapLevel>().ToArray();
+                    song.RefreshFromSongCore();
+                }
+                return this.Where(s => s.PreviewBeatmapLevel != null).Cast<BeatSaber.IPreviewBeatmapLevel>().ToArray();
             }
         }
 
@@ -287,7 +280,7 @@ namespace BeatSaberPlaylistsLib.Types
         {
             if (beatmap == null)
                 return null;
-            IPlaylistSong? song = Add(CreateFromByLevelId(beatmap.levelID, beatmap.songName, null, beatmap.levelAuthorName));
+            IPlaylistSong? song = CreateFromByLevelId(beatmap.levelID, beatmap.songName, null, beatmap.levelAuthorName);
             song?.SetPreviewBeatmap(beatmap);
             return song;
         }
@@ -304,27 +297,27 @@ namespace BeatSaberPlaylistsLib.Types
             IPlaylistSong? song = Add(beatmap.level);
             if (song != null)
                 song.Difficulties = new List<Difficulty> { difficulty };
-            
+
             return song;
         }
 
-        #region Default Cover
 
+        #region Default Cover
         /// <inheritdoc cref="IPlaylist.GetDefaultCoverStream" />
-        public override async Task<Stream?> GetDefaultCoverStream()
+        public async Task<Stream?> GetDefaultCoverStream()
         {
             if (_defaultCoverData != null)
             {
                 return new MemoryStream(_defaultCoverData);
             }
-            
+
             if (!Utilities.ImageSharpLoaded() || BeatmapLevels.Length == 0)
             {
                 return null;
             }
-            
+
             var ms = new MemoryStream();
-            
+
             if (BeatmapLevels.Length == 1)
             {
                 using var coverStream = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
@@ -358,8 +351,10 @@ namespace BeatSaberPlaylistsLib.Types
             _defaultCoverData = ms.ToArray();
             return ms;
         }
-
         #endregion
     }
+
+
+
 }
 #endif

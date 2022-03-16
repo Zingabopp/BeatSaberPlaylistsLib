@@ -255,9 +255,14 @@ namespace BeatSaberPlaylistsLib
         {
             DeletePlaylist(playlist, false);
         }
-
+        /// <summary>
         /// <inheritdoc cref="DeletePlaylist(BeatSaberPlaylistsLib.Types.IPlaylist)" />
+        /// </summary>
+        /// <param name="playlist"></param>
         /// <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
         public void DeletePlaylist(IPlaylist playlist, bool recycle)
         {
             if (playlist == null)
@@ -324,9 +329,12 @@ namespace BeatSaberPlaylistsLib
         {
             DeleteChildManager(managerToDelete, false);
         }
-        
+        /// <summary>
         /// <inheritdoc cref="DeleteChildManager(BeatSaberPlaylistsLib.PlaylistManager)" />
+        /// </summary>
+        /// <param name="managerToDelete"></param>
         /// <param name="recycle">Send to recycling bin. Compatibility isn't guaranteed, and falls back to regular delete if it fails.</param>
+        /// <exception cref="DirectoryNotFoundException"></exception>
         public void DeleteChildManager(PlaylistManager managerToDelete, bool recycle)
         {
             if (ChildManagers.Contains(managerToDelete))

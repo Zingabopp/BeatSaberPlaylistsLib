@@ -44,7 +44,7 @@ namespace BeatSaberPlaylistsLibTests.Mock
             throw new NotImplementedException();
         }
 
-        protected override MockPlaylistSong CreateFrom(ISong song)
+        protected override MockPlaylistSong CreateWith(ISong song)
         {
             return new MockPlaylistSong()
             {
@@ -58,7 +58,7 @@ namespace BeatSaberPlaylistsLibTests.Mock
         }
 
         ///<inheritdoc/>
-        protected override MockPlaylistSong CreateFromByHash(string songHash, string? songName, string? songKey, string? mapper)
+        protected override MockPlaylistSong CreateWithHash(string songHash, string? songName, string? songKey, string? mapper)
         {
             return new MockPlaylistSong()
             {
@@ -70,7 +70,7 @@ namespace BeatSaberPlaylistsLibTests.Mock
         }
 
         ///<inheritdoc/>
-        protected override MockPlaylistSong CreateFromByLevelId(string levelId, string? songName, string? songKey, string? mapper)
+        protected override MockPlaylistSong CreateWithLevelId(string levelId, string? songName, string? songKey, string? mapper)
         {
             return new MockPlaylistSong()
             {

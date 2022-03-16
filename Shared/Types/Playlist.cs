@@ -191,8 +191,6 @@ namespace BeatSaberPlaylistsLib.Types
         public virtual Task<Stream?> GetDefaultCoverStream() => 
             _defaultCoverData != null ? Task.FromResult<Stream?>(new MemoryStream(_defaultCoverData)) : Task.FromResult<Stream?>(null);
 
-#endif
-
         /// <inheritdoc/>
         public async Task SetDefaultCover(Stream coverStream)
         {
@@ -200,6 +198,8 @@ namespace BeatSaberPlaylistsLib.Types
             await coverStream.CopyToAsync(ms);
             _defaultCoverData = ms.ToArray();
         }
+        
+#endif
 
         /// <inheritdoc/>
         public void RaiseCoverImageChangedForDefaultCover()

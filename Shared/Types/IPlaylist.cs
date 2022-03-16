@@ -46,11 +46,6 @@ namespace BeatSaberPlaylistsLib.Types
         /// <returns></returns>
         Task<Stream?> GetDefaultCoverStream();
         /// <summary>
-        /// Set the Default Cover data after generating it
-        /// </summary>
-        /// <param name="coverStream"></param>
-        Task SetDefaultCover(Stream coverStream);
-        /// <summary>
         /// Sets the cover image from a byte array.
         /// </summary>
         /// <param name="coverImage"></param>
@@ -153,6 +148,14 @@ namespace BeatSaberPlaylistsLib.Types
         /// Raises cover image changed if we are using default image. Called when the level collection changes.
         /// </summary>
         void RaiseCoverImageChangedForDefaultCover();
+        
+#if !BeatSaber
+        /// <summary>
+        /// Set the Default Cover data after generating it
+        /// </summary>
+        /// <param name="coverStream"></param>
+        Task SetDefaultCover(Stream coverStream);
+#endif
     }
 
     /// <summary>

@@ -177,12 +177,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetDefaultCover(System.IO.Stream)">
-            <summary>
-            Set the Default Cover data after generating it
-            </summary>
-            <param name="coverStream"></param>
-        </member>
         <member name="M:BeatSaberPlaylistsLib.Types.IPlaylist.SetCover(System.Byte[])">
             <summary>
             Sets the cover image from a byte array.
@@ -626,9 +620,6 @@
             <summary>
             Cached data for the default cover.
             </summary>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.Types.Playlist.SetDefaultCover(System.IO.Stream)">
-            <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist.RaiseCoverImageChangedForDefaultCover">
             <inheritdoc/>

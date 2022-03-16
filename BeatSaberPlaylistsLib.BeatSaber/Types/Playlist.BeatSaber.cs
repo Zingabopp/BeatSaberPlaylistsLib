@@ -16,7 +16,7 @@ namespace BeatSaberPlaylistsLib.Types
     /// <summary>
     /// Base class for a Playlist.
     /// </summary>
-    public abstract partial class Playlist : IStagedSpriteLoad, BeatSaber.IBeatmapLevelCollection
+    public abstract partial class Playlist : IStagedSpriteLoad, IPlaylist
     {
         /// <summary>
         /// Maximum width and height of the small cover image

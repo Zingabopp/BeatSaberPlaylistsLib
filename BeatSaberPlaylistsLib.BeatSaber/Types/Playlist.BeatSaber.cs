@@ -280,7 +280,7 @@ namespace BeatSaberPlaylistsLib.Types
         {
             if (beatmap == null)
                 return null;
-            IPlaylistSong? song = CreateFromByLevelId(beatmap.levelID, beatmap.songName, null, beatmap.levelAuthorName);
+            IPlaylistSong? song = Add((ISong)CreateFromByLevelId(beatmap.levelID, beatmap.songName, null, beatmap.levelAuthorName));
             song?.SetPreviewBeatmap(beatmap);
             return song;
         }

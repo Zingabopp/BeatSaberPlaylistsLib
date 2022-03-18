@@ -1071,7 +1071,11 @@
             <inheritdoc/>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.AddSong(BeatSaberPlaylistsLib.Types.IPlaylistSong)">
-            <inheritdoc/>
+            <summary>
+            Adds a song to the playlist.
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Types.Playlist`1.Clear">
             <inheritdoc/>

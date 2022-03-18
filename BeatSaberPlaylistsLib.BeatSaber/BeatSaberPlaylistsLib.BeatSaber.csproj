@@ -36,6 +36,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Authors>Zingabopp</Authors>
     <Company>Zingabopp</Company>
+	<PackageReadmeFile>package_readme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
@@ -55,6 +56,7 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+	<None Include="package_readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

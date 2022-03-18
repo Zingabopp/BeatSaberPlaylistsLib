@@ -1,0 +1,1 @@
+﻿A library to interact with Beat Saber playlists. Use the [BeatSaberPlaylistsLib](https://www.nuget.org/packages/BeatSaberPlaylistsLib/) package if this library is not being used inside a mod.

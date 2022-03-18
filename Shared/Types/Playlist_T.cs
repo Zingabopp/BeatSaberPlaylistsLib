@@ -192,7 +192,7 @@ namespace BeatSaberPlaylistsLib.Types
         public override void RemoveAt(int index)
         {
             Songs.RemoveAt(index);
-            if (index < 3)
+            if (index < 4)
             {
                 RaiseCoverImageChangedForDefaultCover();
             }

@@ -188,7 +188,7 @@ namespace BeatSaberPlaylistsLib.Types
         protected byte[]? _defaultCoverData;
 #if !BeatSaber
         /// <inheritdoc/>
-        public virtual Task<Stream?> GetDefaultCoverStream() => 
+        public virtual Task<Stream?> GetDefaultCoverStream() =>
             _defaultCoverData != null ? Task.FromResult<Stream?>(new MemoryStream(_defaultCoverData)) : Task.FromResult<Stream?>(null);
 
         /// <inheritdoc/>
@@ -198,7 +198,7 @@ namespace BeatSaberPlaylistsLib.Types
             await coverStream.CopyToAsync(ms);
             _defaultCoverData = ms.ToArray();
         }
-        
+
 #endif
 
         /// <inheritdoc/>
@@ -210,7 +210,7 @@ namespace BeatSaberPlaylistsLib.Types
                 return;
             }
 #endif
-            
+
             _defaultCoverData = null;
 
             if (!HasCover)
@@ -222,6 +222,7 @@ namespace BeatSaberPlaylistsLib.Types
             }
         }
 
+#endregion
         /// <inheritdoc/>
         public abstract IPlaylistSong? Add(ISong song);
         /// <inheritdoc/>
@@ -262,7 +263,6 @@ namespace BeatSaberPlaylistsLib.Types
             throw new NotImplementedException();
         }
 
-        #endregion
     }
 
 

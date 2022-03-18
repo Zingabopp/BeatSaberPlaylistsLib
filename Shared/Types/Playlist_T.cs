@@ -98,7 +98,12 @@ namespace BeatSaberPlaylistsLib.Types
         {
             AddSong(item);
         }
-        /// <inheritdoc/>
+
+        /// <summary>
+        /// Adds a song to the playlist.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public virtual IPlaylistSong? AddSong(IPlaylistSong item) => Add((ISong)item);
 
         /// <inheritdoc/>

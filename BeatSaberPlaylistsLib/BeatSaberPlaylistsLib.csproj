@@ -3,7 +3,7 @@
     <PackageId>BeatSaberPlaylistsLib</PackageId>
     <Product>BeatSaberPlaylistsLib</Product>
     <Title>BeatSaberPlaylistsLib</Title>
-    <TargetFrameworks>netstandard2.0;net48;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net48;net5.0;net6.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <Nullable>Enable</Nullable>
     <Configurations>Debug;Release</Configurations>

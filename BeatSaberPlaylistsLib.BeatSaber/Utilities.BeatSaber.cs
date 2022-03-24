@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using IPA.Loader;
+using CustomPreviewBeatmapLevel = BeatSaber::CustomPreviewBeatmapLevel;
 using Graphics = System.Drawing.Graphics;
 
 namespace BeatSaberPlaylistsLib
@@ -83,13 +84,14 @@ namespace BeatSaberPlaylistsLib
         /// <summary>
         /// Gets a <see cref="Stream"/> from a <see cref="Sprite"/>
         /// </summary>
-        /// <param name="sprite"></param>
+        /// <param name="previewBeatmapLevel"></param>
         /// <returns></returns>
-        public static Stream? GetStreamFromSprite(Sprite sprite)
+        public static Stream? GetStreamFromBeatmap(BeatSaber.IPreviewBeatmapLevel? previewBeatmapLevel)
         {
-            if (sprite.texture.isReadable)
+            if (previewBeatmapLevel is CustomPreviewBeatmapLevel customPreviewBeatmapLevel)
             {
-                return new MemoryStream(sprite.texture.EncodeToPNG());
+                var fileName = customPreviewBeatmapLevel.standardLevelInfoSaveData.coverImageFilename;
+                return new FileStream(Path.Combine(customPreviewBeatmapLevel.customLevelPath, fileName), FileMode.Open, FileAccess.Read, FileShare.Read, 0x4096, true);
             }
             return GetDefaultImageStream();
         }

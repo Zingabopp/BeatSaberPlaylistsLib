@@ -25,11 +25,12 @@ namespace BeatSaberPlaylistsLib
         public static async Task<Stream> GenerateCollage(Stream imageStream1, Stream imageStream2)
         {
             var image = new Image<Rgba32>(kImageSize, kImageSize);
-            using var image1 = await Image.LoadAsync(imageStream1);
-            using var image2 = await Image.LoadAsync(imageStream2);
-
-            await Task.Run(() =>
+            
+            await Task.Run(async () =>
             {
+                using var image1 = await Image.LoadAsync(imageStream1);
+                using var image2 = await Image.LoadAsync(imageStream2);
+                
                 image.Mutate(i =>
                 {
                     image1.Mutate(i1 =>
@@ -67,12 +68,13 @@ namespace BeatSaberPlaylistsLib
         public static async Task<Stream> GenerateCollage(Stream imageStream1, Stream imageStream2, Stream imageStream3)
         {
             var image = new Image<Rgba32>(kImageSize, kImageSize);
-            using var image1 = await Image.LoadAsync(imageStream1);
-            using var image2 = await Image.LoadAsync(imageStream2);
-            using var image3 = await Image.LoadAsync(imageStream3);
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
+                using var image1 = await Image.LoadAsync(imageStream1);
+                using var image2 = await Image.LoadAsync(imageStream2);
+                using var image3 = await Image.LoadAsync(imageStream3);
+                
                 image.Mutate(i =>
                 {
                     image1.Mutate(i1 =>
@@ -116,13 +118,14 @@ namespace BeatSaberPlaylistsLib
         public static async Task<Stream> GenerateCollage(Stream imageStream1, Stream imageStream2, Stream imageStream3, Stream imageStream4)
         {
             var image = new Image<Rgba32>(kImageSize, kImageSize);
-            using var image1 = await Image.LoadAsync(imageStream1);
-            using var image2 = await Image.LoadAsync(imageStream2);
-            using var image3 = await Image.LoadAsync(imageStream3);
-            using var image4 = await Image.LoadAsync(imageStream4);
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
+                using var image1 = await Image.LoadAsync(imageStream1);
+                using var image2 = await Image.LoadAsync(imageStream2);
+                using var image3 = await Image.LoadAsync(imageStream3);
+                using var image4 = await Image.LoadAsync(imageStream4);
+                
                 image.Mutate(i =>
                 {
                     image1.Mutate(i1 =>

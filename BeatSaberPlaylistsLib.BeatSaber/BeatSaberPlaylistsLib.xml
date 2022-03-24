@@ -1155,11 +1155,11 @@
             <param name="returnDefaultOnFail"></param>
             <returns></returns>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.Utilities.GetStreamFromSprite(UnityEngine.Sprite)">
+        <member name="M:BeatSaberPlaylistsLib.Utilities.GetStreamFromBeatmap(IPreviewBeatmapLevel)">
             <summary>
             Gets a <see cref="T:System.IO.Stream"/> from a <see cref="T:UnityEngine.Sprite"/>
             </summary>
-            <param name="sprite"></param>
+            <param name="previewBeatmapLevel"></param>
             <returns></returns>
         </member>
         <member name="M:BeatSaberPlaylistsLib.Utilities.DownscaleImage(System.IO.Stream,System.Int32)">

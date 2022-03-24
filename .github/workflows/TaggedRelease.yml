@@ -20,14 +20,16 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Download SIRA References
       uses: ProjectSIRA/download-sira-stripped@1.0.0
+      if: matrix.configuration == 'Release-BeatSaber'
       with:
         manifest: ${{github.workspace}}/BeatSaberPlaylistsLib.BeatSaber/manifest.json
         sira-server-code: ${{ secrets.SIRA_SERVER_CODE }}
     - name: Download Mod Dependencies
       uses: Goobwabber/download-beatmods-deps@1.2
+      if: matrix.configuration == 'Release-BeatSaber'
       with:
         manifest: ${{github.workspace}}/BeatSaberPlaylistsLib.BeatSaber/manifest.json
     - name: Build ${{ matrix.configuration }}

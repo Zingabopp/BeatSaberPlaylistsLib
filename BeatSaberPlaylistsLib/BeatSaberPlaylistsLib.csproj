@@ -46,7 +46,7 @@
   </ItemGroup>
   
   <ItemGroup>
-	<None Include="package_readme.md" Pack="true" PackagePath="\" />
+	<None Include="package_readme.md" Pack="true" PackagePath="" />
     <PackageReference Include="BeatSaberModdingTools.Tasks" Version="1.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using static BeatSaber::SliderController.Pool;
+using IBeatmapLevelCollection = BeatSaber::IBeatmapLevelCollection;
 
 namespace BeatSaberPlaylistsLib.Types
 {
@@ -317,33 +318,34 @@ namespace BeatSaberPlaylistsLib.Types
             }
 
             var ms = new MemoryStream();
+            var beatmapLevels = ((IBeatmapLevelCollection) this).beatmapLevels;
 
-            if (BeatmapLevels.Length == 1)
+            if (beatmapLevels.Count == 1)
             {
-                using var coverStream = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
+                using var coverStream = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
                 if (coverStream != null) await coverStream.CopyToAsync(ms);
             }
-            else if (BeatmapLevels.Length == 2)
+            else if (beatmapLevels.Count == 2)
             {
-                using var imageStream1 = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
-                using var imageStream2 = Utilities.GetStreamFromSprite(await BeatmapLevels[1].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
                 using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null);
                 await coverStream.CopyToAsync(ms);
             }
-            else if (BeatmapLevels.Length == 3)
+            else if (beatmapLevels.Count == 3)
             {
-                using var imageStream1 = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
-                using var imageStream2 = Utilities.GetStreamFromSprite(await BeatmapLevels[1].GetCoverImageAsync(CancellationToken.None));
-                using var imageStream3 = Utilities.GetStreamFromSprite(await BeatmapLevels[2].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
+                using var imageStream3 = Utilities.GetStreamFromBeatmap(beatmapLevels[2]);
                 using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null);
                 await coverStream.CopyToAsync(ms);
             }
             else
             {
-                using var imageStream1 = Utilities.GetStreamFromSprite(await BeatmapLevels[0].GetCoverImageAsync(CancellationToken.None));
-                using var imageStream2 = Utilities.GetStreamFromSprite(await BeatmapLevels[1].GetCoverImageAsync(CancellationToken.None));
-                using var imageStream3 = Utilities.GetStreamFromSprite(await BeatmapLevels[2].GetCoverImageAsync(CancellationToken.None));
-                using var imageStream4 = Utilities.GetStreamFromSprite(await BeatmapLevels[3].GetCoverImageAsync(CancellationToken.None));
+                using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
+                using var imageStream3 = Utilities.GetStreamFromBeatmap(beatmapLevels[2]);
+                using var imageStream4 = Utilities.GetStreamFromBeatmap(beatmapLevels[3]);
                 using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null, imageStream4 ?? Stream.Null);
                 await coverStream.CopyToAsync(ms);
             }

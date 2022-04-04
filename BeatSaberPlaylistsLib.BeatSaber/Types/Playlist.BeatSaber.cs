@@ -304,6 +304,9 @@ namespace BeatSaberPlaylistsLib.Types
 
 
         #region Default Cover
+
+        private static SemaphoreSlim _defaultCoverSemaphore = new SemaphoreSlim(1, 1);
+        
         /// <inheritdoc cref="IPlaylist.GetDefaultCoverStream" />
         public async Task<Stream?> GetDefaultCoverStream()
         {
@@ -317,39 +320,52 @@ namespace BeatSaberPlaylistsLib.Types
                 return null;
             }
 
+            await _defaultCoverSemaphore.WaitAsync();
             var ms = new MemoryStream();
-            var beatmapLevels = ((IBeatmapLevelCollection) this).beatmapLevels;
 
-            if (beatmapLevels.Count == 1)
+            try
             {
-                using var coverStream = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
-                if (coverStream != null) await coverStream.CopyToAsync(ms);
-            }
-            else if (beatmapLevels.Count == 2)
-            {
-                using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
-                using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
-                using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null);
-                await coverStream.CopyToAsync(ms);
-            }
-            else if (beatmapLevels.Count == 3)
-            {
-                using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
-                using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
-                using var imageStream3 = Utilities.GetStreamFromBeatmap(beatmapLevels[2]);
-                using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null);
-                await coverStream.CopyToAsync(ms);
-            }
-            else
-            {
-                using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
-                using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
-                using var imageStream3 = Utilities.GetStreamFromBeatmap(beatmapLevels[2]);
-                using var imageStream4 = Utilities.GetStreamFromBeatmap(beatmapLevels[3]);
-                using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null, imageStream4 ?? Stream.Null);
-                await coverStream.CopyToAsync(ms);
-            }
+                var beatmapLevels = ((IBeatmapLevelCollection) this).beatmapLevels;
 
+                if (beatmapLevels.Count == 1)
+                {
+                    using var coverStream = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                    if (coverStream != null) await coverStream.CopyToAsync(ms);
+                }
+                else if (beatmapLevels.Count == 2)
+                {
+                    using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                    using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
+                    using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null);
+                    await coverStream.CopyToAsync(ms);
+                }
+                else if (beatmapLevels.Count == 3)
+                {
+                    using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                    using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
+                    using var imageStream3 = Utilities.GetStreamFromBeatmap(beatmapLevels[2]);
+                    using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null);
+                    await coverStream.CopyToAsync(ms);
+                }
+                else
+                {
+                    using var imageStream1 = Utilities.GetStreamFromBeatmap(beatmapLevels[0]);
+                    using var imageStream2 = Utilities.GetStreamFromBeatmap(beatmapLevels[1]);
+                    using var imageStream3 = Utilities.GetStreamFromBeatmap(beatmapLevels[2]);
+                    using var imageStream4 = Utilities.GetStreamFromBeatmap(beatmapLevels[3]);
+                    using var coverStream = await ImageUtilities.GenerateCollage(imageStream1 ?? Stream.Null, imageStream2 ?? Stream.Null, imageStream3 ?? Stream.Null, imageStream4 ?? Stream.Null);
+                    await coverStream.CopyToAsync(ms);
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                _defaultCoverSemaphore.Release();
+            }
+            
             _defaultCoverData = ms.ToArray();
             return ms;
         }

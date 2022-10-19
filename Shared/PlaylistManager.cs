@@ -381,53 +381,90 @@ namespace BeatSaberPlaylistsLib
             PlaylistPath = newDirectory;
         }
 
-        /// <summary>
-        /// Loads all available playlists.
-        /// </summary>
-        /// <param name="loadedPlaylists"></param>
-        /// <param name="includeChildren"></param>
-        /// <param name="erroredPlaylists"></param>
-        /// <param name="exceptions"></param>
-        /// <returns></returns>
-        protected List<IPlaylist> LoadAllPlaylists(List<IPlaylist>? loadedPlaylists, bool includeChildren, List<string> erroredPlaylists, List<Exception> exceptions)
+        private void LoadPlaylist(string playlistName, List<IPlaylist> loadedPlaylists, List<Exception> exceptions,
+            List<string> erroredPlaylists)
         {
-            if (loadedPlaylists == null) loadedPlaylists = new List<IPlaylist>();
-            if (exceptions == null) exceptions = new List<Exception>();
-            if (erroredPlaylists == null) erroredPlaylists = new List<string>();
-            string[] playlistNames
-                = Directory.EnumerateFiles(PlaylistPath, "*.*").Select(p => Path.GetFileName(p)).ToArray();
-            for (int i = 0; i < playlistNames.Length; i++)
+            try
             {
-                try
+                var playlist = GetPlaylist(Path.GetFileNameWithoutExtension(playlistName));
+                if (playlist != null)
                 {
-                    IPlaylist? playlist = GetPlaylist(Path.GetFileNameWithoutExtension(playlistNames[i]));
-                    if (playlist != null)
-                        loadedPlaylists.Add(playlist);
+                    loadedPlaylists.Add(playlist);
                 }
+            }
 #pragma warning disable CA1031 // Do not catch general exception types
-                catch (Exception ex)
-                {
-                    if (exceptions == null) exceptions = new List<Exception>();
-                    exceptions.Add(ex);
-                    erroredPlaylists.Add(playlistNames[i]);
-                }
-#pragma warning restore CA1031 // Do not catch general exception types
-            }
-            if (includeChildren)
+            catch (Exception ex)
             {
-                // Delete any folders that are since deleted to save an exception
-                List<PlaylistManager> managersToDelete = GetChildManagers().Where((childManager) => !Directory.Exists(childManager.PlaylistPath)).ToList();
-                foreach (var manager in managersToDelete)
+                exceptions.Add(ex);
+                erroredPlaylists.Add(playlistName);
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+        }
+        
+        private void LoadPlaylist(string playlistName, ConcurrentBag<IPlaylist> loadedPlaylists, ConcurrentBag<Exception> exceptions,
+            ConcurrentBag<string> erroredPlaylists)
+        {
+            // Have to do this dumb copy paste because concurrentbag and list dont share an interface with add for some silly reason
+            try
+            {
+                var playlist = GetPlaylist(Path.GetFileNameWithoutExtension(playlistName));
+                if (playlist != null)
                 {
-                    ChildManagers.Remove(manager);
-                }
-
-                foreach (var manager in GetChildManagers())
-                {
-                    manager.LoadAllPlaylists(loadedPlaylists, includeChildren, erroredPlaylists, exceptions);
+                    loadedPlaylists.Add(playlist);
                 }
             }
-            return loadedPlaylists;
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception ex)
+            {
+                exceptions.Add(ex);
+                erroredPlaylists.Add(playlistName);
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+        }
+        
+        private void LoadAllPlaylists(List<IPlaylist>? loadedPlaylists, bool includeChildren, List<string>? erroredPlaylists, List<Exception>? exceptions, int maxDegreeOfParallelism)
+        {
+            loadedPlaylists ??= new List<IPlaylist>();
+            exceptions ??= new List<Exception>();
+            erroredPlaylists ??= new List<string>();
+            var playlistNames = Directory.EnumerateFiles(PlaylistPath, "*.*").Select(p => Path.GetFileName(p)).ToArray();
+            
+            if (maxDegreeOfParallelism > 1)
+            {
+                var concurrentLoadedPlaylists = new ConcurrentBag<IPlaylist>();
+                var concurrentExceptions = new ConcurrentBag<Exception>();
+                var concurrentErroredPlaylists = new ConcurrentBag<string>();
+                
+                Parallel.ForEach(playlistNames, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, playlistName => LoadPlaylist(playlistName, concurrentLoadedPlaylists, concurrentExceptions, concurrentErroredPlaylists));
+                
+                loadedPlaylists.AddRange(concurrentLoadedPlaylists);
+                exceptions.AddRange(concurrentExceptions);
+                erroredPlaylists.AddRange(concurrentErroredPlaylists);
+            }
+            else
+            {
+                foreach (var playlistName in playlistNames)
+                {
+                    LoadPlaylist(playlistName, loadedPlaylists, exceptions, erroredPlaylists);
+                }
+            }
+
+            if (!includeChildren)
+            {
+                return;
+            }
+            
+            // Delete any folders that are since deleted to save an exception
+            var managersToDelete = GetChildManagers().Where((childManager) => !Directory.Exists(childManager.PlaylistPath)).ToList();
+            foreach (var manager in managersToDelete)
+            {
+                ChildManagers.Remove(manager);
+            }
+
+            foreach (var manager in GetChildManagers())
+            {
+                manager.LoadAllPlaylists(loadedPlaylists, includeChildren, erroredPlaylists, exceptions, maxDegreeOfParallelism);
+            }
         }
 
         /// <summary>
@@ -435,17 +472,17 @@ namespace BeatSaberPlaylistsLib
         /// Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
         /// </summary>
         /// <param name="includeChildren"></param>
+        /// <param name="maxDegreeOfParallelism"></param>
         /// <param name="e"></param>
         /// <returns></returns>
-        public IPlaylist[] GetAllPlaylists(bool includeChildren, out AggregateException? e)
+        public IPlaylist[] GetAllPlaylists(bool includeChildren, int maxDegreeOfParallelism, out AggregateException? e)
         {
             e = null;
-            List<IPlaylist> loadedPlaylists = new List<IPlaylist>();
-            List<Exception> exceptions = new List<Exception>();
-
-            List<string>? erroredPlaylists = new List<string>(); ;
-            LoadAllPlaylists(loadedPlaylists, includeChildren, erroredPlaylists, exceptions);
-            if (exceptions != null)
+            var loadedPlaylists = new List<IPlaylist>();
+            var exceptions = new List<Exception>();
+            var erroredPlaylists = new List<string>(); ;
+            LoadAllPlaylists(loadedPlaylists, includeChildren, erroredPlaylists, exceptions, maxDegreeOfParallelism);
+            if (exceptions.Any())
             {
                 e = new AggregateException($"Error loading playlists: '{string.Join(", ", erroredPlaylists)}'", exceptions);
             }
@@ -458,23 +495,35 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public IPlaylist[] GetAllPlaylists(out AggregateException? e) => GetAllPlaylists(false, out e);
+        public IPlaylist[] GetAllPlaylists(out AggregateException? e) => GetAllPlaylists(false, 1, out e);
 
         /// <summary>
         /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager.
         /// </summary>
         /// <returns></returns>
-        public IPlaylist[] GetAllPlaylists()
-        {
-            return GetAllPlaylists(out _);
-        }
+        public IPlaylist[] GetAllPlaylists() => GetAllPlaylists(out _);
+
+        /// <summary>
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager and optionally any child managers.
+        /// </summary>
+        /// <param name="maxDegreeOfParallelism"></param>
+        /// <returns></returns>
+        public IPlaylist[] GetAllPlaylists(int maxDegreeOfParallelism) => GetAllPlaylists(false, maxDegreeOfParallelism, out _);
 
         /// <summary>
         /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager and optionally any child managers.
         /// </summary>
         /// <param name="includeChildren"></param>
         /// <returns></returns>
-        public IPlaylist[] GetAllPlaylists(bool includeChildren) => GetAllPlaylists(includeChildren, out _);
+        public IPlaylist[] GetAllPlaylists(bool includeChildren) => GetAllPlaylists(includeChildren, 1, out _);
+
+        /// <summary>
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager and optionally any child managers.
+        /// </summary>
+        /// <param name="includeChildren"></param>
+        /// <param name="maxDegreeOfParallelism"></param>
+        /// <returns></returns>
+        public IPlaylist[] GetAllPlaylists(bool includeChildren, int maxDegreeOfParallelism) => GetAllPlaylists(includeChildren, maxDegreeOfParallelism, out _);
 
         /// <summary>
         /// Returns the available child <see cref="PlaylistManager"/>s.

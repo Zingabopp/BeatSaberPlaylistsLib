@@ -429,7 +429,7 @@ namespace BeatSaberPlaylistsLib
             erroredPlaylists ??= new List<string>();
             var playlistNames = Directory.EnumerateFiles(PlaylistPath, "*.*").Select(p => Path.GetFileName(p)).ToArray();
             
-            if (maxDegreeOfParallelism > 1)
+            if (maxDegreeOfParallelism != 1)
             {
                 var concurrentLoadedPlaylists = new ConcurrentBag<IPlaylist>();
                 var concurrentExceptions = new ConcurrentBag<Exception>();

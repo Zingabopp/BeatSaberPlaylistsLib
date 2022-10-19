@@ -1989,22 +1989,13 @@
             <exception cref="T:System.IO.IOException"></exception>
             <exception cref="T:System.InvalidOperationException">Thrown if a directory name can't be determined from <see cref="P:BeatSaberPlaylistsLib.PlaylistManager.PlaylistPath"/></exception>
         </member>
-        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.LoadAllPlaylists(System.Collections.Generic.List{BeatSaberPlaylistsLib.Types.IPlaylist},System.Boolean,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Exception})">
-            <summary>
-            Loads all available playlists.
-            </summary>
-            <param name="loadedPlaylists"></param>
-            <param name="includeChildren"></param>
-            <param name="erroredPlaylists"></param>
-            <param name="exceptions"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.Boolean,System.AggregateException@)">
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.Boolean,System.Int32,System.AggregateException@)">
             <summary>
             Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager. 
             Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
             </summary>
             <param name="includeChildren"></param>
+            <param name="maxDegreeOfParallelism"></param>
             <param name="e"></param>
             <returns></returns>
         </member>
@@ -2022,11 +2013,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.Int32)">
+            <summary>
+            Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager and optionally any child managers.
+            </summary>
+            <param name="maxDegreeOfParallelism"></param>
+            <returns></returns>
+        </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.Boolean)">
             <summary>
             Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager and optionally any child managers.
             </summary>
             <param name="includeChildren"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.Boolean,System.Int32)">
+            <summary>
+            Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager and optionally any child managers.
+            </summary>
+            <param name="includeChildren"></param>
+            <param name="maxDegreeOfParallelism"></param>
             <returns></returns>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetChildManagers">

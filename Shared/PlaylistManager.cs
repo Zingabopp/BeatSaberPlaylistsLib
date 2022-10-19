@@ -488,6 +488,15 @@ namespace BeatSaberPlaylistsLib
             }
             return loadedPlaylists.ToArray();
         }
+        
+        /// <summary>
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager. 
+        /// Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
+        /// </summary>
+        /// <param name="includeChildren"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public IPlaylist[] GetAllPlaylists(bool includeChildren, out AggregateException? e) => GetAllPlaylists(includeChildren, 1, out e);
 
         /// <summary>
         /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager. 

@@ -2,6 +2,7 @@
 extern alias BeatSaber;
 using BeatSaber::UnityEngine;
 using System;
+using System.Collections;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -13,6 +14,26 @@ namespace BeatSaberPlaylistsLib
 {
     public static partial class Utilities
     {
+        private class SharedCoroutineStarter : MonoBehaviour, BeatSaber.ICoroutineStarter
+        {
+            public void Awake()
+            {
+                DontDestroyOnLoad(this);
+            }
+
+            Coroutine? BeatSaber.ICoroutineStarter.StartCoroutine(IEnumerator routine)
+            {
+                return base.StartCoroutine(routine);
+            }
+
+            void BeatSaber.ICoroutineStarter.StopCoroutine(Coroutine routine)
+            {
+                base.StopCoroutine(routine);
+            }
+        }
+
+        internal static BeatSaber.ICoroutineStarter CoroutineStarter { get; } = new GameObject().AddComponent<SharedCoroutineStarter>();
+
         private static Lazy<Sprite?> _defaultSpriteLoader = new Lazy<Sprite?>(() =>
         {
             Logger?.Invoke("Loading default sprite.", null);
@@ -134,7 +155,7 @@ namespace BeatSaberPlaylistsLib
                 return original;
             }
         }
-        
+
         internal static bool ImageSharpLoaded()
         {
             var imageSharp = PluginManager.GetPluginFromId("SixLabors.ImageSharp");

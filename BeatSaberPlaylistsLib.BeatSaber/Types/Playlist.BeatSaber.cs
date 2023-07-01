@@ -102,7 +102,7 @@ namespace BeatSaberPlaylistsLib.Types
             }
 
             if (!CoroutineRunning)
-                BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
+                Utilities.CoroutineStarter.StartCoroutine(SpriteLoadCoroutine());
         }
 
         private static void OnSpriteLoaded(Playlist playlist)
@@ -149,7 +149,7 @@ namespace BeatSaberPlaylistsLib.Types
             }
             CoroutineRunning = false;
             if (SpriteQueue.Count > 0) // Just in case
-                BeatSaber.SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
+                Utilities.CoroutineStarter.StartCoroutine(SpriteLoadCoroutine());
         }
 
         #region IStagedSpriteLoad
@@ -306,7 +306,7 @@ namespace BeatSaberPlaylistsLib.Types
         #region Default Cover
 
         private static SemaphoreSlim _defaultCoverSemaphore = new SemaphoreSlim(1, 1);
-        
+
         /// <inheritdoc cref="IPlaylist.GetDefaultCoverStream" />
         public async Task<Stream?> GetDefaultCoverStream()
         {
@@ -365,7 +365,7 @@ namespace BeatSaberPlaylistsLib.Types
             {
                 _defaultCoverSemaphore.Release();
             }
-            
+
             _defaultCoverData = ms.ToArray();
             return ms;
         }

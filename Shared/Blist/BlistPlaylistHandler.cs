@@ -66,6 +66,10 @@ namespace BeatSaberPlaylistsLib.Blist
                     if (imageEntry != null)
                         target.SetCover(imageEntry.Open());
                 }
+                else
+                {
+                    target.RaiseCoverImageChangedForDefaultCover();
+                }
 
             }
             catch (PlaylistSerializationException)

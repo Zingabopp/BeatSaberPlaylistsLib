@@ -56,6 +56,7 @@ namespace BeatSaberPlaylistsLib.Legacy
             {
                 using StreamReader sr = new StreamReader(stream);
                 jsonSerializer.Populate(sr, target);
+                target.RaiseCoverImageChangedForDefaultCover();
             }
             catch (Exception ex)
             {

@@ -1815,7 +1815,7 @@
         </member>
         <member name="F:BeatSaberPlaylistsLib.PlaylistManager._defaultManagerLoader">
             <summary>
-            Lazy loader for <see cref="P:BeatSaberPlaylistsLib.PlaylistManager.DefaultManager"/>. 
+            Lazy loader for <see cref="P:BeatSaberPlaylistsLib.PlaylistManager.DefaultManager"/>.
             </summary>
         </member>
         <member name="F:BeatSaberPlaylistsLib.PlaylistManager.ChangedPlaylists">
@@ -1894,13 +1894,20 @@
         </member>
         <member name="P:BeatSaberPlaylistsLib.PlaylistManager.Parent">
             <summary>
-            The parent <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>, if any. 
+            The parent <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>, if any.
             </summary>
         </member>
         <member name="P:BeatSaberPlaylistsLib.PlaylistManager.PlaylistPath">
             <summary>
             Path to the directory the <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> loads and stores playlists.
             </summary>
+        </member>
+        <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetPlaylistCount(System.Boolean)">
+            <summary>
+            Returns the number of playlists loaded by this <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/> and its children.
+            </summary>
+            <param name="includeChildren">Whether or not to count playlists loaded by children.</param>
+            <returns>The number of loaded playlists.</returns>
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RequestRefresh(System.String)">
             <summary>
@@ -2001,7 +2008,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.Boolean,System.AggregateException@)">
             <summary>
-            Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager. 
+            Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager.
             Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
             </summary>
             <param name="includeChildren"></param>
@@ -2010,7 +2017,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetAllPlaylists(System.AggregateException@)">
             <summary>
-            Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager. 
+            Returns all <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/>s that can be loaded by this manager.
             Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
             </summary>
             <param name="e"></param>
@@ -2036,7 +2043,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetHandler``1">
             <summary>
-            Returns the first registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> of type <typeparamref name="T"/> 
+            Returns the first registered <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> of type <typeparamref name="T"/>
             or null if there's no registered matching <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/>.
             </summary>
             <typeparam name="T"></typeparam>
@@ -2067,7 +2074,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.GetOrAdd(System.String,System.Func{BeatSaberPlaylistsLib.Types.IPlaylist})">
             <summary>
-            Attempts to get or load a playlist with the given filename. 
+            Attempts to get or load a playlist with the given filename.
             If the playlist doesn't exist, it will be created by <paramref name="playlistFactory"/>.
             </summary>
             <param name="playlistFileName"></param>
@@ -2120,7 +2127,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterHandlerForExtension(System.String,BeatSaberPlaylistsLib.Types.IPlaylistHandler)">
             <summary>
-            Registers an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for a specific extension. 
+            Registers an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylistHandler"/> for a specific extension.
             This will not register the handler for other extensions it may support.
             </summary>
             <param name="extension"></param>
@@ -2130,11 +2137,11 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.RegisterPlaylist(BeatSaberPlaylistsLib.Types.IPlaylist,System.Boolean)">
             <summary>
-            Registers an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with the <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>. 
+            Registers an <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with the <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>.
             </summary>
             <param name="playlist">Playlist to register.</param>
             <param name="asChanged">Immediately mark the playlist as changed.</param>
-            <returns>True if <paramref name="playlist"/> was successful registered, 
+            <returns>True if <paramref name="playlist"/> was successful registered,
             false if a playlist with the same filename is already registered.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown if <paramref name="playlist"/> does not have a file name.</exception>
         </member>
@@ -2175,7 +2182,7 @@
             <param name="playlistHandler"></param>
             <param name="removeFromChanged"></param>
             <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
-            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the playlist type 
+            <exception cref="T:System.ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the playlist type
             or <paramref name="playlist"/> does not have a filename.</exception>
             <exception cref="T:BeatSaberPlaylistsLib.PlaylistSerializationException">Thrown on serialization errors.</exception>
         </member>
@@ -2197,7 +2204,7 @@
         </member>
         <member name="M:BeatSaberPlaylistsLib.PlaylistManager.TryGetPlaylist(System.String,System.Boolean,BeatSaberPlaylistsLib.Types.IPlaylist@)">
             <summary>
-            Attempts to get a loaded <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with the given filename. 
+            Attempts to get a loaded <see cref="T:BeatSaberPlaylistsLib.Types.IPlaylist"/> with the given filename.
             If <paramref name="searchChildren"/> is true, also searches child <see cref="T:BeatSaberPlaylistsLib.PlaylistManager"/>s for a match.
             </summary>
             <param name="fileName"></param>

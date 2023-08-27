@@ -102,7 +102,7 @@ namespace BeatSaberPlaylistsLib.Types
             }
 
             if (!CoroutineRunning)
-                Utilities.CoroutineStarter.StartCoroutine(SpriteLoadCoroutine());
+                SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
         private static void OnSpriteLoaded(Playlist playlist)
@@ -149,7 +149,7 @@ namespace BeatSaberPlaylistsLib.Types
             }
             CoroutineRunning = false;
             if (SpriteQueue.Count > 0) // Just in case
-                Utilities.CoroutineStarter.StartCoroutine(SpriteLoadCoroutine());
+                SharedCoroutineStarter.instance.StartCoroutine(SpriteLoadCoroutine());
         }
 
         #region IStagedSpriteLoad

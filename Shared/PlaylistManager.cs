@@ -159,6 +159,22 @@ namespace BeatSaberPlaylistsLib
         public string PlaylistPath { get; protected set; }
 
         /// <summary>
+        /// Returns the number of playlists loaded by this <see cref="PlaylistManager"/> and its children.
+        /// </summary>
+        /// <param name="includeChildren">Whether or not to count playlists loaded by children.</param>
+        /// <returns>The number of loaded playlists.</returns>
+        public int GetPlaylistCount(bool includeChildren = false)
+        {
+            int playlistCount = LoadedPlaylists.Count;
+            if (includeChildren)
+            {
+                playlistCount += ChildManagers.Sum(x => x.LoadedPlaylists.Count);
+            }
+
+            return playlistCount;
+        }
+
+        /// <summary>
         /// Call this after making large changes to playlists or the <see cref="PlaylistManager"/> to notify other assemblies.
         /// Recommended for requesting a UI to update.
         /// </summary>

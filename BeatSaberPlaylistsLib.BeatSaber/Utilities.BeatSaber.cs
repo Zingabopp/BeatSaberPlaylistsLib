@@ -134,7 +134,7 @@ namespace BeatSaberPlaylistsLib
                 return original;
             }
         }
-        
+
         internal static bool ImageSharpLoaded()
         {
             var imageSharp = PluginManager.GetPluginFromId("SixLabors.ImageSharp");

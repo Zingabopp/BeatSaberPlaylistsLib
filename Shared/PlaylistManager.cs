@@ -21,7 +21,7 @@ namespace BeatSaberPlaylistsLib
         public event EventHandler<string>? PlaylistsRefreshRequested;
 
         /// <summary>
-        /// Lazy loader for <see cref="DefaultManager"/>. 
+        /// Lazy loader for <see cref="DefaultManager"/>.
         /// </summary>
         protected static readonly Lazy<PlaylistManager> _defaultManagerLoader = new Lazy<PlaylistManager>(() =>
         {
@@ -149,7 +149,7 @@ namespace BeatSaberPlaylistsLib
         public bool HasChildren => ChildManagers.Count > 0;
 
         /// <summary>
-        /// The parent <see cref="PlaylistManager"/>, if any. 
+        /// The parent <see cref="PlaylistManager"/>, if any.
         /// </summary>
         public PlaylistManager? Parent { get; protected set; }
 
@@ -157,6 +157,22 @@ namespace BeatSaberPlaylistsLib
         /// Path to the directory the <see cref="PlaylistManager"/> loads and stores playlists.
         /// </summary>
         public string PlaylistPath { get; protected set; }
+
+        /// <summary>
+        /// Returns the number of playlists loaded by this <see cref="PlaylistManager"/> and its children.
+        /// </summary>
+        /// <param name="includeChildren">Whether or not to count playlists loaded by children.</param>
+        /// <returns>The number of loaded playlists.</returns>
+        public int GetPlaylistCount(bool includeChildren = false)
+        {
+            int playlistCount = LoadedPlaylists.Count;
+            if (includeChildren)
+            {
+                playlistCount += ChildManagers.Sum(x => x.LoadedPlaylists.Count);
+            }
+
+            return playlistCount;
+        }
 
         /// <summary>
         /// Call this after making large changes to playlists or the <see cref="PlaylistManager"/> to notify other assemblies.
@@ -276,7 +292,7 @@ namespace BeatSaberPlaylistsLib
             {
                 if (recycle)
                 {
-                    _ = Task.Run(() => 
+                    _ = Task.Run(() =>
                     {
                         try
                         {
@@ -341,7 +357,7 @@ namespace BeatSaberPlaylistsLib
             {
                 if (recycle)
                 {
-                    _ = Task.Run(() => 
+                    _ = Task.Run(() =>
                     {
                         try
                         {
@@ -431,7 +447,7 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager. 
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager.
         /// Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
         /// </summary>
         /// <param name="includeChildren"></param>
@@ -443,9 +459,9 @@ namespace BeatSaberPlaylistsLib
             List<IPlaylist> loadedPlaylists = new List<IPlaylist>();
             List<Exception> exceptions = new List<Exception>();
 
-            List<string>? erroredPlaylists = new List<string>(); ;
+            List<string> erroredPlaylists = new List<string>();
             LoadAllPlaylists(loadedPlaylists, includeChildren, erroredPlaylists, exceptions);
-            if (exceptions != null)
+            if (exceptions.Count > 0)
             {
                 e = new AggregateException($"Error loading playlists: '{string.Join(", ", erroredPlaylists)}'", exceptions);
             }
@@ -453,7 +469,7 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager. 
+        /// Returns all <see cref="IPlaylist"/>s that can be loaded by this manager.
         /// Any exceptions thrown from loading individual playlists are stored in <paramref name="e"/>.
         /// </summary>
         /// <param name="e"></param>
@@ -481,7 +497,7 @@ namespace BeatSaberPlaylistsLib
         /// </summary>
         public IEnumerable<PlaylistManager> GetChildManagers() => ChildManagers.AsEnumerable();
         /// <summary>
-        /// Returns the first registered <see cref="IPlaylistHandler"/> of type <typeparamref name="T"/> 
+        /// Returns the first registered <see cref="IPlaylistHandler"/> of type <typeparamref name="T"/>
         /// or null if there's no registered matching <see cref="IPlaylistHandler"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -557,7 +573,7 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Attempts to get or load a playlist with the given filename. 
+        /// Attempts to get or load a playlist with the given filename.
         /// If the playlist doesn't exist, it will be created by <paramref name="playlistFactory"/>.
         /// </summary>
         /// <param name="playlistFileName"></param>
@@ -685,7 +701,7 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Registers an <see cref="IPlaylistHandler"/> for a specific extension. 
+        /// Registers an <see cref="IPlaylistHandler"/> for a specific extension.
         /// This will not register the handler for other extensions it may support.
         /// </summary>
         /// <param name="extension"></param>
@@ -708,11 +724,11 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Registers an <see cref="IPlaylist"/> with the <see cref="PlaylistManager"/>. 
+        /// Registers an <see cref="IPlaylist"/> with the <see cref="PlaylistManager"/>.
         /// </summary>
         /// <param name="playlist">Playlist to register.</param>
         /// <param name="asChanged">Immediately mark the playlist as changed.</param>
-        /// <returns>True if <paramref name="playlist"/> was successful registered, 
+        /// <returns>True if <paramref name="playlist"/> was successful registered,
         /// false if a playlist with the same filename is already registered.</returns>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="playlist"/> does not have a file name.</exception>
         public bool RegisterPlaylist(IPlaylist playlist, bool asChanged = true)
@@ -844,7 +860,7 @@ namespace BeatSaberPlaylistsLib
         /// <param name="playlistHandler"></param>
         /// <param name="removeFromChanged"></param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="playlist"/> is null.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the playlist type 
+        /// <exception cref="ArgumentException">Thrown if <paramref name="playlistHandler"/> does not support the playlist type
         /// or <paramref name="playlist"/> does not have a filename.</exception>
         /// <exception cref="PlaylistSerializationException">Thrown on serialization errors.</exception>
         public void StorePlaylist(IPlaylist playlist, IPlaylistHandler playlistHandler, bool removeFromChanged = true)
@@ -925,7 +941,7 @@ namespace BeatSaberPlaylistsLib
         }
 
         /// <summary>
-        /// Attempts to get a loaded <see cref="IPlaylist"/> with the given filename. 
+        /// Attempts to get a loaded <see cref="IPlaylist"/> with the given filename.
         /// If <paramref name="searchChildren"/> is true, also searches child <see cref="PlaylistManager"/>s for a match.
         /// </summary>
         /// <param name="fileName"></param>
@@ -990,7 +1006,7 @@ namespace BeatSaberPlaylistsLib
             if (fileExtension != null && SupportsExtension(fileExtension))
                 fileName = Path.GetFileNameWithoutExtension(fileName);
             string? file = files.FirstOrDefault(
-                f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase) 
+                f => fileName.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.OrdinalIgnoreCase)
                         && SupportsExtension(Path.GetExtension(f)));
             if (file != null)
             {

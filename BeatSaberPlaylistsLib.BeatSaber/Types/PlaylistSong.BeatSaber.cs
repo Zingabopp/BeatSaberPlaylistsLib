@@ -92,6 +92,10 @@ namespace BeatSaberPlaylistsLib.Types
             => PreviewBeatmapLevel?.allDirectionsEnvironmentInfo;
 
         [IgnoreDataMember]
+        BeatSaber.EnvironmentInfoSO[]? BeatSaber.IPreviewBeatmapLevel.environmentInfos
+            => PreviewBeatmapLevel?.environmentInfos;
+
+        [IgnoreDataMember]
         IReadOnlyList<BeatSaber.PreviewDifficultyBeatmapSet>? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
 

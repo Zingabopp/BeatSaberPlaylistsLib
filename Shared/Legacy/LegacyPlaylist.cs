@@ -97,7 +97,7 @@ namespace BeatSaberPlaylistsLib.Legacy
 
         ///<inheritdoc/>
         [DataMember]
-        [JsonProperty("playlistTitle", Order = -10)]
+        [JsonProperty("playlistTitle", Order = -10, NullValueHandling = NullValueHandling.Ignore)]
         public override string Title { get; set; } = string.Empty;
         ///<inheritdoc/>
         [DataMember]

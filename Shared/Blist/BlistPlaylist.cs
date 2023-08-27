@@ -43,7 +43,7 @@ namespace BeatSaberPlaylistsLib.Blist
         /// <summary>
         /// The playlist title
         /// </summary>
-        [JsonProperty("title", Order = -10)]
+        [JsonProperty("title", Order = -10, NullValueHandling = NullValueHandling.Ignore)]
         public override string Title { get; set; } = "";
 
         /// <summary>

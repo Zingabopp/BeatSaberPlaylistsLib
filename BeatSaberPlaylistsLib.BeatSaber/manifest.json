@@ -8,6 +8,7 @@
   "gameVersion": "1.31.0",
   "dependsOn": {
     "BSIPA": "^4.2.1",
-    "SongCore": "^3.9.0"
+    "SongCore": "^3.9.0",
+    "System.IO.Compression": "^4.6.57"
   }
 }

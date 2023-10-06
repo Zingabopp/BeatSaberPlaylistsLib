@@ -3,7 +3,6 @@ extern alias BeatSaber;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +10,7 @@ namespace BeatSaberPlaylistsLib.Types
 {
     public abstract partial class PlaylistSong : IPlaylistSong
     {
-    [NonSerialized]
+        [NonSerialized]
         private BeatSaber.IPreviewBeatmapLevel? _previewBeatmapLevel;
         ///<inheritdoc/>
         [IgnoreDataMember]
@@ -98,6 +97,10 @@ namespace BeatSaberPlaylistsLib.Types
         [IgnoreDataMember]
         IReadOnlyList<BeatSaber.PreviewDifficultyBeatmapSet>? BeatSaber.IPreviewBeatmapLevel.previewDifficultyBeatmapSets
             => PreviewBeatmapLevel?.previewDifficultyBeatmapSets;
+
+        [IgnoreDataMember]
+        BeatSaber.PlayerSensitivityFlag BeatSaber.IPreviewBeatmapLevel.contentRating
+            => PreviewBeatmapLevel?.contentRating ?? BeatSaber.PlayerSensitivityFlag.Safe;
 
         Task<BeatSaber.UnityEngine.Sprite>? BeatSaber.IPreviewBeatmapLevel.GetCoverImageAsync(CancellationToken cancellationToken)
             => PreviewBeatmapLevel?.GetCoverImageAsync(cancellationToken);

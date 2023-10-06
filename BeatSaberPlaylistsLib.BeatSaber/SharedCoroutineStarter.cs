@@ -1,14 +1,11 @@
 ﻿#if BeatSaber
 extern alias BeatSaber;
-using System.Runtime.CompilerServices;
 using BeatSaber::UnityEngine;
-
-[assembly: InternalsVisibleTo("PlaylistManager")]
 
 namespace BeatSaberPlaylistsLib
 {
     // Mostly a copy-paste of PersistentSingleton<T> from game version < 1.31.0.
-    internal class SharedCoroutineStarter : MonoBehaviour
+    public class SharedCoroutineStarter : MonoBehaviour
     {
         private static SharedCoroutineStarter? _instance;
         private static object _lock = new object();

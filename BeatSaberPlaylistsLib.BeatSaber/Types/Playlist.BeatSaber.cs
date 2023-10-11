@@ -241,6 +241,11 @@ namespace BeatSaberPlaylistsLib.Types
         public string shortPackName => Regex.Replace(Title, @"\t|\n|\r", " ");
 
         /// <summary>
+        /// BeatmapLevelPack content rating.
+        /// </summary>
+        public BeatSaber.PlayerSensitivityFlag contentRating => BeatSaber.PlayerSensitivityFlag.Safe;
+
+        /// <summary>
         /// Returns itself.
         /// </summary>
         BeatSaber.IBeatmapLevelCollection BeatSaber.IAnnotatedBeatmapLevelCollection.beatmapLevelCollection => this;

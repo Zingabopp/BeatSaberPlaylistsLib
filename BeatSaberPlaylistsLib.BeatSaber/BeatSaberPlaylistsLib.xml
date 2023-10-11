@@ -476,6 +476,11 @@
             BeatmapLevelPack Short Name, same as name of the collection.
             </summary>
         </member>
+        <member name="P:BeatSaberPlaylistsLib.Types.Playlist.contentRating">
+            <summary>
+            BeatmapLevelPack content rating.
+            </summary>
+        </member>
         <member name="P:BeatSaberPlaylistsLib.Types.Playlist.IAnnotatedBeatmapLevelCollection#beatmapLevelCollection">
             <summary>
             Returns itself.

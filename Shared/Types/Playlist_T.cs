@@ -75,7 +75,7 @@ namespace BeatSaberPlaylistsLib.Types
         /// <inheritdoc/>
         public override IPlaylistSong? Add(ISong song)
         {
-            if (AllowDuplicates || !Songs.Any(s => s.Hash == song.Hash || (song.Key != null && s.Key == song.Key)))
+            if (AllowDuplicates || !Songs.Any(s => (song.Hash != null && s.Hash == song.Hash) || (song.Key != null && s.Key == song.Key) || (song.LevelId != null && s.LevelId == song.LevelId)))
             {
                 T playlistSong = CreateWith(song);
                 Songs.Add(playlistSong);
